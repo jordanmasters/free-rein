@@ -1,7 +1,7 @@
 {
   "name": "free-rein",
   "displayName": "Free Rein",
-  "description": "Look before you let go: see what your agent's harness has, what it lacks, and how far it's trusted.",
+  "description": "See how much free rein your agent has. Your rules say one thing: what does your agent actually do?",
   "version": "0.2.0",
   "repository": {"type": "git", "url": "https://github.com/jordanmasters/free-rein.git", "directory": "vscode"},
   "homepage": "https://github.com/jordanmasters/free-rein#readme",

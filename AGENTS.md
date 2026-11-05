@@ -3,7 +3,8 @@
 Free Rein reads an AI agent's harness (instructions, skills, tools, agents,
 guardrails, memory, environment) and shows what it has, what it lacks, how the
 pieces affect each other, and how much it is trusted to do on its own.
-Tagline: *Look before you let go.*
+Tagline: *See how much free rein your agent has.* Under it: *Your rules say
+one thing. What does your agent actually do?*
 
 ## Layout
 

@@ -1,6 +1,8 @@
 # Free Rein
 
-*Look before you let go.*
+**See how much free rein your agent has.**
+
+*Your rules say one thing. What does your agent actually do?*
 
 Your `CLAUDE.md` says "never push to main". Does anything stop the agent if it
 tries? An AI coding agent is only as good as its **harness**: the instructions,
