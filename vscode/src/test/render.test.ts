@@ -251,6 +251,14 @@ async function main() {
         assert.deepEqual([...doc.querySelectorAll("#v44drawer .sl87.live .ss87 li")].map((li: any) => li.className), ["ok", "cur"], "the Scans page: each step, the current one turning");
         msg({ type: "cancelled" });
         assert.match(doc.getElementById("v44scan").textContent, /Scan cancelled[\s\S]*still shows the last scan/, "cancelled: the board keeps the last scan");
+        // a scan a file change started (auto) stays quiet while it runs; only what it finds new, or a failure, is said
+        click("#v44scan [data-toastx]");
+        msg({ type: "reading", why: "A file changed", changed: ["CLAUDE.md"], auto: true, at: Date.now() });
+        assert.ok(doc.getElementById("v44scan").hidden, "an automatic scan doesn't announce itself");
+        msg({ type: "failed", error: "unreadable" });
+        await new Promise(r => setTimeout(r, 5));
+        assert.match(doc.getElementById("v44scan").textContent, /fail|couldn/i, "but a failed one does");
+        click("#v44scan [data-toastx]");
         click('#v44drawer [data-closetopic]');
         assert.deepStrictEqual(errors, [], "Map to: no script errors");
         console.log("ok  the context button: the folder, program, model and layers, with their switches; one Draft chip; the mode in the Layers tab; modes in the agent's words, what-ifs in gold; Where you use it behind a flag");

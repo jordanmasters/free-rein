@@ -17,7 +17,7 @@ import * as st from "./state";
 import { Trace, CombosProvider } from "./trace";
 import { registerPlans, upgrade, applyNow, undoLast, apply as applyPlan, sendToClaude } from "./upgrade";
 import { getPlan, Plan } from "./plan";
-import { filesRead, changedSince, watchList, outside, logScan, Scan } from "./fresh";
+import { filesRead, changedSince, watchList, outside, noise, logScan, Scan } from "./fresh";
 import { Drafts, applyDraft, saveDraft, openDraft, createFromDraft } from "./draft";
 
 let ctx: vscode.ExtensionContext;
@@ -30,8 +30,9 @@ let watchers: vscode.Disposable[] = [];
 // when the board's data was read, and from which files: shown on the board, and checked again when you come back to it
 let readAt = "", readFiles: string[] = [], loading = false;
 // what started the next scan, for the list of scans: you, a file that changed, coming back to the window…
-let why = { text: "", changed: new Set<string>() };
-const because = (text: string, files: string[] = []) => { why.text = text; files.forEach(f => why.changed.add(f)); };
+let why = { text: "", changed: new Set<string>(), auto: false };
+// auto: started by a file changing, not by you; a scan like that stays quiet unless it finds something new
+const because = (text: string, files: string[] = [], auto = false) => { why.text = text; why.auto = auto; files.forEach(f => why.changed.add(f)); };
 const pieces = new PiecesProvider();
 const combosView = new CombosProvider();
 let trace: Trace;
@@ -208,10 +209,10 @@ async function load() {
   // only the latest reading counts: an older, slower one (another runtime, a package since removed) is dropped
   const gen = ++loadGen;
   let got: typeof reading;
-  const cause = { text: why.text || "Read", changed: [...why.changed] }, t0 = Date.now(); why = { text: "", changed: new Set() };
+  const cause = { text: why.text || "Read", changed: [...why.changed], auto: why.auto }, t0 = Date.now(); why = { text: "", changed: new Set(), auto: false };
   // what the scan is doing, as it does it: why it started, then each step the core reports, with the time it began
   const d0 = isProfile(t) ? null : draftOf(t), measuring = !!(d0 && (d0.add.length || d0.ups.length || (d0.rules || []).length || d0.runtime || d0.noBase));
-  loading = true; post({ type: "reading", why: measuring ? "Measuring the draft on a copy" : cause.text, changed: cause.changed.map(f => f.replace(t + path.sep, "").replace(os.homedir(), "~")), draft: measuring, at: t0 });
+  loading = true; post({ type: "reading", why: measuring ? "Measuring the draft on a copy" : cause.text, changed: cause.changed.map(f => f.replace(t + path.sep, "").replace(os.homedir(), "~")), draft: measuring, auto: cause.auto && !measuring, at: t0 });
   const onStep = (s: { id: string; label: string; detail?: string }) => { if (gen === loadGen) post({ type: "scanstep", ...s, at: Date.now() }); };
   try {
     const dir = freeReinDir();
@@ -263,7 +264,7 @@ async function load() {
 function watch(t: string) {
   watchers.forEach(w => w.dispose()); watchers = [];
   let timer: NodeJS.Timeout | undefined;
-  const again = (u?: vscode.Uri) => { because(u ? "A file changed" : "Files changed", u ? [u.fsPath] : []); clearTimeout(timer); timer = setTimeout(load, 800); };
+  const again = (u?: vscode.Uri) => { if (u && noise(u.fsPath)) return; because(u ? "A file changed" : "Files changed", u ? [u.fsPath] : [], true); clearTimeout(timer); timer = setTimeout(load, 800); };
   const home = cfg("countHome", true);
   const on = (base: string, glob: string) => {
     const w = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(base), glob));
@@ -320,8 +321,8 @@ async function runReview() {
 function recheck() {
   const t = target();
   if (!t || isProfile(t) || loading || !reading || !readAt) return;
-  const ch = changedSince(readFiles, readAt);
-  if (ch.length) { because("Back in the window: files had changed", ch); load(); }
+  const ch = changedSince(readFiles, readAt).filter(f => !noise(f));
+  if (ch.length) { because("Back in the window: files had changed", ch, true); load(); }
 }
 
 // --- showing it --------------------------------------------------------------

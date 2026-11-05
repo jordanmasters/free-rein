@@ -5,7 +5,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import { readHarness } from "../read";
-import { filesRead, changedSince, watchList, outside, logScan, Scan } from "../fresh";
+import { filesRead, changedSince, watchList, outside, noise, logScan, Scan } from "../fresh";
 
 const repo = path.resolve(__dirname, "..", "..", "..");
 // as the other tests: an empty home folder, so nothing of yours is read
@@ -32,6 +32,12 @@ async function main() {
     assert.ok(!watchList(root, false).some(x => x.base !== root), "the home folder only when it counts");
     assert.strictEqual(outside(path.join(root, ".claude", "settings.json"), root, false), false, "covered by the folder's patterns");
     assert.strictEqual(outside(path.join(root, "scripts", "done.sh"), root, false), true, "a script elsewhere is watched on its own");
+    // bookkeeping isn't a change to the harness: Claude Code's skill sync, logs, hidden files
+    const sync = path.join(os.homedir(), ".claude", "skills", "synced", "abc");
+    assert.ok(noise(path.join(sync, "manifest.json")) && noise(path.join(sync, ".last-complete-round")), "the skill sync's stamps");
+    assert.ok(!noise(path.join(sync, "review", "SKILL.md")), "a synced skill itself still counts");
+    assert.ok(noise(path.join(root, ".claude", "telemetry", "events.jsonl")) && noise(path.join(root, "logs", "x.txt")), "logs");
+    assert.ok(!noise(path.join(root, ".mcp.json")) && !noise(path.join(root, ".claude", "settings.json")) && !noise(path.join(root, "CLAUDE.md")), "what the runtimes read");
     // the list of scans: every scan kept, with what started it, the oldest dropped past the cap
     const sc = (n: number): Scan => ({ at: `2026-11-04T10:0${n}:00Z`, kind: "rules", why: n ? "A file changed" : "You opened the folder", changed: n ? ["CLAUDE.md"] : [], ms: 300, files: 40, xp: 500 + n, level: 10, equipped: 20, backed: 60, exposed: 1 });
     let log: Scan[] = []; for (let n = 0; n < 5; n++) log = logScan(log, sc(n), 3);

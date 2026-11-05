@@ -78,14 +78,17 @@ function freshBlock(){const R=freshOf(), hosted=typeof HOST!=='undefined'; if(!R
     <button class="lk50 go" data-scans="1">Every scan, and when it ran ${icon('ArrowRight',12)}</button></div>`}
 if(typeof window!=='undefined'&&window.addEventListener){
   window.addEventListener('message',e=>{const m=e.data; if(!m) return;
-    if(m.type==='reading'){READING=true;SCAN={why:m.why||'Scanning',changed:m.changed||[],draft:!!m.draft,at:m.at||Date.now(),steps:[],before:scanNumbers()};TOAST={state:'run'};updateScanUI()}
+    if(m.type==='reading'){READING=true;SCAN={why:m.why||'Scanning',changed:m.changed||[],draft:!!m.draft,auto:!!m.auto,at:m.at||Date.now(),steps:[],before:scanNumbers()};if(!m.auto)TOAST={state:'run'};updateScanUI()}
     else if(m.type==='scanstep'&&SCAN){const at=m.at||Date.now(), s=SCAN.steps.find(x=>x.id===m.id);
       if(s){s.label=m.label;if(m.detail)s.detail=m.detail}else{const p=SCAN.steps[SCAN.steps.length-1];if(p&&!p.end)p.end=at;SCAN.steps.push({id:m.id,label:m.label,detail:m.detail||'',t:at})}
       updateScanUI()}
     else if(m.type==='data'||m.type==='failed'||m.type==='cancelled'){READING=false;const had=!!SCAN;if(SCAN){const end=Date.now(),p=SCAN.steps[SCAN.steps.length-1];if(p&&!p.end)p.end=end;SCAN.end=end;SCAN.failed=m.type==='failed';SCAN.cancelled=m.type==='cancelled';SCAN.error=m.error||'';LASTSCAN=SCAN;SCAN=null}
       // the board redraws with the new data first; then the toast says what the scan found and what moved
       if(m.type==='cancelled'){PENDING=null;TOAST={state:'cancelled'};if(typeof head==='function')head();drawToast()}
-      else if(had) setTimeout(()=>{if(LASTSCAN&&LASTSCAN.end&&!LASTSCAN.after)LASTSCAN.after=scanNumbers();TOAST={state:m.type==='failed'?'failed':'done'};drawToast()},0)}});
+      // a scan a file change started says nothing unless it found something new (or failed)
+      else if(had) setTimeout(()=>{const S=LASTSCAN;if(S&&S.end&&!S.after)S.after=scanNumbers();
+        if(S&&S.auto&&m.type!=='failed'&&!scanSummary(S).moved.length){if(TOAST&&TOAST.state==='run'){TOAST=null;drawToast()}return}
+        TOAST={state:m.type==='failed'?'failed':'done'};drawToast()},0)}});
   setInterval(()=>{if(typeof document==='undefined') return; document.querySelectorAll('[data-ago]').forEach(el=>{el.textContent=agoText(el.dataset.ago)});
     const d=document.querySelector('#v44head .cb86 .fd86:not(.busy)'), R=freshOf(); if(d&&R) d.title=`Your files, read ${agoText(R.at)}`},30000)}
 const LYNAME={org:'Your organization',local:'This repo',project:'This repo',user:'All repos'};

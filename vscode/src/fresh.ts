@@ -73,6 +73,18 @@ export function outside(f: string, root: string, home: boolean): boolean {
   return true;
 }
 
+/** A change that isn't to the harness: a tool's own bookkeeping, rewritten as it works (Claude Code's sync of your
+ * claude.ai skills touches a manifest every few minutes), a log, or a hidden file other than the two the runtimes
+ * read. Such a change doesn't start a scan; a real edit next to it (a skill's SKILL.md) still does. */
+export function noise(f: string): boolean {
+  const b = path.basename(f), parts = f.split(/[\\/]/);
+  if (b.startsWith(".") && b !== ".mcp.json" && b !== ".cursorrules") return true;
+  if (/\.(jsonl|log)$/i.test(b)) return true;
+  if (parts.some(p => p === "telemetry" || p === "logs")) return true;
+  const i = parts.lastIndexOf("synced");
+  return i > 0 && parts[i - 1] === "skills" && b === "manifest.json";
+}
+
 /** One scan of your files: when, what started it, how long it took, and what it found. Kept per folder, newest last,
  * for the board's list of scans and for readings over time. Only your files as they are: a draft or a what-if is
  * measured on a copy and isn't a scan. */
