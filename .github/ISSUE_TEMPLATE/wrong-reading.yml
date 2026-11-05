@@ -1,0 +1,35 @@
+name: Free Rein read my harness wrongly
+description: A piece it missed or saw that isn't there, a rule matched to the wrong thing, a situation that plays out differently for real.
+labels: [reading]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks: these reports are the most useful. Please don't paste secrets or private instructions; a small made-up example that shows the same thing is perfect.
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      options: [Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI, OpenCode, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: saw
+    attributes:
+      label: What Free Rein showed
+      description: The piece, rule or situation, and what it said. A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What's actually there
+      description: The file and the lines it should have read (or shouldn't have), and what really happens when the agent tries.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Free Rein version
+      description: In the extension's details (Extensions view), or core/package.json from a clone.
+      placeholder: "0.2.0"

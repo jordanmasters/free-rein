@@ -13,9 +13,8 @@ installers) is code. Its rules:
 ## Reporting a problem
 
 Please don't open a public issue. Report it privately to the maintainer
-through GitHub (the repository's Security tab, "Report a vulnerability", once
-the repository is public), with what you saw, how to reproduce it and the
-version.
+through GitHub (the repository's Security tab, "Report a vulnerability"), with
+what you saw, how to reproduce it and the version.
 
 ## Supported versions
 

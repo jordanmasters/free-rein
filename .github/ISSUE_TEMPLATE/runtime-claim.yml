@@ -1,0 +1,29 @@
+name: A runtime claim is out of date
+description: Something Free Rein says about how a runtime works (in model/runtimes/<id>.json) is wrong or has changed.
+labels: [runtime-data]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Runtime and piece
+      description: For example "Codex, permission rules", or the file and key.
+    validations:
+      required: true
+  - type: textarea
+    id: now
+    attributes:
+      label: What it does now
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link to the vendor's own docs, changelog or release notes. Every claim needs one.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Runtime version
+      description: The version where this changed or where you checked it.
