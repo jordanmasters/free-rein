@@ -1,0 +1,216 @@
+{
+ "models": [
+  {
+   "id": "claude-opus-5-5",
+   "name": "Claude Opus 5.5",
+   "known": true,
+   "as": [
+    "opus"
+   ],
+   "used_for": [
+    "the main model (user settings)"
+   ],
+   "found_in": [
+    "<home>/.claude/settings.json"
+   ],
+   "kind": "llm",
+   "runs": "cloud",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": true
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": false,
+    "vectors": false
+   },
+   "source": [
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://code.claude.com/docs/en/model-config"
+   ],
+   "checked": "2026-10-08 (pages undated; Claude Code page references v2.1.196)"
+  }
+ ],
+ "main_set": true,
+ "core": "claude-opus-5-5",
+ "cores": [
+  "claude-opus-5-5"
+ ],
+ "agents": [],
+ "others": [],
+ "choices": [
+  {
+   "value": "default",
+   "name": "Claude Code's default",
+   "model_id": "claude-code-default",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "opus",
+   "name": "Claude Opus 5.5",
+   "model_id": "claude-opus-5-5",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "sonnet",
+   "name": "Claude Sonnet 5.5",
+   "model_id": "claude-sonnet-5-5",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "haiku",
+   "name": "Claude Haiku 5.5",
+   "model_id": "claude-haiku-5-5",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "fable",
+   "name": "Claude Fable 5.1",
+   "model_id": "claude-fable-5-1",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "opusplan",
+   "name": "Opus while it plans, Sonnet while it works",
+   "model_id": null,
+   "inputs": null,
+   "outputs": null
+  }
+ ],
+ "current": "opus",
+ "choices_from": "https://code.claude.com/docs/en/model-config",
+ "inputs": {
+  "text": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5"
+   ]
+  },
+  "image": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5"
+   ]
+  },
+  "audio": {
+   "state": "unknown",
+   "by": []
+  },
+  "video": {
+   "state": "unknown",
+   "by": []
+  }
+ },
+ "files": {
+  "pdf": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5"
+   ]
+  }
+ },
+ "outputs": {
+  "text": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5"
+   ]
+  },
+  "image": {
+   "state": "unknown",
+   "by": []
+  },
+  "audio": {
+   "state": "unknown",
+   "by": []
+  },
+  "video": {
+   "state": "unknown",
+   "by": []
+  },
+  "decisions": {
+   "state": "no",
+   "by": []
+  },
+  "vectors": {
+   "state": "no",
+   "by": []
+  }
+ },
+ "note": null
+}

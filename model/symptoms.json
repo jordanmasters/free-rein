@@ -1,0 +1,18 @@
+{
+  "schema": "free-rein.symptoms/1",
+  "about": "A way into the board from a problem: each symptom belongs to one view (what it has, how it checks, how work flows) and names the pieces that answer it.",
+  "symptoms": [
+    { "id": "unsafe-reach", "name": "Can't reach the right data or tool safely", "view": "has",
+      "pieces": ["permissions", "sandbox", "mcp", "live-injection"] },
+    { "id": "forgets", "name": "Forgets progress across sessions", "view": "has",
+      "pieces": ["progress-log", "session-state", "task-list", "session-recall"] },
+    { "id": "unreliable", "name": "First try is close but not reliable", "view": "checks",
+      "pieces": ["check-commands", "completion-check", "independent-checker"] },
+    { "id": "wrong-stop", "name": "Keeps going after success, or stops too soon", "view": "checks",
+      "pieces": ["criteria", "completion-check", "spend-limits"] },
+    { "id": "order", "name": "Specialists must run in a set order", "view": "flows",
+      "pieces": ["orchestration", "subagents", "modes"] },
+    { "id": "lost-failure", "name": "Hard to find where a long process failed", "view": "flows",
+      "pieces": ["event-log", "receipts", "transcripts"] }
+  ]
+}

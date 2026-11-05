@@ -1,0 +1,2464 @@
+{
+ "meta": {
+  "adapter": "claude-code",
+  "adapters": [
+   "claude-code"
+  ],
+  "root": "<kitchen>",
+  "schema": "0.1"
+ },
+ "nodes": [
+  {
+   "id": "black-box:claude-code-runtime",
+   "type": "black-box",
+   "label": "claude-code-runtime",
+   "opacity": "proprietary",
+   "evidence": "system prompt, context management, and built-in tool behavior are not inspectable from the repo",
+   "requires": [],
+   "part": "proprietary-runtime"
+  },
+  {
+   "id": "config:.devcontainer",
+   "type": "config",
+   "label": ".devcontainer",
+   "kind": "env-setup",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.devcontainer"
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:.nvmrc",
+   "type": "config",
+   "label": ".nvmrc",
+   "kind": "env-pin",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.nvmrc",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:Dockerfile",
+   "type": "config",
+   "label": "Dockerfile",
+   "kind": "env-setup",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/Dockerfile",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:check-commands",
+   "type": "config",
+   "label": "check-commands",
+   "kind": "env-check",
+   "discovered": true,
+   "commands": [
+    "lint",
+    "test",
+    "typecheck"
+   ],
+   "provenance": {
+    "path": "<kitchen>"
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:global-settings",
+   "type": "config",
+   "label": "global-settings",
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     8,
+     20
+    ]
+   },
+   "part": "runtime-binding"
+  },
+  {
+   "id": "config:mcp-json",
+   "type": "config",
+   "label": "mcp-json",
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:package-lock.json",
+   "type": "config",
+   "label": "package-lock.json",
+   "kind": "env-lock",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/package-lock.json",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:project-settings",
+   "type": "config",
+   "label": "project-settings",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     65,
+     141
+    ]
+   },
+   "part": "runtime-binding"
+  },
+  {
+   "id": "config:sig:auto-fix:project",
+   "type": "config",
+   "label": "sig:auto-fix:project",
+   "kind": "sig-auto-fix",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "formats or fixes after Edit",
+   "hook_events": [
+    "PostToolUse"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:auto-fix:user",
+   "type": "config",
+   "label": "sig:auto-fix:user",
+   "kind": "sig-auto-fix",
+   "discovered": true,
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     1,
+     22
+    ]
+   },
+   "evidence": "formats or fixes after Write",
+   "hook_events": [
+    "PostToolUse"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:ci-agent:ci.yml",
+   "type": "config",
+   "label": "sig:ci-agent:ci.yml",
+   "kind": "sig-ci-agent",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.github/workflows/ci.yml",
+    "lines": [
+     1,
+     7
+    ]
+   },
+   "evidence": "Claude Code runs in GitHub Actions",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:code-intel:lsp-json",
+   "type": "config",
+   "label": "sig:code-intel:lsp-json",
+   "kind": "sig-code-intel",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.lsp.json",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": ".lsp.json",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:code-intel:project",
+   "type": "config",
+   "label": "sig:code-intel:project",
+   "kind": "sig-code-intel",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "ts-lsp@market",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:codebase-map:ARCHITECTURE.md",
+   "type": "config",
+   "label": "sig:codebase-map:ARCHITECTURE.md",
+   "kind": "sig-codebase-map",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/ARCHITECTURE.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "ARCHITECTURE.md, named in CLAUDE.md as the place to start",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:codebase-map:docs/map-schema.md",
+   "type": "config",
+   "label": "sig:codebase-map:docs/map-schema.md",
+   "kind": "sig-codebase-map",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/docs/map-schema.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "evidence": "docs/map-schema.md, named in CLAUDE.md as the place to start",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:commands:commands",
+   "type": "config",
+   "label": "sig:commands:commands",
+   "kind": "sig-commands",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/commands"
+   },
+   "evidence": "1 command(s)",
+   "n": 1,
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:commands:review-work",
+   "type": "config",
+   "label": "sig:commands:review-work",
+   "kind": "sig-commands",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md",
+    "lines": [
+     1,
+     34
+    ]
+   },
+   "evidence": "a skill you start by name",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:compaction:claude-md",
+   "type": "config",
+   "label": "sig:compaction:claude-md",
+   "kind": "sig-compaction",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/CLAUDE.md",
+    "lines": [
+     1,
+     20
+    ]
+   },
+   "evidence": "compact instructions in CLAUDE.md",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:compaction:project",
+   "type": "config",
+   "label": "sig:compaction:project",
+   "kind": "sig-compaction",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "PreCompact or PostCompact hook",
+   "hook_events": [
+    "PreCompact"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:connected-accounts:claude-ai",
+   "type": "config",
+   "label": "sig:connected-accounts:claude-ai",
+   "kind": "sig-connected-accounts",
+   "discovered": true,
+   "provenance": {
+    "path": "<home>/.claude/projects/<kitchen-history>"
+   },
+   "evidence": "claude.ai connectors: Google Drive",
+   "connectors": [
+    "Google Drive"
+   ],
+   "n": 1,
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:connected-accounts:gmail",
+   "type": "config",
+   "label": "sig:connected-accounts:gmail",
+   "kind": "sig-connected-accounts",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "gmail server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:connected-accounts:google-calendar",
+   "type": "config",
+   "label": "sig:connected-accounts:google-calendar",
+   "kind": "sig-connected-accounts",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "google-calendar server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:cost-tracking:ccusage",
+   "type": "config",
+   "label": "sig:cost-tracking:ccusage",
+   "kind": "sig-cost-tracking",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/package.json",
+    "lines": [
+     1,
+     14
+    ]
+   },
+   "evidence": "ccusage",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:cost-tracking:otel@project",
+   "type": "config",
+   "label": "sig:cost-tracking:otel@project",
+   "kind": "sig-cost-tracking",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "usage metrics exported",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:cost-tracking:statusline@project",
+   "type": "config",
+   "label": "sig:cost-tracking:statusline@project",
+   "kind": "sig-cost-tracking",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "status line shows cost",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:decision-model:app.py",
+   "type": "config",
+   "label": "sig:decision-model:app.py",
+   "kind": "sig-decision-model",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/app.py",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "evidence": "jev-latest",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:decision-model:automode@project",
+   "type": "config",
+   "label": "sig:decision-model:automode@project",
+   "kind": "sig-decision-model",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "auto mode's safety check tuned (autoMode)",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:decision-model:jev-decisions",
+   "type": "config",
+   "label": "sig:decision-model:jev-decisions",
+   "kind": "sig-decision-model",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "jev-decisions server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:decision-model:package.json",
+   "type": "config",
+   "label": "sig:decision-model:package.json",
+   "kind": "sig-decision-model",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/package.json",
+    "lines": [
+     1,
+     14
+    ]
+   },
+   "evidence": "typesafe-sdk",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:decision-model:requirements.txt",
+   "type": "config",
+   "label": "sig:decision-model:requirements.txt",
+   "kind": "sig-decision-model",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/requirements.txt",
+    "lines": [
+     1,
+     3
+    ]
+   },
+   "evidence": "typesafe-sdk",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:env-keys:env-example",
+   "type": "config",
+   "label": "sig:env-keys:env-example",
+   "kind": "sig-env-keys",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.env.example",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "env template checked in",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:env-keys:project",
+   "type": "config",
+   "label": "sig:env-keys:project",
+   "kind": "sig-env-keys",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "env or apiKeyHelper in settings",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:folder-instructions:imports",
+   "type": "config",
+   "label": "sig:folder-instructions:imports",
+   "kind": "sig-folder-instructions",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/CLAUDE.md",
+    "lines": [
+     1,
+     20
+    ]
+   },
+   "evidence": "@ imports",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:folder-instructions:nested",
+   "type": "config",
+   "label": "sig:folder-instructions:nested",
+   "kind": "sig-folder-instructions",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>"
+   },
+   "evidence": "CLAUDE.md in subfolders",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:folder-instructions:rules",
+   "type": "config",
+   "label": "sig:folder-instructions:rules",
+   "kind": "sig-folder-instructions",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/rules"
+   },
+   "evidence": "1 rule file(s)",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:git-workflow:.husky/commit-msg",
+   "type": "config",
+   "label": "sig:git-workflow:.husky/commit-msg",
+   "kind": "sig-git-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.husky/commit-msg",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "commit-msg hook",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:git-workflow:attribution@project",
+   "type": "config",
+   "label": "sig:git-workflow:attribution@project",
+   "kind": "sig-git-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "commit and PR attribution set",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:git-workflow:commit-it",
+   "type": "config",
+   "label": "sig:git-workflow:commit-it",
+   "kind": "sig-git-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/commit-it/SKILL.md",
+    "lines": [
+     1,
+     6
+    ]
+   },
+   "evidence": "a commit skill",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:git-workflow:commit-it@skills",
+   "type": "config",
+   "label": "sig:git-workflow:commit-it@skills",
+   "kind": "sig-git-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/skills/commit-it/SKILL.md",
+    "lines": [
+     1,
+     6
+    ]
+   },
+   "evidence": "a commit skill",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:git-workflow:commitlint.config.js",
+   "type": "config",
+   "label": "sig:git-workflow:commitlint.config.js",
+   "kind": "sig-git-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/commitlint.config.js",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "commit messages checked",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:modalities:inputs:image",
+   "type": "config",
+   "label": "sig:modalities:inputs:image",
+   "kind": "sig-modalities",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "input image: Claude Haiku 5.5",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:modalities:inputs:text",
+   "type": "config",
+   "label": "sig:modalities:inputs:text",
+   "kind": "sig-modalities",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "input text: Claude Haiku 5.5, Jev, Llama 3.2 (1B/3B), text-embedding-3-small",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:modalities:outputs:decisions",
+   "type": "config",
+   "label": "sig:modalities:outputs:decisions",
+   "kind": "sig-modalities",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/app.py",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "evidence": "gives decisions: Jev",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:modalities:outputs:text",
+   "type": "config",
+   "label": "sig:modalities:outputs:text",
+   "kind": "sig-modalities",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "gives text: Claude Haiku 5.5, Llama 3.2 (1B/3B)",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:modalities:outputs:vectors",
+   "type": "config",
+   "label": "sig:modalities:outputs:vectors",
+   "kind": "sig-modalities",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/app.py",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "evidence": "gives vectors: text-embedding-3-small",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:model-routing:agents",
+   "type": "config",
+   "label": "sig:model-routing:agents",
+   "kind": "sig-model-routing",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/agents"
+   },
+   "evidence": "1 agent(s) with their own model",
+   "n": 1,
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:model-routing:opusplan@project",
+   "type": "config",
+   "label": "sig:model-routing:opusplan@project",
+   "kind": "sig-model-routing",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "Opus while it plans, Sonnet while it works",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:model-routing:subagents@project",
+   "type": "config",
+   "label": "sig:model-routing:subagents@project",
+   "kind": "sig-model-routing",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "subagents run on haiku",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:network-limits:project",
+   "type": "config",
+   "label": "sig:network-limits:project",
+   "kind": "sig-network-limits",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "network limited to named domains",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:notifications:project",
+   "type": "config",
+   "label": "sig:notifications:project",
+   "kind": "sig-notifications",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "Notification hook or notification channel",
+   "hook_events": [
+    "Notification"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:ontology:docs/map-schema.md",
+   "type": "config",
+   "label": "sig:ontology:docs/map-schema.md",
+   "kind": "sig-ontology",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/docs/map-schema.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "evidence": "docs/map-schema.md",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:ontology:docs/ontology.md",
+   "type": "config",
+   "label": "sig:ontology:docs/ontology.md",
+   "kind": "sig-ontology",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/docs/ontology.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "docs/ontology.md",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:ontology:terms.ttl",
+   "type": "config",
+   "label": "sig:ontology:terms.ttl",
+   "kind": "sig-ontology",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/terms.ttl",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "terms.ttl",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:output-style:files",
+   "type": "config",
+   "label": "sig:output-style:files",
+   "kind": "sig-output-style",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/output-styles"
+   },
+   "evidence": "output style files",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:output-style:project",
+   "type": "config",
+   "label": "sig:output-style:project",
+   "kind": "sig-output-style",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "outputStyle: Explanatory",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:plan-first:project",
+   "type": "config",
+   "label": "sig:plan-first:project",
+   "kind": "sig-plan-first",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "starts in plan mode",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:plugins:packaged",
+   "type": "config",
+   "label": "sig:plugins:packaged",
+   "kind": "sig-plugins",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude-plugin"
+   },
+   "evidence": "packaged as a plugin",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:plugins:project",
+   "type": "config",
+   "label": "sig:plugins:project",
+   "kind": "sig-plugins",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "1 plugin(s) enabled",
+   "n": 1,
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:review-workflow:REVIEW.md",
+   "type": "config",
+   "label": "sig:review-workflow:REVIEW.md",
+   "kind": "sig-review-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/REVIEW.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "REVIEW.md",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:review-workflow:agent:reviewer",
+   "type": "config",
+   "label": "sig:review-workflow:agent:reviewer",
+   "kind": "sig-review-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/agents/reviewer.md",
+    "lines": [
+     1,
+     8
+    ]
+   },
+   "evidence": "a review skill or agent",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:review-workflow:review-work",
+   "type": "config",
+   "label": "sig:review-workflow:review-work",
+   "kind": "sig-review-workflow",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md",
+    "lines": [
+     1,
+     34
+    ]
+   },
+   "evidence": "a review skill or agent",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:rewind:hook@project",
+   "type": "config",
+   "label": "sig:rewind:hook@project",
+   "kind": "sig-rewind",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "a hook that snapshots the work",
+   "hook_events": [
+    "PreCompact"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:secrets-out:project",
+   "type": "config",
+   "label": "sig:secrets-out:project",
+   "kind": "sig-secrets-out",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "secret files denied",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:secrets-out:user",
+   "type": "config",
+   "label": "sig:secrets-out:user",
+   "kind": "sig-secrets-out",
+   "discovered": true,
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     1,
+     22
+    ]
+   },
+   "evidence": "secret files denied",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:sees-app:chrome-devtools",
+   "type": "config",
+   "label": "sig:sees-app:chrome-devtools",
+   "kind": "sig-sees-app",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "chrome-devtools server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:sees-app:playwright",
+   "type": "config",
+   "label": "sig:sees-app:playwright",
+   "kind": "sig-sees-app",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "playwright server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:session-recall:memory",
+   "type": "config",
+   "label": "sig:session-recall:memory",
+   "kind": "sig-session-recall",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "memory server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:session-start:project",
+   "type": "config",
+   "label": "sig:session-start:project",
+   "kind": "sig-session-start",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "SessionStart hook",
+   "hook_events": [
+    "SessionStart"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:settings-split:settings",
+   "type": "config",
+   "label": "sig:settings-split:settings",
+   "kind": "sig-settings-split",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "shared settings, personal ones kept local",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:sign-off:review-work",
+   "type": "config",
+   "label": "sig:sign-off:review-work",
+   "kind": "sig-sign-off",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md",
+    "lines": [
+     1,
+     34
+    ]
+   },
+   "evidence": "a sign-off step",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:sign-off:vault",
+   "type": "config",
+   "label": "sig:sign-off:vault",
+   "kind": "sig-sign-off",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/vault"
+   },
+   "evidence": "work whose gate a person decides",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:spend-limits:agents",
+   "type": "config",
+   "label": "sig:spend-limits:agents",
+   "kind": "sig-spend-limits",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/agents"
+   },
+   "evidence": "maxTurns on agents",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:spend-limits:ci.yml",
+   "type": "config",
+   "label": "sig:spend-limits:ci.yml",
+   "kind": "sig-spend-limits",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.github/workflows/ci.yml",
+    "lines": [
+     1,
+     7
+    ]
+   },
+   "evidence": "turn or budget limit on runs",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:spend-limits:scripts/run.sh",
+   "type": "config",
+   "label": "sig:spend-limits:scripts/run.sh",
+   "kind": "sig-spend-limits",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/scripts/run.sh",
+    "lines": [
+     1,
+     3
+    ]
+   },
+   "evidence": "turn or budget limit on runs",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:status-line:project",
+   "type": "config",
+   "label": "sig:status-line:project",
+   "kind": "sig-status-line",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     1,
+     143
+    ]
+   },
+   "evidence": "statusLine set",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:task-list:TODO.md",
+   "type": "config",
+   "label": "sig:task-list:TODO.md",
+   "kind": "sig-task-list",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/TODO.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "evidence": "TODO.md",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:task-list:linear",
+   "type": "config",
+   "label": "sig:task-list:linear",
+   "kind": "sig-task-list",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     1,
+     13
+    ]
+   },
+   "evidence": "linear server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:transcripts:history",
+   "type": "config",
+   "label": "sig:transcripts:history",
+   "kind": "sig-transcripts",
+   "discovered": true,
+   "provenance": {
+    "path": "<home>/.claude/projects/<kitchen-history>"
+   },
+   "evidence": "2 sessions kept",
+   "n": 2,
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:visual-check:browser-tests",
+   "type": "config",
+   "label": "sig:visual-check:browser-tests",
+   "kind": "sig-visual-check",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>"
+   },
+   "evidence": "browser or screenshot tests",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sub/Cargo.lock",
+   "type": "config",
+   "label": "sub/Cargo.lock",
+   "kind": "env-lock",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/sub/Cargo.lock",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "executor:.claude/hooks/done.sh",
+   "type": "executor",
+   "label": ".claude/hooks/done.sh",
+   "activation": "event",
+   "runtime": "inline",
+   "event": "Stop",
+   "weight": 5,
+   "summary": "A completion check: tests must pass.",
+   "provenance": {
+    "path": "<kitchen>/.claude/hooks/done.sh",
+    "lines": [
+     1,
+     5
+    ]
+   }
+  },
+  {
+   "id": "executor:.claude/hooks/guard.sh",
+   "type": "executor",
+   "label": ".claude/hooks/guard.sh",
+   "activation": "event",
+   "runtime": "inline",
+   "event": "PreToolUse",
+   "weight": 6,
+   "summary": "Refuses edits to the vault — exits 2 to block. nested marker Second line of header.",
+   "provenance": {
+    "path": "<kitchen>/.claude/hooks/guard.sh",
+    "lines": [
+     1,
+     6
+    ]
+   }
+  },
+  {
+   "id": "executor:.claude/hooks/log-skill.sh",
+   "type": "executor",
+   "label": ".claude/hooks/log-skill.sh",
+   "activation": "event",
+   "runtime": "inline",
+   "event": "PreToolUse",
+   "weight": 4,
+   "summary": "Records each skill it starts.",
+   "provenance": {
+    "path": "<kitchen>/.claude/hooks/log-skill.sh",
+    "lines": [
+     1,
+     4
+    ]
+   }
+  },
+  {
+   "id": "executor:.claude/hooks/start.py",
+   "type": "executor",
+   "label": ".claude/hooks/start.py",
+   "activation": "event",
+   "runtime": "inline",
+   "event": "SessionStart",
+   "weight": 3,
+   "summary": "",
+   "provenance": {
+    "path": "<kitchen>/.claude/hooks/start.py",
+    "lines": [
+     1,
+     3
+    ]
+   }
+  },
+  {
+   "id": "executor:agent:helper",
+   "type": "executor",
+   "label": "agent:helper",
+   "activation": "cascade",
+   "runtime": "background",
+   "kind": "subagent",
+   "weight": 5,
+   "summary": "Copilot helper",
+   "provenance": {
+    "path": "<kitchen>/.github/agents/helper.agent.md",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "part": "subagent",
+   "orphan": true
+  },
+  {
+   "id": "executor:agent:planner",
+   "type": "executor",
+   "label": "agent:planner",
+   "activation": "cascade",
+   "runtime": "background",
+   "kind": "subagent",
+   "runtime_core": "codex",
+   "provenance": {
+    "path": "<kitchen>/.codex/agents/planner.toml",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "subagent",
+   "orphan": true
+  },
+  {
+   "id": "executor:agent:reviewer",
+   "type": "executor",
+   "label": "agent:reviewer",
+   "activation": "cascade",
+   "runtime": "background",
+   "kind": "subagent",
+   "weight": 8,
+   "summary": "Reviews work and gives a verdict with findings",
+   "provenance": {
+    "path": "<kitchen>/.claude/agents/reviewer.md",
+    "lines": [
+     1,
+     8
+    ]
+   },
+   "part": "subagent",
+   "orphan": true
+  },
+  {
+   "id": "executor:agent:reviewer@.github",
+   "type": "executor",
+   "label": "agent:reviewer@.github",
+   "activation": "cascade",
+   "runtime": "background",
+   "kind": "subagent",
+   "weight": 4,
+   "summary": "dup name",
+   "provenance": {
+    "path": "<kitchen>/.github/agents/reviewer.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "subagent",
+   "orphan": true
+  },
+  {
+   "id": "executor:agent:scribe",
+   "type": "executor",
+   "label": "agent:scribe",
+   "activation": "cascade",
+   "runtime": "background",
+   "kind": "subagent",
+   "weight": 6,
+   "summary": "\"Writes notes\"",
+   "provenance": {
+    "path": "<kitchen>/.claude/agents/scribe.md",
+    "lines": [
+     1,
+     6
+    ]
+   },
+   "part": "subagent",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:docs@codex",
+   "type": "executor",
+   "label": "mcp:docs@codex",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.codex/config.toml",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:github",
+   "type": "executor",
+   "label": "mcp:github",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.vscode/mcp.json",
+    "lines": [
+     3,
+     3
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:gmail",
+   "type": "executor",
+   "label": "mcp:gmail",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     7,
+     7
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:jev-decisions",
+   "type": "executor",
+   "label": "mcp:jev-decisions",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     10,
+     10
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:linear",
+   "type": "executor",
+   "label": "mcp:linear",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     8,
+     8
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:memory",
+   "type": "executor",
+   "label": "mcp:memory",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     9,
+     9
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:notion",
+   "type": "executor",
+   "label": "mcp:notion",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.gemini/settings.json",
+    "lines": [
+     3,
+     3
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:playwright",
+   "type": "executor",
+   "label": "mcp:playwright",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.mcp.json",
+    "lines": [
+     6,
+     6
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:search-web@codex",
+   "type": "executor",
+   "label": "mcp:search-web@codex",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/.codex/config.toml",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:mcp:slack",
+   "type": "executor",
+   "label": "mcp:slack",
+   "activation": "cascade",
+   "runtime": "inline",
+   "kind": "mcp",
+   "provenance": {
+    "path": "<kitchen>/opencode.json",
+    "lines": [
+     3,
+     3
+    ]
+   },
+   "part": "tool-extension",
+   "orphan": true
+  },
+  {
+   "id": "executor:scripts/validate_skills.py",
+   "type": "executor",
+   "label": "scripts/validate_skills.py",
+   "activation": "event",
+   "runtime": "inline",
+   "event": "PreToolUse",
+   "weight": 2,
+   "summary": "",
+   "provenance": {
+    "path": "<kitchen>/scripts/validate_skills.py",
+    "lines": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "id": "gate:.claude/hooks/done.sh",
+   "type": "gate",
+   "label": ".claude/hooks/done.sh",
+   "imparts": {
+    "verifier": "deterministic",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [
+    "hook-runtime"
+   ],
+   "evidence": "script exits non-zero — deterministically blocks the action",
+   "summary": "A completion check: tests must pass.",
+   "provenance": {
+    "path": "<kitchen>/.claude/hooks/done.sh",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "on_completion": true,
+   "part": "event-hook-gate"
+  },
+  {
+   "id": "gate:.claude/hooks/guard.sh",
+   "type": "gate",
+   "label": ".claude/hooks/guard.sh",
+   "imparts": {
+    "verifier": "deterministic",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [
+    "hook-runtime"
+   ],
+   "evidence": "script exits non-zero — deterministically blocks the action",
+   "summary": "Refuses edits to the vault — exits 2 to block. nested marker Second line of header.",
+   "provenance": {
+    "path": "<kitchen>/.claude/hooks/guard.sh",
+    "lines": [
+     1,
+     6
+    ]
+   },
+   "guards_writes": true,
+   "matcher": "Edit|Write",
+   "part": "event-hook-gate"
+  },
+  {
+   "id": "gate:approval:review-work",
+   "type": "gate",
+   "label": "approval:review-work",
+   "imparts": {
+    "verifier": "human",
+    "binding": "blocking",
+    "locus": "model"
+   },
+   "requires": [],
+   "evidence": "Show the findings for review** and await approval before writing.",
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md",
+    "lines": [
+     18,
+     18
+    ]
+   },
+   "part": "human-checkpoint"
+  },
+  {
+   "id": "gate:permissions:global-settings",
+   "type": "gate",
+   "label": "permissions:global-settings",
+   "kind": "permission-policy",
+   "imparts": {
+    "verifier": "structural",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [],
+   "rules": 1,
+   "evidence": "1 allow / deny / ask rules, decided before the model acts",
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     3,
+     7
+    ]
+   },
+   "part": "permission-policy"
+  },
+  {
+   "id": "gate:permissions:project-settings",
+   "type": "gate",
+   "label": "permissions:project-settings",
+   "kind": "permission-policy",
+   "imparts": {
+    "verifier": "structural",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [],
+   "rules": 7,
+   "evidence": "7 allow / deny / ask rules, decided before the model acts",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     49,
+     64
+    ]
+   },
+   "part": "permission-policy"
+  },
+  {
+   "id": "sink:telemetry-events",
+   "type": "sink",
+   "label": "telemetry-events",
+   "part": "telemetry-sink"
+  },
+  {
+   "id": "substrate:.claude/state/mode.json",
+   "type": "substrate",
+   "label": ".claude/state/mode.json",
+   "kind": "session-state",
+   "discovered": true,
+   "authoritative": false,
+   "provenance": {
+    "path": "<kitchen>/.claude/state/mode.json",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "session-state",
+   "orphan": true
+  },
+  {
+   "id": "substrate:drafts/current.md",
+   "type": "substrate",
+   "label": "drafts/current.md",
+   "authoritative": false
+  },
+  {
+   "id": "substrate:feature_list.json",
+   "type": "substrate",
+   "label": "feature_list.json",
+   "kind": "feature-list",
+   "discovered": true,
+   "authoritative": false,
+   "provenance": {
+    "path": "<kitchen>/feature_list.json",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "orphan": true
+  },
+  {
+   "id": "substrate:progress.md",
+   "type": "substrate",
+   "label": "progress.md",
+   "authoritative": false,
+   "kind": "progress",
+   "discovered": true,
+   "provenance": {
+    "path": "<kitchen>/progress.md",
+    "lines": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "id": "substrate:templates/",
+   "type": "substrate",
+   "label": "templates/",
+   "authoritative": false
+  },
+  {
+   "id": "substrate:vault/",
+   "type": "substrate",
+   "label": "vault/",
+   "authoritative": true,
+   "discovered": true,
+   "kind": "vault",
+   "files": 4,
+   "found_by": "conventional name",
+   "obsidian": true,
+   "provenance": {
+    "path": "<kitchen>/vault"
+   },
+   "part": "authoritative-store",
+   "orphan": true
+  },
+  {
+   "id": "substrate:vault/#success-criteria",
+   "type": "substrate",
+   "label": "vault/#success-criteria",
+   "kind": "success-criteria",
+   "discovered": true,
+   "authoritative": true,
+   "files": 1,
+   "provenance": {
+    "path": "<kitchen>/vault"
+   },
+   "part": "authoritative-store",
+   "orphan": true
+  },
+  {
+   "id": "substrate:vault/decisions.md",
+   "type": "substrate",
+   "label": "vault/decisions.md",
+   "authoritative": true,
+   "discovered": true,
+   "kind": "decision-log",
+   "provenance": {
+    "path": "<kitchen>/vault/decisions.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "authoritative-store"
+  },
+  {
+   "id": "substrate:vault/reviews.md",
+   "type": "substrate",
+   "label": "vault/reviews.md",
+   "authoritative": true,
+   "part": "authoritative-store"
+  },
+  {
+   "id": "surface:global-claude-md",
+   "type": "surface",
+   "label": "global-claude-md",
+   "injection": "session-start",
+   "weight": 4,
+   "summary": "Always answer in English. Never commit secrets.",
+   "provenance": {
+    "path": "<home>/.claude/CLAUDE.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "user-constitution"
+  },
+  {
+   "id": "surface:global-codex-agents-md",
+   "type": "surface",
+   "label": "global-codex-agents-md",
+   "injection": "session-start",
+   "weight": 2,
+   "summary": "Codex personal instructions.",
+   "provenance": {
+    "path": "<home>/.codex/AGENTS.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "user-constitution"
+  },
+  {
+   "id": "surface:local-claude-md",
+   "type": "surface",
+   "label": "local-claude-md",
+   "injection": "session-start",
+   "weight": 2,
+   "summary": "Personal: prefer short answers.",
+   "provenance": {
+    "path": "<kitchen>/CLAUDE.local.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "project-constitution"
+  },
+  {
+   "id": "surface:nested-claude-md:sub",
+   "type": "surface",
+   "label": "nested-claude-md:sub",
+   "injection": "on-trigger",
+   "weight": 4,
+   "summary": "Rules for the sub folder: never delete files in data/.",
+   "provenance": {
+    "path": "<kitchen>/sub/CLAUDE.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "project-constitution"
+  },
+  {
+   "id": "surface:project-agents-md",
+   "type": "surface",
+   "label": "project-agents-md",
+   "injection": "session-start",
+   "weight": 4,
+   "summary": "﻿# Agents",
+   "provenance": {
+    "path": "<kitchen>/AGENTS.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "project-constitution"
+  },
+  {
+   "id": "surface:project-claude-md",
+   "type": "surface",
+   "label": "project-claude-md",
+   "injection": "session-start",
+   "weight": 20,
+   "summary": "A sample harness with one of everything, for Free Rein's tests. Café rules apply.",
+   "provenance": {
+    "path": "<kitchen>/CLAUDE.md",
+    "lines": [
+     1,
+     20
+    ]
+   },
+   "part": "project-constitution"
+  },
+  {
+   "id": "surface:project-copilot-md",
+   "type": "surface",
+   "label": "project-copilot-md",
+   "injection": "session-start",
+   "weight": 2,
+   "summary": "Copilot reads this.",
+   "provenance": {
+    "path": "<kitchen>/.github/copilot-instructions.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "project-constitution",
+   "orphan": true
+  },
+  {
+   "id": "surface:project-dotclaude-claude-md",
+   "type": "surface",
+   "label": "project-dotclaude-claude-md",
+   "injection": "session-start",
+   "weight": 4,
+   "summary": "Project notes in .claude. Lone CR line. Another.",
+   "provenance": {
+    "path": "<kitchen>/.claude/CLAUDE.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "project-constitution"
+  },
+  {
+   "id": "surface:project-gemini-md",
+   "type": "surface",
+   "label": "project-gemini-md",
+   "injection": "session-start",
+   "weight": 2,
+   "summary": "Gemini reads this.",
+   "provenance": {
+    "path": "<kitchen>/GEMINI.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "project-constitution",
+   "orphan": true
+  },
+  {
+   "id": "unit:commit-it",
+   "type": "unit",
+   "label": "commit-it",
+   "activation": "semantic",
+   "weight": 6,
+   "checkpoint_rules": [],
+   "readonly": false,
+   "routing_signal": "Commit with a message",
+   "goal": null,
+   "steps": null,
+   "constraints": null,
+   "statements": null,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/commit-it/SKILL.md",
+    "lines": [
+     1,
+     6
+    ]
+   },
+   "part": "skill"
+  },
+  {
+   "id": "unit:commit-it@skills",
+   "type": "unit",
+   "label": "commit-it@skills",
+   "activation": "semantic",
+   "weight": 6,
+   "checkpoint_rules": [],
+   "readonly": false,
+   "routing_signal": "Another copy",
+   "goal": null,
+   "steps": null,
+   "constraints": null,
+   "statements": null,
+   "provenance": {
+    "path": "<kitchen>/skills/commit-it/SKILL.md",
+    "lines": [
+     1,
+     6
+    ]
+   },
+   "part": "skill",
+   "orphan": true
+  },
+  {
+   "id": "unit:lint-notes",
+   "type": "unit",
+   "label": "lint-notes",
+   "activation": "semantic",
+   "weight": 7,
+   "checkpoint_rules": [],
+   "readonly": false,
+   "routing_signal": "Use when the user asks to check the notes for broken links before committing them.",
+   "goal": null,
+   "steps": null,
+   "constraints": null,
+   "statements": null,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/lint-notes/SKILL.md",
+    "lines": [
+     1,
+     7
+    ]
+   },
+   "part": "skill",
+   "orphan": true
+  },
+  {
+   "id": "unit:review-work",
+   "type": "unit",
+   "label": "review-work",
+   "activation": "semantic",
+   "weight": 34,
+   "checkpoint_rules": [
+    {
+     "line": 18,
+     "path": ".claude/skills/review-work/SKILL.md",
+     "text": "The user must say something like \"yes, ship it\" or \"approved\"; a second confirmation is required for `vault/decisions.md`.",
+     "phrases": [
+      "yes, ship it",
+      "approved"
+     ],
+     "question": null,
+     "phrase_mode": "example",
+     "confirmations": 2,
+     "claims_strict": false,
+     "applies_to": [
+      "vault/decisions.md"
+     ]
+    }
+   ],
+   "readonly": false,
+   "routing_signal": "Use when the user asks to review work before it ships; triggers on 'review'.",
+   "goal": "Review the draft and record a verdict in vault/reviews.md.",
+   "steps": [
+    "Read the draft",
+    "Show the findings for review",
+    "Write the verdict",
+    "Sign off on the result"
+   ],
+   "constraints": [
+    "Never write to vault/ without approval.",
+    "Don't skip the tests."
+   ],
+   "statements": {
+    "pointers": [
+     "vault/reviews.md",
+     "drafts/current.md",
+     "vault/decisions.md",
+     "lib/tools.py",
+     "engines/review/PROTOCOL.md"
+    ],
+    "invocations": [
+     "/commit-it",
+     "lib/tools.py"
+    ],
+    "conditions": [
+     "If the user says no, stop. When in doubt, ask: \"Proceed?\""
+    ],
+    "constraints": [
+     "- Never write to vault/ without approval.",
+     "- Don't skip the tests."
+    ],
+    "asks": [
+     "If the user says no, stop. When in doubt, ask: \"Proceed?\""
+    ],
+    "emissions": [
+     "review-done"
+    ],
+    "examples": [
+     "```bash · 3 lines"
+    ]
+   },
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md",
+    "lines": [
+     1,
+     34
+    ]
+   },
+   "part": "skill"
+  },
+  {
+   "id": "unit:tidy-notes",
+   "type": "unit",
+   "label": "tidy-notes",
+   "activation": "semantic",
+   "weight": 7,
+   "checkpoint_rules": [],
+   "readonly": false,
+   "routing_signal": "Formats notes in the vault nicely",
+   "goal": null,
+   "steps": null,
+   "constraints": null,
+   "statements": null,
+   "provenance": {
+    "path": "<kitchen>/.claude/skills/tidy-notes/SKILL.md",
+    "lines": [
+     1,
+     7
+    ]
+   },
+   "part": "skill",
+   "orphan": true
+  },
+  {
+   "id": "unit:zeta-ü",
+   "type": "unit",
+   "label": "zeta-ü",
+   "activation": "semantic",
+   "weight": 5,
+   "checkpoint_rules": [],
+   "readonly": true,
+   "routing_signal": "Ünicode skill",
+   "goal": null,
+   "steps": null,
+   "constraints": null,
+   "statements": null,
+   "provenance": {
+    "path": "<kitchen>/.agents/skills/zeta-ü/SKILL.md",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "part": "skill",
+   "orphan": true
+  }
+ ],
+ "edges": [
+  {
+   "type": "routes-to",
+   "source": "surface:project-claude-md",
+   "target": "unit:review-work"
+  },
+  {
+   "type": "routes-to",
+   "source": "surface:project-claude-md",
+   "target": "unit:commit-it"
+  },
+  {
+   "type": "writes",
+   "source": "unit:commit-it",
+   "target": "substrate:progress.md",
+   "provenance": {
+    "heuristic": true
+   }
+  },
+  {
+   "type": "invokes",
+   "source": "unit:review-work",
+   "target": "unit:commit-it"
+  },
+  {
+   "type": "reads",
+   "source": "unit:review-work",
+   "target": "substrate:vault/reviews.md",
+   "provenance": {
+    "heuristic": true
+   }
+  },
+  {
+   "type": "reads",
+   "source": "unit:review-work",
+   "target": "substrate:drafts/current.md",
+   "provenance": {
+    "heuristic": true
+   }
+  },
+  {
+   "type": "writes",
+   "source": "gate:approval:review-work",
+   "target": "substrate:vault/reviews.md",
+   "provenance": {
+    "heuristic": true
+   },
+   "verifier": "human",
+   "binding": "blocking",
+   "locus": "model"
+  },
+  {
+   "type": "reads",
+   "source": "unit:review-work",
+   "target": "substrate:vault/decisions.md",
+   "provenance": {
+    "heuristic": true
+   }
+  },
+  {
+   "type": "scaffolds-from",
+   "source": "unit:review-work",
+   "target": "substrate:templates/"
+  },
+  {
+   "type": "writes",
+   "source": "unit:review-work",
+   "target": "gate:approval:review-work"
+  },
+  {
+   "type": "binds",
+   "source": "config:global-settings",
+   "target": "gate:permissions:global-settings"
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "gate:permissions:project-settings"
+  },
+  {
+   "type": "invokes",
+   "source": "executor:.claude/hooks/guard.sh",
+   "target": "gate:.claude/hooks/guard.sh"
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "executor:.claude/hooks/guard.sh",
+   "event": "PreToolUse",
+   "matcher": "Edit|Write",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     66,
+     89
+    ]
+   }
+  },
+  {
+   "type": "emits",
+   "source": "executor:.claude/hooks/log-skill.sh",
+   "target": "sink:telemetry-events"
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "executor:.claude/hooks/log-skill.sh",
+   "event": "PreToolUse",
+   "matcher": "Skill",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     66,
+     89
+    ]
+   }
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "executor:scripts/validate_skills.py",
+   "event": "PreToolUse",
+   "matcher": "Skill",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     66,
+     89
+    ]
+   }
+  },
+  {
+   "type": "invokes",
+   "source": "executor:.claude/hooks/done.sh",
+   "target": "gate:.claude/hooks/done.sh"
+  },
+  {
+   "type": "emits",
+   "source": "executor:.claude/hooks/done.sh",
+   "target": "sink:telemetry-events"
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "executor:.claude/hooks/done.sh",
+   "event": "Stop",
+   "matcher": "",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     101,
+     110
+    ]
+   }
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "executor:.claude/hooks/start.py",
+   "event": "SessionStart",
+   "matcher": "",
+   "provenance": {
+    "path": "<kitchen>/.claude/settings.json",
+    "lines": [
+     111,
+     120
+    ]
+   }
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:project-claude-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:global-claude-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:project-agents-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:project-dotclaude-claude-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:local-claude-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:global-codex-agents-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:nested-claude-md:sub"
+  }
+ ]
+}

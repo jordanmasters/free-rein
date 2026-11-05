@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "free-rein.harness/1",
+  "title": "A harness document: the facts about one AI agent's harness",
+  "description": "What it has (pieces, where each is, from which layer, whether it holds), what its prose says, what happens in each situation, and which combos are in play. No scores: see score.py for the reference scorer.",
+  "type": "object",
+  "required": ["schema", "free_rein", "read_at", "target", "runtime", "mode", "pieces", "statements", "situations", "combos"],
+  "properties": {
+    "schema": {"const": "free-rein.harness/1"},
+    "free_rein": {"type": "string", "description": "The Free Rein version that read it"},
+    "read_at": {"type": "string", "format": "date-time"},
+    "target": {"type": "object", "required": ["name", "kind"], "properties": {"name": {"type": ["string", "null"]}, "kind": {"enum": ["folder", "profile"]}}},
+    "runtime": {"type": "object", "required": ["id"], "properties": {"id": {"type": "string"}, "name": {"type": ["string", "null"]}, "version_checked": {"type": "string"}, "build": {"type": "string"}}},
+    "mode": {"type": "string", "description": "The working mode situations were read in"},
+    "counts_home": {"type": "boolean", "description": "Whether what loads from the home folder (~/.claude) was counted"},
+    "pieces": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "section", "kind", "state", "maturity", "instances"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "section": {"type": "string"},
+          "kind": {"enum": ["ability", "safeguard"]},
+          "state": {"enum": ["yes", "partial", "no", "unchecked"]},
+          "maturity": {"enum": [0, 1, 2, 3], "description": "0 empty, 1 started, 2 equipped, 3 hardened"},
+          "supplied_by": {"type": "string"},
+          "runtime_items": {"type": "array", "items": {"type": "string"}},
+          "tier": {"type": "object", "required": ["reached", "of"], "properties": {"reached": {"type": "integer"}, "of": {"type": "integer"}}},
+          "items_complete": {"type": "object", "required": ["ok", "of"], "properties": {"ok": {"type": "integer"}, "of": {"type": "integer"}}},
+          "instances": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["path", "layer"],
+              "properties": {
+                "path": {"type": ["string", "null"], "description": "Relative to the harness; ~ for the home folder"},
+                "layer": {"type": "string", "description": "project, home, package:<name>, or the runtime"},
+                "lines": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2},
+                "enforced": {"type": "boolean", "description": "true: it holds on its own; false: it asks"}
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    },
+    "statements": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "kind", "text"], "properties": {"kind": {"type": "string"}, "path": {"type": ["string", "null"]}, "line": {"type": ["integer", "null"]}, "strength": {"type": "string"}, "piece": {"type": "string"}}}
+    },
+    "situations": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "stakes", "verdict", "accounted", "decided_by"], "properties": {"stakes": {"type": "string"}, "verdict": {"type": "string"}, "accounted": {"type": "boolean"}, "decided_by": {"type": "array", "items": {"type": "string"}}}}
+    },
+    "combos": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "kind", "status", "pieces"], "properties": {"kind": {"enum": ["synergy", "curse"]}, "status": {"enum": ["active", "locked", "dormant", "cleared"], "description": "locked: an achievement missing a piece; cleared: a weak spot whose fix is in place"}}}
+    }
+  }
+}

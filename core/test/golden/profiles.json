@@ -1,0 +1,122 @@
+[
+ {
+  "id": "claude",
+  "name": "Claude Code",
+  "kind": "runtime",
+  "build": "workbench",
+  "checked_on": "2026-10-03",
+  "about": null
+ },
+ {
+  "id": "codex",
+  "name": "Codex",
+  "kind": "runtime",
+  "build": "workbench",
+  "checked_on": "2026-10-03",
+  "about": null
+ },
+ {
+  "id": "cursor",
+  "name": "Cursor",
+  "kind": "runtime",
+  "build": "workbench",
+  "checked_on": "2026-10-03",
+  "about": null
+ },
+ {
+  "id": "gemini",
+  "name": "Gemini CLI",
+  "kind": "runtime",
+  "build": "workbench",
+  "checked_on": "2026-10-03",
+  "about": null
+ },
+ {
+  "id": "opencode",
+  "name": "OpenCode",
+  "kind": "runtime",
+  "build": "workbench",
+  "checked_on": "2026-10-03",
+  "about": null
+ },
+ {
+  "id": "copilot",
+  "name": "GitHub Copilot in VS Code (Local agent)",
+  "kind": "runtime",
+  "build": "workbench",
+  "checked_on": "2026-10-03",
+  "about": null
+ },
+ {
+  "id": "chatbot-bare",
+  "name": "Hand-made chatbot: bare",
+  "kind": "reference",
+  "build": "companion",
+  "checked_on": "2026-10-03",
+  "about": "A system prompt and a chat loop around a model API. History lives in memory for the session."
+ },
+ {
+  "id": "chatbot-tools",
+  "name": "Hand-made chatbot: with tools",
+  "kind": "reference",
+  "build": "companion",
+  "checked_on": "2026-10-03",
+  "about": "The bare chatbot plus function calling: a few tools the model can call, and request logs."
+ },
+ {
+  "id": "chatbot-rag",
+  "name": "Hand-made chatbot: RAG",
+  "kind": "reference",
+  "build": "companion",
+  "checked_on": "2026-10-03",
+  "about": "A chatbot that answers from your documents: an index, a search step before each answer, and saved conversations."
+ },
+ {
+  "id": "chatbot-production",
+  "name": "Hand-made chatbot: production service",
+  "kind": "reference",
+  "build": "service",
+  "checked_on": "2026-10-03",
+  "about": "A chatbot run for other people: users sign in, sensitive data is involved, and it's deployed, monitored and evaluated."
+ },
+ {
+  "id": "example-first",
+  "name": "Example: a first CLAUDE.md",
+  "kind": "example",
+  "build": "workbench",
+  "checked_on": "2026-10-09",
+  "about": "Not a real harness. Day one on Claude Code: a CLAUDE.md, a lockfile, the built-in web tools, and a few things started (a skill, a permission rule, a test command)."
+ },
+ {
+  "id": "example-solo",
+  "name": "Example: a solo project, set up",
+  "kind": "example",
+  "build": "workbench",
+  "checked_on": "2026-10-09",
+  "about": "Not a real harness. One person's project after a few weeks: instructions per folder, skills and commands, an MCP server, plan mode, permission rules, tests it runs, a task list and a codebase map."
+ },
+ {
+  "id": "example-team",
+  "name": "Example: a team repo with guardrails",
+  "kind": "example",
+  "build": "workbench",
+  "checked_on": "2026-10-09",
+  "about": "Not a real harness. A shared repo: a team plugin, review before merge, blocking hooks, a sensitive data guard, a completion check that runs the tests, an independent reviewer, a decision log and an event log."
+ },
+ {
+  "id": "example-unattended",
+  "name": "Example: guarded unattended runs",
+  "kind": "example",
+  "build": "workbench",
+  "checked_on": "2026-10-09",
+  "about": "Not a real harness. A team repo that also runs on its own: sandboxed, with network and spend limits, human approvals for what matters, evals and a feedback loop, receipts and telemetry."
+ },
+ {
+  "id": "example-maxed",
+  "name": "Example: every piece in place, hardened",
+  "kind": "example",
+  "build": "workbench",
+  "checked_on": "2026-10-09",
+  "about": "Not a real harness. A Claude Code harness with every piece Free Rein knows in place, every one hardened: the top of the scale. In a real harness a piece hardens when it blocks on its own, or when a safeguard guards it; an example can simply say so."
+ }
+]

@@ -1,0 +1,510 @@
+{
+ "hard-gate": {
+  "piece": "hard-gate",
+  "name": "Blocking hooks",
+  "maturity": 0,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/.claude/hooks/protect-files.sh",
+    "rel": ".claude/hooks/protect-files.sh",
+    "before": null,
+    "after": "#!/usr/bin/env bash\n# Blocking hook (PreToolUse on Edit/Write): refuses edits to protected files.\n# Added by Free Rein. Exit 2 blocks the edit and tells the agent why.\n# Protected paths, one glob per line: .claude/hooks/protected-paths.txt\n# To change a protected file on purpose, edit it yourself, or remove its line.\ninput=$(cat)\n# the edit's path, read with node or python3; if neither can read it, the edit is refused (never let through unread)\nfield() {\n  if command -v node >/dev/null 2>&1; then\n    node -e 'let s=\"\";process.stdin.on(\"data\",c=>s+=c).on(\"end\",()=>{const d=JSON.parse(s);console.log((d.tool_input||{}).file_path||\"\")})'\n  elif command -v python3 >/dev/null 2>&1; then\n    python3 -c 'import json,sys; d=json.load(sys.stdin); print((d.get(\"tool_input\") or {}).get(\"file_path\") or \"\")'\n  else return 1; fi\n}\npath=$(printf '%s' \"$input\" | field) || { echo \"Blocked by .claude/hooks/protect-files.sh: couldn't read which file this edit is for (it needs node or python3).\" >&2; exit 2; }\n[ -z \"$path\" ] && exit 0\nrel=\"${path#\"$CLAUDE_PROJECT_DIR\"/}\"\nlist=\"$CLAUDE_PROJECT_DIR/.claude/hooks/protected-paths.txt\"\n[ -f \"$list\" ] || exit 0\nwhile IFS= read -r glob; do\n  case \"$glob\" in ''|'#'*) continue ;; esac\n  case \"$rel\" in $glob)\n    echo \"Blocked by .claude/hooks/protect-files.sh: $rel is protected ($glob). Ask the person to change it, or to remove the rule.\" >&2\n    exit 2 ;;\n  esac\ndone < \"$list\"\nexit 0\n",
+    "kind": "create",
+    "note": "a hook that refuses edits to protected files",
+    "mode": 493
+   },
+   {
+    "path": "<empty>/.claude/hooks/protected-paths.txt",
+    "rel": ".claude/hooks/protected-paths.txt",
+    "before": null,
+    "after": "# Files the agent may not edit on its own (Free Rein's blocking hook).\n.env\n.env.*\n*.pem\n*.key\nsecrets/*\n",
+    "kind": "create",
+    "note": "which files it protects; edit freely",
+    "mode": null
+   },
+   {
+    "path": "<empty>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": null,
+    "after": "{\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write|MultiEdit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.sh\\\"\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "create",
+    "note": "registers the hook before every edit",
+    "mode": null
+   }
+  ],
+  "request": "Add **Blocking hooks** to this repo's agent harness.\n\nWhat it is: A hook can refuse an action outright, not just ask.\nWhat to do: A PreToolUse hook that refuses edits to the files you list as protected (exit 2), registered before every edit. Edit the list to change what it protects.\nLikely files: .claude/hooks/protect-files.sh, .claude/hooks/protected-paths.txt, .claude/settings.json.\nHow Claude Code does it: A PreToolUse hook that exits non-zero.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Blocking hooks.",
+  "effect": {
+   "piece": {
+    "from": 0,
+    "to": 3
+   },
+   "xp": 215,
+   "level": {
+    "from": 16,
+    "to": 19
+   },
+   "rank": {
+    "from": null,
+    "to": null
+   },
+   "earned": [
+    "Defense in depth"
+   ],
+   "lost": [],
+   "cleared": [
+    "Approval fatigue"
+   ],
+   "opened": [],
+   "trust": {
+    "Edit files": {
+     "from": 25,
+     "to": 44
+    },
+    "Change what it knows": {
+     "from": 14,
+     "to": 57
+    },
+    "Act unattended": {
+     "from": 21,
+     "to": 46
+    }
+   },
+   "backed": {
+    "from": 24,
+    "to": 41
+   },
+   "others": {
+    "human-gate": {
+     "from": 2,
+     "to": 3
+    }
+   }
+  },
+  "verified": true
+ },
+ "completion-check": {
+  "piece": "completion-check",
+  "name": "Completion check",
+  "maturity": 0,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/.claude/hooks/check-on-stop.sh",
+    "rel": ".claude/hooks/check-on-stop.sh",
+    "before": null,
+    "after": "#!/usr/bin/env bash\n# Completion check (Stop hook): when the agent says it's done, run the checks.\n# Added by Free Rein. Exit 2 sends it back to work with the failures.\ninput=$(cat)\n# already continuing because of this hook: don't loop\nprintf '%s' \"$input\" | grep -q '\"stop_hook_active\": *true' && exit 0\ncd \"$CLAUDE_PROJECT_DIR\" || exit 0\n# No check commands found. Add yours here, for example:\n# out=$(npm test 2>&1) || { echo \"$out\" | tail -40 >&2; exit 2; }\nexit 0\n",
+    "kind": "create",
+    "note": "runs your checks when the agent stops (add them: none found)",
+    "mode": 493
+   },
+   {
+    "path": "<empty>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": null,
+    "after": "{\n  \"hooks\": {\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/check-on-stop.sh\\\"\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "create",
+    "note": "registers it on Stop",
+    "mode": null
+   }
+  ],
+  "request": "Add **Completion check** to this repo's agent harness.\n\nWhat it is: When the agent says it's done, a check runs and can send it back to work.\nWhat to do: Runs the check commands when the agent stops, and sends it back if they fail.\nLikely files: .claude/settings.json, a stop-check script.\nHow Claude Code does it: A Stop hook that exits non-zero when the checks fail.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Completion check.",
+  "effect": {
+   "piece": {
+    "from": 0,
+    "to": 3
+   },
+   "xp": 125,
+   "level": {
+    "from": 16,
+    "to": 18
+   },
+   "rank": {
+    "from": null,
+    "to": null
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [
+    "Marks its own work"
+   ],
+   "opened": [],
+   "trust": {
+    "Edit files": {
+     "from": 25,
+     "to": 53
+    },
+    "Change what it knows": {
+     "from": 14,
+     "to": 36
+    },
+    "Decide it's done": {
+     "from": 10,
+     "to": 40
+    },
+    "Act unattended": {
+     "from": 21,
+     "to": 33
+    }
+   },
+   "backed": {
+    "from": 24,
+    "to": 42
+   },
+   "others": {
+    "hard-gate": {
+     "from": 0,
+     "to": 1
+    }
+   }
+  },
+  "verified": true
+ },
+ "permissions": {
+  "piece": "permissions",
+  "name": "Permission rules",
+  "maturity": 3,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": null,
+    "after": "{\n  \"permissions\": {\n    \"ask\": [\n      \"Bash(git push:*)\",\n      \"Bash(rm -rf:*)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Read(./.env.*)\"\n    ]\n  }\n}\n",
+    "kind": "create",
+    "note": "allow the checks, ask before pushing or deleting, never read .env",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Permission rules** in this repo's agent harness: it's in place already (hardened).\n\nWhat it is: Allow or deny decided before the model even sees the request.\nWhat's there now: 1 found.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Permission rules.",
+  "effect": {
+   "piece": {
+    "from": 3,
+    "to": 3
+   },
+   "xp": 0,
+   "level": {
+    "from": 16,
+    "to": 16
+   },
+   "rank": {
+    "from": null,
+    "to": null
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 24,
+    "to": 24
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "event-log": {
+  "piece": "event-log",
+  "name": "Event log",
+  "maturity": 1,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/.claude/hooks/log-event.sh",
+    "rel": ".claude/hooks/log-event.sh",
+    "before": null,
+    "after": "#!/usr/bin/env bash\n# Event log (PostToolUse hook): one line per tool call, appended to\n# .claude/telemetry/events.jsonl. Added by Free Rein.\ninput=$(cat)\ndir=\"$CLAUDE_PROJECT_DIR/.claude/telemetry\"\nmkdir -p \"$dir\"\n# one JSON line, written with node or python3 (whichever is installed)\nif command -v node >/dev/null 2>&1; then\n  printf '%s' \"$input\" | node -e 'let s=\"\";process.stdin.on(\"data\",c=>s+=c).on(\"end\",()=>{const d=JSON.parse(s);console.log(JSON.stringify({ts:Date.now()/1000,session:d.session_id??null,tool:d.tool_name??null,event:d.hook_event_name??null}))})' >> \"$dir/events.jsonl\"\nelif command -v python3 >/dev/null 2>&1; then\n  printf '%s' \"$input\" | python3 -c 'import json,sys,time; d=json.load(sys.stdin); print(json.dumps({\"ts\": time.time(), \"session\": d.get(\"session_id\"), \"tool\": d.get(\"tool_name\"), \"event\": d.get(\"hook_event_name\")}))' >> \"$dir/events.jsonl\"\nfi\nexit 0\n",
+    "kind": "create",
+    "note": "appends each tool call to .claude/telemetry/events.jsonl",
+    "mode": 493
+   },
+   {
+    "path": "<empty>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": null,
+    "after": "{\n  \"hooks\": {\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"*\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/log-event.sh\\\"\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "create",
+    "note": "registers it after every tool call",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Event log** in this repo's agent harness: it's in place already (started).\n\nWhat it is: An append-only record of what happened.\nWhat's there now: 1 found.\nWhat the next level needs: make it complete, so Free Rein reads it as fully in place.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Event log.",
+  "effect": {
+   "piece": {
+    "from": 1,
+    "to": 2
+   },
+   "xp": 35,
+   "level": {
+    "from": 16,
+    "to": 17
+   },
+   "rank": {
+    "from": null,
+    "to": null
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [
+    "Unread record"
+   ],
+   "trust": {
+    "Run commands": {
+     "from": 50,
+     "to": 62
+    },
+    "Act unattended": {
+     "from": 21,
+     "to": 29
+    }
+   },
+   "backed": {
+    "from": 24,
+    "to": 28
+   },
+   "others": {
+    "feedback": {
+     "from": 0,
+     "to": 1
+    }
+   }
+  },
+  "verified": true
+ },
+ "independent-checker": {
+  "piece": "independent-checker",
+  "name": "Independent checker",
+  "maturity": 1,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/.claude/agents/reviewer.md",
+    "rel": ".claude/agents/reviewer.md",
+    "before": null,
+    "after": "---\nname: reviewer\ndescription: Reviews finished work in a fresh context against its success criteria, and reports what's missing. Use before calling work done.\ntools: Read, Grep, Glob, Bash\n---\n\nYou review work you didn't do. You start fresh: read the request, the\nsuccess criteria (if there are any), and the changes, then check them.\n\n1. Restate what was asked, and what \"done\" means for it.\n2. Run the project's check commands, if it has any.\n3. Read the changed files. Look for what was asked but not done, what was\n   done but not asked, and anything that breaks the project's rules in\n   CLAUDE.md.\n4. Report: done or not done, and a short list of what's missing, with the\n   file and line for each. Don't fix anything yourself.\n",
+    "kind": "create",
+    "note": "a reviewer agent that checks finished work in a fresh context",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Independent checker** in this repo's agent harness: it's in place already (started).\n\nWhat it is: Work is reviewed by a separate agent with its own context, not by the one that did it.\nWhat's there now: 1 found.\nWhat the next level needs: make it complete, so Free Rein reads it as fully in place.\nA weak spot to fix: Marks its own work. The agent that did the work is the only one judging whether it's done. Add an independent checker, or a completion check that runs the tests.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Independent checker.",
+  "effect": {
+   "piece": {
+    "from": 1,
+    "to": 2
+   },
+   "xp": 55,
+   "level": {
+    "from": 16,
+    "to": 17
+   },
+   "rank": {
+    "from": null,
+    "to": null
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [
+    "Marks its own work"
+   ],
+   "opened": [],
+   "trust": {
+    "Edit files": {
+     "from": 25,
+     "to": 31
+    },
+    "Decide it's done": {
+     "from": 10,
+     "to": 20
+    },
+    "Act unattended": {
+     "from": 21,
+     "to": 29
+    }
+   },
+   "backed": {
+    "from": 24,
+    "to": 29
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "progress-log": {
+  "piece": "progress-log",
+  "name": "Progress log",
+  "maturity": 0,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/PROGRESS.md",
+    "rel": "PROGRESS.md",
+    "before": null,
+    "after": "# Progress\n\nWhat's done, what's in progress, and what's next. Read this at the start of a session; update it at the end.\n\n## Done\n\n## In progress\n\n## Next\n",
+    "kind": "create",
+    "note": "a progress file the agent reads first and updates last",
+    "mode": null
+   },
+   {
+    "path": "<empty>/CLAUDE.md",
+    "rel": "CLAUDE.md",
+    "before": null,
+    "after": "# CLAUDE.md\n\n## Progress\n\nRead `PROGRESS.md` at the start of every session. Before you finish, update it: what you did, what's in progress, and what's next.\n",
+    "kind": "create",
+    "note": "tells the agent to use it",
+    "mode": null
+   }
+  ],
+  "request": "Add **Progress log** to this repo's agent harness.\n\nWhat it is: What's done, in progress and blocked, kept on disk for the next session.\nWhat to do: Adds a progress file and tells the agent to read it at start and update it at the end.\nLikely files: PROGRESS.md, CLAUDE.md.\nHow Claude Code does it: A progress file the agent reads first and updates last.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Progress log.",
+  "effect": {
+   "piece": {
+    "from": 0,
+    "to": 2
+   },
+   "xp": 70,
+   "level": {
+    "from": 16,
+    "to": 17
+   },
+   "rank": {
+    "from": null,
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 24,
+    "to": 24
+   },
+   "others": {
+    "proj-instructions": {
+     "from": 0,
+     "to": 2
+    }
+   }
+  },
+  "verified": true
+ },
+ "receipts": {
+  "piece": "receipts",
+  "name": "Session receipts",
+  "maturity": 0,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/handoff.md",
+    "rel": "handoff.md",
+    "before": null,
+    "after": "# Handoff\n\nThe last session's receipt. Replace it at the end of each session.\n\n- **Asked:** \n- **Done:** \n- **Changed:** \n- **Left open:** \n",
+    "kind": "create",
+    "note": "a receipt the agent writes at the end of each session",
+    "mode": null
+   },
+   {
+    "path": "<empty>/CLAUDE.md",
+    "rel": "CLAUDE.md",
+    "before": null,
+    "after": "# CLAUDE.md\n\n## Ending a session\n\nBefore you finish, rewrite `handoff.md`: what was asked, what you did, which files changed, and what's left open.\n",
+    "kind": "create",
+    "note": "tells the agent to write it",
+    "mode": null
+   }
+  ],
+  "request": "Add **Session receipts** to this repo's agent harness.\n\nWhat it is: Each session leaves a short account of itself.\nWhat to do: Writes a short summary of each session when a mode ends.\nLikely files: skills/exit-mode/SKILL.md, lib/receipt.py.\nHow Claude Code does it: A receipt written on mode exit.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Session receipts.",
+  "effect": {
+   "piece": {
+    "from": 0,
+    "to": 2
+   },
+   "xp": 70,
+   "level": {
+    "from": 16,
+    "to": 17
+   },
+   "rank": {
+    "from": null,
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {
+    "Act unattended": {
+     "from": 21,
+     "to": 38
+    }
+   },
+   "backed": {
+    "from": 24,
+    "to": 27
+   },
+   "others": {
+    "proj-instructions": {
+     "from": 0,
+     "to": 2
+    }
+   }
+  },
+  "verified": true
+ },
+ "proj-instructions": {
+  "piece": "proj-instructions",
+  "name": "Project instructions",
+  "maturity": 0,
+  "template": true,
+  "edits": [
+   {
+    "path": "<empty>/CLAUDE.md",
+    "rel": "CLAUDE.md",
+    "before": null,
+    "after": "# CLAUDE.md\n\nStanding rules for working in this repo.\n\n## How to work here\n\n- Read the code you're changing before you change it.\n- Before you call anything done, run the project's checks.\n\n## Commits\n\n- Small commits with a message that says why.\n",
+    "kind": "create",
+    "note": "project instructions the agent reads at the start of every session",
+    "mode": null
+   }
+  ],
+  "request": "Add **Project instructions** to this repo's agent harness.\n\nWhat it is: Standing rules for this repo: commits, vault rules, naming.\nHow Claude Code does it: CLAUDE.md at the repo root; AGENTS.md only when there is no CLAUDE.md (from 2.1.277), which instructionFiles changes.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Project instructions.",
+  "effect": {
+   "piece": {
+    "from": 0,
+    "to": 2
+   },
+   "xp": 35,
+   "level": {
+    "from": 16,
+    "to": 17
+   },
+   "rank": {
+    "from": null,
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 24,
+    "to": 24
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "skills": {
+  "piece": "skills",
+  "name": "Skills",
+  "maturity": 2,
+  "template": false,
+  "edits": [],
+  "request": "Strengthen **Skills** in this repo's agent harness: it's in place already (equipped).\n\nWhat it is: Named capabilities it can route to by intent.\nWhat's there now: 13 found, 13 of them built into the runtime.\nA weak spot to fix: Marks its own work. The agent that did the work is the only one judging whether it's done. Add an independent checker, or a completion check that runs the tests.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Skills.",
+  "effect": null,
+  "verified": false
+ }
+}

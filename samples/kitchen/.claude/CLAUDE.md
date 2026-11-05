@@ -1,0 +1,1 @@
+Project notes in .claude.Lone CR line.Another.

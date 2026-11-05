@@ -1,0 +1,343 @@
+{
+ "meta": {
+  "adapter": "claude-code",
+  "adapters": [
+   "claude-code"
+  ],
+  "root": "<solo>",
+  "schema": "0.1"
+ },
+ "nodes": [
+  {
+   "id": "black-box:claude-code-runtime",
+   "type": "black-box",
+   "label": "claude-code-runtime",
+   "opacity": "proprietary",
+   "evidence": "system prompt, context management, and built-in tool behavior are not inspectable from the repo",
+   "requires": [],
+   "part": "proprietary-runtime"
+  },
+  {
+   "id": "config:check-commands",
+   "type": "config",
+   "label": "check-commands",
+   "kind": "env-check",
+   "discovered": true,
+   "commands": [
+    "test"
+   ],
+   "provenance": {
+    "path": "<solo>"
+   },
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:global-settings",
+   "type": "config",
+   "label": "global-settings",
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     8,
+     20
+    ]
+   },
+   "part": "runtime-binding"
+  },
+  {
+   "id": "config:project-settings",
+   "type": "config",
+   "label": "project-settings",
+   "provenance": {
+    "path": "<solo>/.claude/settings.json",
+    "lines": [
+     7,
+     9
+    ]
+   },
+   "part": "runtime-binding"
+  },
+  {
+   "id": "config:sig:auto-fix:user",
+   "type": "config",
+   "label": "sig:auto-fix:user",
+   "kind": "sig-auto-fix",
+   "discovered": true,
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     1,
+     22
+    ]
+   },
+   "evidence": "formats or fixes after Write",
+   "hook_events": [
+    "PostToolUse"
+   ],
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:connected-accounts:google-calendar",
+   "type": "config",
+   "label": "sig:connected-accounts:google-calendar",
+   "kind": "sig-connected-accounts",
+   "discovered": true,
+   "provenance": {
+    "path": "<solo>/.mcp.json"
+   },
+   "evidence": "google-calendar server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:secrets-out:project",
+   "type": "config",
+   "label": "sig:secrets-out:project",
+   "kind": "sig-secrets-out",
+   "discovered": true,
+   "provenance": {
+    "path": "<solo>/.claude/settings.json",
+    "lines": [
+     1,
+     11
+    ]
+   },
+   "evidence": "secret files denied",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:secrets-out:user",
+   "type": "config",
+   "label": "sig:secrets-out:user",
+   "kind": "sig-secrets-out",
+   "discovered": true,
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     1,
+     22
+    ]
+   },
+   "evidence": "secret files denied",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "config:sig:sees-app:chrome-devtools",
+   "type": "config",
+   "label": "sig:sees-app:chrome-devtools",
+   "kind": "sig-sees-app",
+   "discovered": true,
+   "provenance": {
+    "path": "<solo>/.mcp.json"
+   },
+   "evidence": "chrome-devtools server",
+   "part": "runtime-binding",
+   "orphan": true
+  },
+  {
+   "id": "executor:.claude/hooks/no-force-push.sh",
+   "type": "executor",
+   "label": ".claude/hooks/no-force-push.sh",
+   "activation": "event",
+   "runtime": "inline",
+   "event": "PreToolUse",
+   "weight": 5,
+   "summary": "refuse a force push",
+   "provenance": {
+    "path": "<solo>/.claude/hooks/no-force-push.sh",
+    "lines": [
+     1,
+     5
+    ]
+   }
+  },
+  {
+   "id": "gate:.claude/hooks/no-force-push.sh",
+   "type": "gate",
+   "label": ".claude/hooks/no-force-push.sh",
+   "imparts": {
+    "verifier": "deterministic",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [
+    "hook-runtime"
+   ],
+   "evidence": "script exits non-zero — deterministically blocks the action",
+   "summary": "refuse a force push",
+   "provenance": {
+    "path": "<solo>/.claude/hooks/no-force-push.sh",
+    "lines": [
+     1,
+     5
+    ]
+   },
+   "part": "event-hook-gate"
+  },
+  {
+   "id": "gate:permissions:global-settings",
+   "type": "gate",
+   "label": "permissions:global-settings",
+   "kind": "permission-policy",
+   "imparts": {
+    "verifier": "structural",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [],
+   "rules": 1,
+   "evidence": "1 allow / deny / ask rules, decided before the model acts",
+   "provenance": {
+    "path": "<home>/.claude/settings.json",
+    "lines": [
+     3,
+     7
+    ]
+   },
+   "part": "permission-policy"
+  },
+  {
+   "id": "gate:permissions:project-settings",
+   "type": "gate",
+   "label": "permissions:project-settings",
+   "kind": "permission-policy",
+   "imparts": {
+    "verifier": "structural",
+    "binding": "blocking",
+    "locus": "infrastructure"
+   },
+   "requires": [],
+   "rules": 4,
+   "evidence": "4 allow / deny / ask rules, decided before the model acts",
+   "provenance": {
+    "path": "<solo>/.claude/settings.json",
+    "lines": [
+     2,
+     6
+    ]
+   },
+   "part": "permission-policy"
+  },
+  {
+   "id": "surface:global-claude-md",
+   "type": "surface",
+   "label": "global-claude-md",
+   "injection": "session-start",
+   "weight": 4,
+   "summary": "Always answer in English. Never commit secrets.",
+   "provenance": {
+    "path": "<home>/.claude/CLAUDE.md",
+    "lines": [
+     1,
+     4
+    ]
+   },
+   "part": "user-constitution"
+  },
+  {
+   "id": "surface:global-codex-agents-md",
+   "type": "surface",
+   "label": "global-codex-agents-md",
+   "injection": "session-start",
+   "weight": 2,
+   "summary": "Codex personal instructions.",
+   "provenance": {
+    "path": "<home>/.codex/AGENTS.md",
+    "lines": [
+     1,
+     2
+    ]
+   },
+   "part": "user-constitution"
+  },
+  {
+   "id": "surface:project-claude-md",
+   "type": "surface",
+   "label": "project-claude-md",
+   "injection": "session-start",
+   "weight": 7,
+   "summary": "A small app. Run `npm test` before you say you're done.",
+   "provenance": {
+    "path": "<solo>/CLAUDE.md",
+    "lines": [
+     1,
+     7
+    ]
+   },
+   "part": "project-constitution"
+  },
+  {
+   "id": "unit:release",
+   "type": "unit",
+   "label": "release",
+   "activation": "semantic",
+   "weight": 8,
+   "checkpoint_rules": [],
+   "readonly": false,
+   "routing_signal": "Cut a release: bump the version, tag it, write the notes.",
+   "goal": null,
+   "steps": null,
+   "constraints": null,
+   "statements": null,
+   "provenance": {
+    "path": "<solo>/.claude/skills/release/SKILL.md",
+    "lines": [
+     1,
+     8
+    ]
+   },
+   "part": "skill",
+   "orphan": true
+  }
+ ],
+ "edges": [
+  {
+   "type": "binds",
+   "source": "config:global-settings",
+   "target": "gate:permissions:global-settings"
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "gate:permissions:project-settings"
+  },
+  {
+   "type": "invokes",
+   "source": "executor:.claude/hooks/no-force-push.sh",
+   "target": "gate:.claude/hooks/no-force-push.sh"
+  },
+  {
+   "type": "binds",
+   "source": "config:project-settings",
+   "target": "executor:.claude/hooks/no-force-push.sh",
+   "event": "PreToolUse",
+   "matcher": "Bash",
+   "provenance": {
+    "path": "<solo>/.claude/settings.json",
+    "lines": [
+     8,
+     8
+    ]
+   }
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:project-claude-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:global-claude-md"
+  },
+  {
+   "type": "reads",
+   "source": "black-box:claude-code-runtime",
+   "target": "surface:global-codex-agents-md"
+  }
+ ]
+}

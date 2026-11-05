@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "free-rein.symptoms/1",
+  "title": "Symptoms: a way in from a problem, each to one view and the pieces that answer it",
+  "type": "object",
+  "required": ["schema", "symptoms"],
+  "properties": {
+    "schema": {"const": "free-rein.symptoms/1"},
+    "about": {"type": "string"},
+    "symptoms": {"type": "array", "items": {"type": "object", "required": ["id", "name", "view", "pieces"], "properties": {
+      "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}, "name": {"type": "string"},
+      "view": {"enum": ["has", "checks", "flows"]},
+      "pieces": {"type": "array", "items": {"type": "string"}, "minItems": 1}}, "additionalProperties": false}}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "free-rein.editors/1",
+  "note": "How an editor's own customization view names what Free Rein reads: its sections (Free Rein's kinds of customization, in its order and words), its scopes, and the agents (harnesses) you can pick in it, each read as one of Free Rein's runtimes. Free Rein's wording, not the editors'; only the section names are theirs. A section's pieces are the ones that window edits directly. Hooks are files you edit there; the pieces a hook backs are not listed, because that window does not edit them as pieces.",
+  "editors": [
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "view": "Customize",
+      "version_checked": "3.24.12",
+      "checked_on": "2026-10-13",
+      "source": {
+        "kind": "observed",
+        "title": "Cursor 3.24.12, Customize panel (screenshots of its sections and scopes)"
+      },
+      "harnesses": [
+        { "id": "agent", "name": "Cursor agent", "runtime": "cursor" }
+      ],
+      "sections": [
+        { "kind": "plugins", "name": "Plugins", "pieces": ["plugins"] },
+        { "kind": "mcp", "name": "MCPs", "pieces": ["mcp"] },
+        { "kind": "skills", "name": "Skills", "pieces": ["skills"] },
+        { "kind": "agents", "name": "Subagents", "pieces": ["subagents"] },
+        { "kind": "instructions", "name": "Rules", "pieces": ["proj-instructions", "personal-instructions", "folder-instructions"] },
+        { "kind": "commands", "name": "Commands", "pieces": ["commands"] },
+        { "kind": "hooks", "name": "Hooks", "pieces": [] }
+      ],
+      "scopes": { "project": "Project", "local": "Project", "user": "User", "org": "Team", "plugin": "Plugin" }
+    },
+    {
+      "id": "vscode",
+      "name": "VS Code",
+      "view": "Agent Customizations",
+      "version_checked": "1.141",
+      "checked_on": "2026-10-13",
+      "source": {
+        "kind": "official",
+        "title": "VS Code: choose and use an agent harness; agent customizations",
+        "url": "https://code.visualstudio.com/docs/agents/run/agent-harnesses"
+      },
+      "harnesses": [
+        { "id": "copilot", "name": "Copilot", "runtime": "copilot-cli", "note": "Runs on the Agent Host with the Copilot CLI's rules" },
+        { "id": "claude", "name": "Claude", "runtime": "claude", "note": "Anthropic's Claude Agent SDK: Claude Code's files" },
+        { "id": "codex", "name": "Codex", "runtime": "codex", "note": "OpenAI Codex, through its extension or the Agent Host" },
+        { "id": "local", "name": "Local", "runtime": "copilot", "note": "VS Code's own agent, in the extension host" },
+        { "id": "cloud", "name": "Cloud", "runtime": "copilot-cloud", "note": "Copilot cloud agent, on GitHub" }
+      ],
+      "sections": [
+        { "kind": "plugins", "name": "Plugins", "pieces": ["plugins"] },
+        { "kind": "mcp", "name": "MCP Servers", "pieces": ["mcp"] },
+        { "kind": "skills", "name": "Skills", "pieces": ["skills"] },
+        { "kind": "instructions", "name": "Instructions", "pieces": ["proj-instructions", "personal-instructions", "folder-instructions"] },
+        { "kind": "agents", "name": "Agents", "pieces": ["subagents"] },
+        { "kind": "hooks", "name": "Hooks", "pieces": [] }
+      ],
+      "scopes": { "project": "Workspace", "local": "Workspace", "user": "User", "org": "Organization", "plugin": "Plugin" }
+    }
+  ]
+}

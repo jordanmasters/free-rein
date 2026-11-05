@@ -1,0 +1,412 @@
+{
+ "models": [
+  {
+   "id": "claude-opus-5-5",
+   "name": "Claude Opus 5.5",
+   "known": true,
+   "as": [
+    "opus"
+   ],
+   "used_for": [
+    "the main model (user settings)",
+    "the main model while it plans (project settings)"
+   ],
+   "found_in": [
+    "<home>/.claude/settings.json",
+    "<kitchen>/.claude/settings.json"
+   ],
+   "kind": "llm",
+   "runs": "local",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": true
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": false,
+    "vectors": false
+   },
+   "source": [
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://code.claude.com/docs/en/model-config"
+   ],
+   "checked": "2026-10-08 (pages undated; Claude Code page references v2.1.196)",
+   "note": "Claude Code is pointed at a model server on this machine (http://localhost:4000)"
+  },
+  {
+   "id": "claude-sonnet-5-5",
+   "name": "Claude Sonnet 5.5",
+   "known": true,
+   "as": [
+    "sonnet"
+   ],
+   "used_for": [
+    "the main model while it works (project settings)",
+    "one you can switch to",
+    "the main model (local settings)",
+    "the reviewer subagent"
+   ],
+   "found_in": [
+    "<kitchen>/.claude/settings.json",
+    "<kitchen>/.claude/settings.local.json",
+    "<kitchen>/.claude/agents/reviewer.md"
+   ],
+   "kind": "llm",
+   "runs": "local",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": true
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": false,
+    "vectors": false
+   },
+   "source": [
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://code.claude.com/docs/en/model-config"
+   ],
+   "checked": "2026-10-08 (pages undated)",
+   "note": "Claude Code is pointed at a model server on this machine (http://localhost:4000)"
+  },
+  {
+   "id": "claude-haiku-5-5",
+   "name": "Claude Haiku 5.5",
+   "known": true,
+   "as": [
+    "haiku"
+   ],
+   "used_for": [
+    "every subagent without its own"
+   ],
+   "found_in": [
+    "<kitchen>/.claude/settings.json"
+   ],
+   "kind": "llm",
+   "runs": "cloud",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": true
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": false,
+    "vectors": false
+   },
+   "source": [
+    "https://platform.claude.com/docs/en/about-claude/models/overview",
+    "https://platform.claude.com/docs/en/build-with-claude/vision",
+    "https://platform.claude.com/docs/en/build-with-claude/pdf-support",
+    "https://code.claude.com/docs/en/model-config"
+   ],
+   "checked": "2026-10-08 (pages undated)"
+  },
+  {
+   "id": "jev",
+   "name": "Jev",
+   "known": true,
+   "as": [
+    "jev-latest"
+   ],
+   "used_for": [
+    "the which-one and yes-or-no calls",
+    "the which-one and yes-or-no calls (the TypeSafe SDK is a dependency)"
+   ],
+   "found_in": [
+    "<kitchen>/app.py",
+    "<kitchen>/package.json"
+   ],
+   "kind": "decision",
+   "runs": "cloud",
+   "inputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": null
+   },
+   "outputs": {
+    "text": null,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": true,
+    "vectors": false
+   },
+   "source": [
+    "https://docs.typesafe.ai",
+    "https://docs.typesafe.ai/introduction/quickstart"
+   ],
+   "checked": "2026-10-08 (jev-latest; sample response reports jev-1.13.0)"
+  },
+  {
+   "id": "llama3.2",
+   "name": "Llama 3.2 (1B/3B)",
+   "known": true,
+   "as": [
+    "llama3.2:1b"
+   ],
+   "used_for": [
+    "one you can switch to",
+    "a local model it runs"
+   ],
+   "found_in": [
+    "<kitchen>/.claude/settings.json",
+    "<kitchen>/app.py"
+   ],
+   "kind": "llm",
+   "runs": "either",
+   "inputs": {
+    "text": true,
+    "image": false,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": false,
+    "vectors": false
+   },
+   "source": [
+    "https://ollama.com/library/llama3.2"
+   ],
+   "checked": "2026-10-08 (Ollama: updated 2 years ago)"
+  },
+  {
+   "id": "text-embedding-3-small",
+   "name": "text-embedding-3-small",
+   "known": true,
+   "as": [
+    "text-embedding-3-small"
+   ],
+   "used_for": [
+    "turning text into vectors for search"
+   ],
+   "found_in": [
+    "<kitchen>/app.py"
+   ],
+   "kind": "embedding",
+   "runs": "cloud",
+   "inputs": {
+    "text": true,
+    "image": false,
+    "audio": null,
+    "video": null
+   },
+   "files": {
+    "pdf": null
+   },
+   "outputs": {
+    "text": null,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": false,
+    "vectors": true
+   },
+   "source": [
+    "https://developers.openai.com/api/docs/models/text-embedding-3-small"
+   ],
+   "checked": "2026-10-08 (snapshot text-embedding-3-small)"
+  }
+ ],
+ "main_set": true,
+ "core": "claude-opus-5-5",
+ "cores": [
+  "claude-opus-5-5",
+  "claude-sonnet-5-5"
+ ],
+ "agents": [
+  {
+   "name": "reviewer",
+   "model": "sonnet",
+   "model_id": "claude-sonnet-5-5",
+   "path": "<kitchen>/.claude/agents/reviewer.md",
+   "about": "Reviews work and gives a verdict with findings"
+  },
+  {
+   "name": "scribe",
+   "model": "inherit",
+   "model_id": null,
+   "path": "<kitchen>/.claude/agents/scribe.md",
+   "about": "Writes notes"
+  }
+ ],
+ "others": [
+  "jev",
+  "llama3.2",
+  "text-embedding-3-small"
+ ],
+ "choices": [
+  {
+   "value": "default",
+   "name": "Claude Code's default",
+   "model_id": "claude-code-default",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "sonnet",
+   "name": "Claude Sonnet 5.5",
+   "model_id": "claude-sonnet-5-5",
+   "inputs": {
+    "text": true,
+    "image": true,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  },
+  {
+   "value": "llama3.2:1b",
+   "name": "Llama 3.2 (1B/3B)",
+   "model_id": "llama3.2",
+   "inputs": {
+    "text": true,
+    "image": false,
+    "audio": null,
+    "video": null
+   },
+   "outputs": {
+    "text": true,
+    "image": null,
+    "audio": null,
+    "video": null,
+    "decisions": null,
+    "vectors": null
+   }
+  }
+ ],
+ "current": "sonnet",
+ "choices_from": "https://code.claude.com/docs/en/model-config",
+ "inputs": {
+  "text": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5",
+    "Claude Sonnet 5.5",
+    "Claude Haiku 5.5",
+    "Jev",
+    "Llama 3.2 (1B/3B)",
+    "text-embedding-3-small"
+   ]
+  },
+  "image": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5",
+    "Claude Sonnet 5.5",
+    "Claude Haiku 5.5"
+   ]
+  },
+  "audio": {
+   "state": "unknown",
+   "by": []
+  },
+  "video": {
+   "state": "unknown",
+   "by": []
+  }
+ },
+ "files": {
+  "pdf": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5",
+    "Claude Sonnet 5.5",
+    "Claude Haiku 5.5"
+   ]
+  }
+ },
+ "outputs": {
+  "text": {
+   "state": "yes",
+   "by": [
+    "Claude Opus 5.5",
+    "Claude Sonnet 5.5",
+    "Claude Haiku 5.5",
+    "Llama 3.2 (1B/3B)"
+   ]
+  },
+  "image": {
+   "state": "unknown",
+   "by": []
+  },
+  "audio": {
+   "state": "unknown",
+   "by": []
+  },
+  "video": {
+   "state": "unknown",
+   "by": []
+  },
+  "decisions": {
+   "state": "yes",
+   "by": [
+    "Jev"
+   ]
+  },
+  "vectors": {
+   "state": "yes",
+   "by": [
+    "text-embedding-3-small"
+   ]
+  }
+ },
+ "note": null
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "free-rein.pieces/1",
+  "title": "Free Rein's pieces: sections, pieces, combos, tiers, progression and trust",
+  "type": "object",
+  "required": ["schema", "version", "runtimes", "slots", "combos", "tiers", "progression", "trust"],
+  "properties": {
+    "schema": {"const": "free-rein.pieces/1"},
+    "version": {"const": 2},
+    "runtimes": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}, "uniqueItems": true},
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "items"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "name": {"type": "string"},
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "what", "kind"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+                "name": {"type": "string"},
+                "what": {"type": "string"},
+                "kind": {"enum": ["capability", "control"]},
+                "strength": {"enum": ["asks", "checks", "blocks"]}
+              },
+              "not": {"required": ["cores"]}
+            }
+          }
+        }
+      }
+    },
+    "combos": {"type": "array", "items": {"type": "object", "required": ["id", "kind", "name"], "properties": {"kind": {"enum": ["synergy", "curse"]}}}},
+    "progression": {"type": "object", "required": ["piece_xp", "level_curve", "max_level"]}
+  }
+}

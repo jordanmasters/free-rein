@@ -1,0 +1,49 @@
+[
+ {
+  "id": "~/.claude/CLAUDE.md:3:06369aa6",
+  "kind": "rule",
+  "text": "Always answer in English.",
+  "source": {
+   "file": "~/.claude/CLAUDE.md",
+   "line": 3,
+   "node": "surface:global-claude-md"
+  },
+  "about": [],
+  "strength": "must",
+  "matched": [
+   "Always"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "personal-instructions"
+ },
+ {
+  "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+  "kind": "rule",
+  "text": "Never commit secrets.",
+  "source": {
+   "file": "~/.claude/CLAUDE.md",
+   "line": 3,
+   "node": "surface:global-claude-md"
+  },
+  "about": [
+   {
+    "action": "commit"
+   },
+   {
+    "action": "read-secrets"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "commit",
+   "secrets"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "personal-instructions"
+ }
+]

@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run compile:*)",
+      "Bash(npm run board:*)",
+      "Bash(npm run setup)",
+      "Bash(node core/out/src/cli.js:*)",
+      "Bash(node model/parts/render.mjs:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "ask": [
+      "Bash(npm run golden:*)",
+      "Edit(core/test/golden/**)",
+      "Edit(model/runtimes/**)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git checkout -- .:*)",
+      "Bash(npm publish:*)",
+      "Edit(.claude/settings.json)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Edit(model/parts/CATALOG.md)",
+      "Edit(.env)",
+      "Edit(.env.*)"
+    ]
+  }
+}

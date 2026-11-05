@@ -1,0 +1,2033 @@
+{
+ "doc": {
+  "schema": "free-rein.harness/1",
+  "free_rein": "0.2.0",
+  "target": {
+   "name": "kitchen",
+   "kind": "folder"
+  },
+  "runtime": {
+   "id": "claude",
+   "name": "Claude Code",
+   "version_checked": "2.1.301",
+   "build": "workbench"
+  },
+  "mode": "manual",
+  "counts_home": true,
+  "pieces": [
+   {
+    "id": "proj-instructions",
+    "section": "context",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "CLAUDE.md",
+      "layer": "project",
+      "lines": [
+       1,
+       20
+      ]
+     },
+     {
+      "path": ".claude/CLAUDE.md",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     },
+     {
+      "path": "CLAUDE.local.md",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     },
+     {
+      "path": "sub/CLAUDE.md",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 3,
+     "of": 3
+    }
+   },
+   {
+    "id": "personal-instructions",
+    "section": "context",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "~/.claude/CLAUDE.md",
+      "layer": "home",
+      "lines": [
+       1,
+       4
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 1,
+     "of": 3
+    }
+   },
+   {
+    "id": "folder-instructions",
+    "section": "context",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/rules",
+      "layer": "project"
+     },
+     {
+      "path": ".",
+      "layer": "project"
+     },
+     {
+      "path": "CLAUDE.md",
+      "layer": "project",
+      "lines": [
+       1,
+       20
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 1,
+     "of": 3
+    }
+   },
+   {
+    "id": "live-injection",
+    "section": "context",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 2
+    }
+   },
+   {
+    "id": "contracts",
+    "section": "protocols",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "modes",
+    "section": "protocols",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "plan-first",
+    "section": "protocols",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "commands",
+    "section": "protocols",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/commands",
+      "layer": "project"
+     },
+     {
+      "path": ".claude/skills/review-work/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       34
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "git-workflow",
+    "section": "protocols",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": "commitlint.config.js",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     },
+     {
+      "path": ".husky/commit-msg",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     },
+     {
+      "path": ".claude/skills/commit-it/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       6
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "review-workflow",
+    "section": "protocols",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/skills/review-work/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       34
+      ]
+     },
+     {
+      "path": ".claude/agents/reviewer.md",
+      "layer": "project",
+      "lines": [
+       1,
+       8
+      ]
+     },
+     {
+      "path": "REVIEW.md",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "skills",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/skills/commit-it/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       6
+      ]
+     },
+     {
+      "path": ".claude/skills/lint-notes/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       7
+      ]
+     },
+     {
+      "path": ".claude/skills/review-work/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       34
+      ]
+     },
+     {
+      "path": ".claude/skills/tidy-notes/SKILL.md",
+      "layer": "project",
+      "lines": [
+       1,
+       7
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "runtime_items": [
+     "batch",
+     "claude-api",
+     "code-review",
+     "dataviz",
+     "debug",
+     "doctor",
+     "fewer-permission-prompts",
+     "loop",
+     "run",
+     "run-skill-generator",
+     "update-config",
+     "verify"
+    ],
+    "tier": {
+     "reached": 1,
+     "of": 4
+    },
+    "items_complete": {
+     "ok": 1,
+     "of": 4
+    }
+   },
+   {
+    "id": "mcp",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       6,
+       6
+      ]
+     },
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       7,
+       7
+      ]
+     },
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       10,
+       10
+      ]
+     },
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       8,
+       8
+      ]
+     },
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       9,
+       9
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "plugins",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".claude-plugin",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "web",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "connected-accounts",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       1,
+       13
+      ]
+     },
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       1,
+       13
+      ]
+     },
+     {
+      "path": "~/.claude/projects/<kitchen-history>",
+      "layer": "home"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "subagents",
+    "section": "agents",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/agents/reviewer.md",
+      "layer": "project",
+      "lines": [
+       1,
+       8
+      ]
+     },
+     {
+      "path": ".claude/agents/scribe.md",
+      "layer": "project",
+      "lines": [
+       1,
+       6
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "orchestration",
+    "section": "agents",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "autonomous-runs",
+    "section": "agents",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": ".github/workflows/ci.yml",
+      "layer": "project",
+      "lines": [
+       1,
+       7
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "model-routing",
+    "section": "agents",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".claude/agents",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "modalities",
+    "section": "agents",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": "app.py",
+      "layer": "project",
+      "lines": [
+       1,
+       5
+      ]
+     },
+     {
+      "path": "app.py",
+      "layer": "project",
+      "lines": [
+       1,
+       5
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "installer",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "unchecked",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "setup",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "Dockerfile",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     },
+     {
+      "path": ".devcontainer",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "pins",
+    "section": "configuration",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "package-lock.json",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     },
+     {
+      "path": "sub/Cargo.lock",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "settings-split",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "env-keys",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".env.example",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "managed-policy",
+    "section": "configuration",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "permissions",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": "~/.claude/settings.json",
+      "layer": "home",
+      "lines": [
+       3,
+       7
+      ],
+      "enforced": true
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       49,
+       64
+      ],
+      "enforced": true
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 4,
+     "of": 4
+    }
+   },
+   {
+    "id": "hard-gate",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": ".claude/hooks/guard.sh",
+      "layer": "project",
+      "lines": [
+       1,
+       6
+      ],
+      "enforced": true
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 4,
+     "of": 4
+    }
+   },
+   {
+    "id": "secrets-out",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": "~/.claude/settings.json",
+      "layer": "home",
+      "lines": [
+       1,
+       22
+      ]
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 1,
+     "of": 3
+    }
+   },
+   {
+    "id": "sandbox",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 3
+    }
+   },
+   {
+    "id": "network-limits",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 3,
+     "of": 3
+    }
+   },
+   {
+    "id": "spend-limits",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".github/workflows/ci.yml",
+      "layer": "project",
+      "lines": [
+       1,
+       7
+      ]
+     },
+     {
+      "path": ".claude/agents",
+      "layer": "project"
+     },
+     {
+      "path": "scripts/run.sh",
+      "layer": "project",
+      "lines": [
+       1,
+       3
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 2
+    }
+   },
+   {
+    "id": "human-gate",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": ".claude/skills/review-work/SKILL.md",
+      "layer": "project",
+      "lines": [
+       18,
+       18
+      ],
+      "enforced": false
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 4
+    }
+   },
+   {
+    "id": "notifications",
+    "section": "guardrails",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 2
+    }
+   },
+   {
+    "id": "completion-check",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": ".claude/hooks/done.sh",
+      "layer": "project",
+      "lines": [
+       1,
+       5
+      ],
+      "enforced": true
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 4
+    }
+   },
+   {
+    "id": "rewind",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 2
+    }
+   },
+   {
+    "id": "check-commands",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "schema",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "unchecked",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "auto-fix",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "~/.claude/settings.json",
+      "layer": "home",
+      "lines": [
+       1,
+       22
+      ]
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "independent-checker",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/agents/reviewer.md",
+      "layer": "project",
+      "lines": [
+       1,
+       8
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "visual-check",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "harness-checker",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "criteria",
+    "section": "validation",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": "vault",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "evals",
+    "section": "validation",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "feedback",
+    "section": "validation",
+    "kind": "safeguard",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [
+     {
+      "path": null,
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "event-log",
+    "section": "observability",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": null,
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "receipts",
+    "section": "observability",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "transcripts",
+    "section": "observability",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "~/.claude/projects/<kitchen-history>",
+      "layer": "home"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "status-line",
+    "section": "observability",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "telemetry-export",
+    "section": "observability",
+    "kind": "ability",
+    "state": "unchecked",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "cost-tracking",
+    "section": "observability",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": ".claude/settings.json",
+      "layer": "project",
+      "lines": [
+       1,
+       143
+      ]
+     },
+     {
+      "path": "package.json",
+      "layer": "project",
+      "lines": [
+       1,
+       14
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "session-state",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".claude/state/mode.json",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "task-list",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       1,
+       13
+      ]
+     },
+     {
+      "path": "TODO.md",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "saved-facts",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "progress-log",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "progress.md",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "session-recall",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".mcp.json",
+      "layer": "project",
+      "lines": [
+       1,
+       13
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "knowledge-base",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": "vault",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "decisions",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "vault/decisions.md",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "codebase-map",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "ARCHITECTURE.md",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     },
+     {
+      "path": "docs/map-schema.md",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "ontology",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "docs/map-schema.md",
+      "layer": "project",
+      "lines": [
+       1,
+       4
+      ]
+     },
+     {
+      "path": "docs/ontology.md",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     },
+     {
+      "path": "terms.ttl",
+      "layer": "project",
+      "lines": [
+       1,
+       2
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "knowledge-graph",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "retrieval",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   }
+  ],
+  "statements": [
+   {
+    "id": "CLAUDE.md:5:a56b1f91",
+    "kind": "direction",
+    "text": "Start here: docs/map-schema.md and ARCHITECTURE.md. @docs/extra.md",
+    "path": "CLAUDE.md",
+    "line": 5,
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:10:ca0722fb",
+    "kind": "direction",
+    "text": "Keep the plan.",
+    "path": "CLAUDE.md",
+    "line": 10,
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:12:4cc95702",
+    "kind": "rule",
+    "text": "- Never push to main without a review.",
+    "path": "CLAUDE.md",
+    "line": 12,
+    "strength": "must-not",
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:13:ba37f724",
+    "kind": "rule",
+    "text": "- Always run /review-work before /commit-it.",
+    "path": "CLAUDE.md",
+    "line": 13,
+    "strength": "must",
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:14:9bf74e5d",
+    "kind": "claim",
+    "text": "- Don't edit vault/decisions.md directly; it is gated.",
+    "path": "CLAUDE.md",
+    "line": 14,
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:15:3ff85dec",
+    "kind": "direction",
+    "text": "- Use `lib/tools.py` for exports.",
+    "path": "CLAUDE.md",
+    "line": 15,
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:16:e55b6caa",
+    "kind": "direction",
+    "text": "- Stop.",
+    "path": "CLAUDE.md",
+    "line": 16,
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:17:412a6663",
+    "kind": "rule",
+    "text": "- Never publish a package.",
+    "path": "CLAUDE.md",
+    "line": 17,
+    "strength": "must-not",
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:18:e6fb489b",
+    "kind": "rule",
+    "text": "- Never edit `vault/notes/` without asking first.",
+    "path": "CLAUDE.md",
+    "line": 18,
+    "strength": "must-not",
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "CLAUDE.md:19:5fd17c4e",
+    "kind": "rule",
+    "text": "- Always ask before you write to the vault.",
+    "path": "CLAUDE.md",
+    "line": 19,
+    "strength": "must",
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "AGENTS.md:3:5b3d360f",
+    "kind": "claim",
+    "text": "Hooks block force pushes.",
+    "path": "AGENTS.md",
+    "line": 3,
+    "piece": "proj-instructions"
+   },
+   {
+    "id": "~/.claude/CLAUDE.md:3:06369aa6",
+    "kind": "rule",
+    "text": "Always answer in English.",
+    "path": "~/.claude/CLAUDE.md",
+    "line": 3,
+    "strength": "must",
+    "piece": "personal-instructions"
+   },
+   {
+    "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+    "kind": "rule",
+    "text": "Never commit secrets.",
+    "path": "~/.claude/CLAUDE.md",
+    "line": 3,
+    "strength": "must-not",
+    "piece": "personal-instructions"
+   },
+   {
+    "id": ".claude/rules/style.md:2:f57acff6",
+    "kind": "rule",
+    "text": "- You must cite sources.",
+    "path": ".claude/rules/style.md",
+    "line": 2,
+    "strength": "must",
+    "piece": "folder-instructions"
+   },
+   {
+    "id": ".claude/skills/commit-it/SKILL.md:3:3b34c48e",
+    "kind": "trigger",
+    "text": "Commit with a message",
+    "path": ".claude/skills/commit-it/SKILL.md",
+    "line": 3,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/commit-it/SKILL.md:5:172678c4",
+    "kind": "direction",
+    "text": "Commit the changes.",
+    "path": ".claude/skills/commit-it/SKILL.md",
+    "line": 5,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/commit-it/SKILL.md:5:496fe40e",
+    "kind": "rule",
+    "text": "Never force-push.",
+    "path": ".claude/skills/commit-it/SKILL.md",
+    "line": 5,
+    "strength": "must-not",
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/lint-notes/SKILL.md:3:2e4228f2",
+    "kind": "trigger",
+    "text": "Use when the user asks to check the notes for broken links before committing them.",
+    "path": ".claude/skills/lint-notes/SKILL.md",
+    "line": 3,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/lint-notes/SKILL.md:5:8394b2f7",
+    "kind": "pointer",
+    "text": "Read every note.",
+    "path": ".claude/skills/lint-notes/SKILL.md",
+    "line": 5,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/lint-notes/SKILL.md:6:12e2da25",
+    "kind": "direction",
+    "text": "Report each broken link with its line.",
+    "path": ".claude/skills/lint-notes/SKILL.md",
+    "line": 6,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:3:9191cc00",
+    "kind": "trigger",
+    "text": "Use when the user asks to review work before it ships; triggers on 'review'.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 3,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:7:e0f4a5f7",
+    "kind": "pointer",
+    "text": "Goal: Review the draft and record a verdict in vault/reviews.md.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 7,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:11:6f35cf2a",
+    "kind": "direction",
+    "text": "**Read the draft** from drafts/current.md.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 11,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:12:3de24e50",
+    "kind": "direction",
+    "text": "**Show the findings for review** and await approval before writing.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 12,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:13:561184eb",
+    "kind": "direction",
+    "text": "**Write the verdict** to vault/reviews.md and log it with `emit.py review-done`.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 13,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:13:433829a3",
+    "kind": "direction",
+    "text": "**Step 4 — Sign off on the result.**",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 13,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:18:aa108ef5",
+    "kind": "rule",
+    "text": "The user must say something like \"yes, ship it\" or \"approved\"; a second confirmation is required for `vault/decisions.md`.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 18,
+    "strength": "must",
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:20:c2398994",
+    "kind": "pointer",
+    "text": "Then call /commit-it and see lib/tools.py and engines/review/PROTOCOL.md.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 20,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:29:1eb58044",
+    "kind": "rule",
+    "text": "- Never write to vault/ without approval.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 29,
+    "strength": "must-not",
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/review-work/SKILL.md:30:a24bf4a2",
+    "kind": "rule",
+    "text": "- Don't skip the tests.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 30,
+    "strength": "must-not",
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/tidy-notes/SKILL.md:3:f52ced3e",
+    "kind": "trigger",
+    "text": "Formats notes in the vault nicely",
+    "path": ".claude/skills/tidy-notes/SKILL.md",
+    "line": 3,
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/tidy-notes/SKILL.md:5:1b084e14",
+    "kind": "pointer",
+    "text": "Read the notes.",
+    "path": ".claude/skills/tidy-notes/SKILL.md",
+    "line": 5,
+    "piece": "skills"
+   },
+   {
+    "id": "skills/commit-it/SKILL.md:3:a27c6359",
+    "kind": "trigger",
+    "text": "Another copy",
+    "path": "skills/commit-it/SKILL.md",
+    "line": 3,
+    "piece": "skills"
+   },
+   {
+    "id": "sub/CLAUDE.md:3:47cf7ddb",
+    "kind": "rule",
+    "text": "Rules for the sub folder: never delete files in data/.",
+    "path": "sub/CLAUDE.md",
+    "line": 3,
+    "strength": "must-not",
+    "piece": "folder-instructions"
+   },
+   {
+    "id": ".claude/agents/reviewer.md:3:0932e109",
+    "kind": "trigger",
+    "text": "Reviews work and gives a verdict with findings",
+    "path": ".claude/agents/reviewer.md",
+    "line": 3
+   },
+   {
+    "id": ".claude/agents/scribe.md:2:a9876523",
+    "kind": "trigger",
+    "text": "Writes notes",
+    "path": ".claude/agents/scribe.md",
+    "line": 2
+   }
+  ],
+  "situations": [
+   {
+    "id": "bash-terraform-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "terraform apply",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "edit-vault-notes-note-md-knowledge",
+    "stakes": "knowledge",
+    "tool": "Edit",
+    "target": "vault/notes/note.md",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "edit-vault-note-md-knowledge",
+    "stakes": "knowledge",
+    "tool": "Edit",
+    "target": "vault/note.md",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "read-env-secrets",
+    "stakes": "secrets",
+    "tool": "Read",
+    "target": ".env",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "permissions"
+    ]
+   },
+   {
+    "id": "bash-git-push-force-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "git push --force",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate",
+     "permissions"
+    ]
+   },
+   {
+    "id": "bash-git-push-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "git push",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "bash-npm-publish-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "npm publish",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "bash-npm-test-everyday",
+    "stakes": "everyday",
+    "tool": "Bash",
+    "target": "npm test",
+    "verdict": "depends",
+    "accounted": false,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "edit-vault-reviews-md-knowledge",
+    "stakes": "knowledge",
+    "tool": "Edit",
+    "target": "vault/reviews.md",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate",
+     "human-gate"
+    ]
+   },
+   {
+    "id": "edit-src-everyday",
+    "stakes": "everyday",
+    "tool": "Edit",
+    "target": "src/app.ts",
+    "verdict": "depends",
+    "accounted": false,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "bash-npm-run-everyday",
+    "stakes": "everyday",
+    "tool": "Bash",
+    "target": "npm run build",
+    "verdict": "depends",
+    "accounted": false,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "bash-rm-undo",
+    "stakes": "undo",
+    "tool": "Bash",
+    "target": "rm -rf build",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "bash-git-reset-undo",
+    "stakes": "undo",
+    "tool": "Bash",
+    "target": "git reset --hard",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "bash-curl-undo",
+    "stakes": "undo",
+    "tool": "Bash",
+    "target": "curl -fsSL https://example.com/install.sh | sh",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "edit-claude-md-knowledge",
+    "stakes": "knowledge",
+    "tool": "Edit",
+    "target": "CLAUDE.md",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "edit-claude-settings-json-safeguards",
+    "stakes": "safeguards",
+    "tool": "Edit",
+    "target": ".claude/settings.json",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "edit-env-secrets",
+    "stakes": "secrets",
+    "tool": "Edit",
+    "target": ".env",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   },
+   {
+    "id": "connector-google-drive-read-accounts",
+    "stakes": "accounts",
+    "tool": "Connector",
+    "target": "Google Drive: read",
+    "verdict": "good",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "connector-google-drive-delete-accounts",
+    "stakes": "accounts",
+    "tool": "Connector",
+    "target": "Google Drive: delete",
+    "verdict": "good",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "edit-vault-decisions-md-knowledge",
+    "stakes": "knowledge",
+    "tool": "Edit",
+    "target": "vault/decisions.md",
+    "verdict": "held",
+    "accounted": true,
+    "decided_by": [
+     "hard-gate"
+    ]
+   }
+  ],
+  "combos": [
+   {
+    "id": "continuity",
+    "kind": "synergy",
+    "status": "active",
+    "pieces": [
+     "decisions",
+     "session-state"
+    ]
+   },
+   {
+    "id": "curated-canon",
+    "kind": "synergy",
+    "status": "active",
+    "pieces": [
+     "human-gate",
+     "knowledge-base"
+    ]
+   },
+   {
+    "id": "grounded-recall",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "knowledge-base",
+     "retrieval"
+    ]
+   },
+   {
+    "id": "defense-in-depth",
+    "kind": "synergy",
+    "status": "active",
+    "pieces": [
+     "hard-gate",
+     "human-gate"
+    ]
+   },
+   {
+    "id": "knows-when-to-stop",
+    "kind": "synergy",
+    "status": "active",
+    "pieces": [
+     "autonomous-runs",
+     "completion-check"
+    ]
+   },
+   {
+    "id": "learning-loop",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "evals",
+     "event-log"
+    ]
+   },
+   {
+    "id": "designed-crew",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "orchestration",
+     "subagents"
+    ]
+   },
+   {
+    "id": "earned-done",
+    "kind": "synergy",
+    "status": "active",
+    "pieces": [
+     "completion-check",
+     "criteria"
+    ]
+   },
+   {
+    "id": "approval-fatigue",
+    "kind": "curse",
+    "status": "cleared",
+    "pieces": [
+     "human-gate"
+    ]
+   },
+   {
+    "id": "heavy-pack",
+    "kind": "curse",
+    "status": "dormant",
+    "pieces": [
+     "proj-instructions"
+    ]
+   },
+   {
+    "id": "unread-record",
+    "kind": "curse",
+    "status": "active",
+    "pieces": [
+     "event-log"
+    ]
+   },
+   {
+    "id": "accidental-swarm",
+    "kind": "curse",
+    "status": "active",
+    "pieces": [
+     "subagents"
+    ]
+   },
+   {
+    "id": "tool-overload",
+    "kind": "curse",
+    "status": "dormant",
+    "pieces": [
+     "skills"
+    ]
+   },
+   {
+    "id": "marks-own-work",
+    "kind": "curse",
+    "status": "cleared",
+    "pieces": [
+     "skills"
+    ]
+   },
+   {
+    "id": "closed-loop",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "completion-check",
+     "criteria",
+     "evals"
+    ]
+   },
+   {
+    "id": "paper-trail",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "event-log",
+     "receipts",
+     "telemetry-export"
+    ]
+   },
+   {
+    "id": "safe-autopilot",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "autonomous-runs",
+     "completion-check",
+     "hard-gate",
+     "sandbox"
+    ]
+   }
+  ]
+ },
+ "score": {
+  "xp": 2766,
+  "level": 34,
+  "level_start": 2752,
+  "next_level_at": 2916,
+  "parts": {
+   "pieces": 2231,
+   "combos": 310,
+   "situations": 225
+  }
+ }
+}

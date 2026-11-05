@@ -1,0 +1,183 @@
+{
+ "text": "Warnings (1)\n  .claude/settings.json:1  Stops when it says it's done: The agent decides when it's done.\n\nNotes (3)\n  .claude/settings.json:1  Change its instructions: Claude Code decides: no rule of yours (ask first: Edit(CLAUDE.md) or add Blocking hooks)\n  .claude/settings.json:1  Change its own permissions and hooks: Claude Code decides: no rule of yours (ask first: Edit(.claude/settings.json) or add Blocking hooks)\n  .claude/skills/release/SKILL.md:1  /release: its description says what it is but not when to use it\n\n0 errors, 1 warnings, 3 notes (read in auto mode)\n",
+ "sarif": {
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+   {
+    "tool": {
+     "driver": {
+      "name": "Free Rein",
+      "version": "0.0.0",
+      "semanticVersion": "0.0.0",
+      "rules": [
+       {
+        "id": "left-to-claude-code",
+        "name": "LeftToClaudeCode",
+        "shortDescription": {
+         "text": "Claude Code's safety check decides, not a rule of yours"
+        },
+        "fullDescription": {
+         "text": "In auto mode, a high-stakes action with no rule of yours is judged by Claude Code's own classifier."
+        },
+        "help": {
+         "text": "It may well stop it, but you can't see or set its rules, so the harness doesn't say what should happen. Make the call yourself: a permission rule that allows, asks or refuses.",
+         "markdown": "In auto mode, a high-stakes action with no rule of yours is judged by Claude Code's own classifier.\n\n**Why it matters:** It may well stop it, but you can't see or set its rules, so the harness doesn't say what should happen.\n\n**What to do:** Make the call yourself: a permission rule that allows, asks or refuses."
+        },
+        "defaultConfiguration": {
+         "level": "note"
+        }
+       },
+       {
+        "id": "loop-self-declared",
+        "name": "LoopSelfDeclared",
+        "shortDescription": {
+         "text": "It stops when it says it's done"
+        },
+        "fullDescription": {
+         "text": "Nothing checks the work before it ends: the agent decides it's finished."
+        },
+        "help": {
+         "text": "Loop on evidence, not confidence. Saying it's done is never enough. Add a completion check: a Stop hook that runs the check commands and sends failures back.",
+         "markdown": "Nothing checks the work before it ends: the agent decides it's finished.\n\n**Why it matters:** Loop on evidence, not confidence. Saying it's done is never enough.\n\n**What to do:** Add a completion check: a Stop hook that runs the check commands and sends failures back."
+        },
+        "defaultConfiguration": {
+         "level": "warning"
+        }
+       },
+       {
+        "id": "skill-issue",
+        "name": "SkillIssue",
+        "shortDescription": {
+         "text": "A skill the model may misuse"
+        },
+        "fullDescription": {
+         "text": "A skill has a problem in its own text: no description, no steps, a name that doesn't match its folder, or rules that contradict."
+        },
+        "help": {
+         "text": "The model picks skills by their description and follows their steps; a vague or broken one fires wrongly or does the wrong thing. Fix the skill's text as the message says.",
+         "markdown": "A skill has a problem in its own text: no description, no steps, a name that doesn't match its folder, or rules that contradict.\n\n**Why it matters:** The model picks skills by their description and follows their steps; a vague or broken one fires wrongly or does the wrong thing.\n\n**What to do:** Fix the skill's text as the message says."
+        },
+        "defaultConfiguration": {
+         "level": "note"
+        }
+       }
+      ]
+     }
+    },
+    "originalUriBaseIds": {
+     "SRCROOT": {
+      "description": {
+       "text": "The harness that was checked"
+      }
+     }
+    },
+    "results": [
+     {
+      "ruleId": "loop-self-declared",
+      "ruleIndex": 1,
+      "level": "warning",
+      "message": {
+       "text": "Stops when it says it's done: The agent decides when it's done."
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/settings.json",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "d243fc22c8bd6a33a622851582c9cc4b"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 0,
+      "level": "note",
+      "message": {
+       "text": "Change its instructions: Claude Code decides: no rule of yours (ask first: Edit(CLAUDE.md) or add Blocking hooks)"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/settings.json",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "aa043f33a43d96cd3813c1066c55f5b6"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 0,
+      "level": "note",
+      "message": {
+       "text": "Change its own permissions and hooks: Claude Code decides: no rule of yours (ask first: Edit(.claude/settings.json) or add Blocking hooks)"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/settings.json",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "92a4eb36649dfced85801b061cfa9b9b"
+      }
+     },
+     {
+      "ruleId": "skill-issue",
+      "ruleIndex": 2,
+      "level": "note",
+      "message": {
+       "text": "/release: its description says what it is but not when to use it"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/skills/release/SKILL.md",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "06d4955a3f256f481c66d2c2df9db146"
+      }
+     }
+    ],
+    "properties": {
+     "mode": "auto"
+    }
+   }
+  ]
+ }
+}

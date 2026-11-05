@@ -1,0 +1,14 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+
+# sample harnesses are kept exactly as they are (some on purpose: CRLF, no final newline)
+[samples/**]
+end_of_line = unset
+insert_final_newline = unset
+charset = unset

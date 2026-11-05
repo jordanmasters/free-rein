@@ -1,0 +1,692 @@
+{
+  "note": "Ways to add each piece: real tools, services and Claude Code settings, read from each one's own page (source and date per option). Shown in the piece pane's Add flow beside Free Rein's own template and having Claude Code build it.",
+  "checked_on": "2026-10-08",
+  "pieces": {
+    "knowledge-graph": [
+      {
+        "name": "Graphify",
+        "kind": "tool",
+        "takes": "Install the CLI and register the skill with `uv tool install graphifyy && graphify install`, then run `/graphify .` on a folder of code or notes; it writes graph.html, GRAPH_REPORT.md and graph.json, and `python -m graphify.serve graphify-out/graph.json` serves the graph over MCP.",
+        "runs": "local",
+        "source": "https://github.com/safishamsi/graphify",
+        "seen": "2026-10-08 (README; PyPI package graphifyy, no version shown; a hosted platform also exists)"
+      },
+      {
+        "name": "Obsidian (CLI + kepano/obsidian-skills)",
+        "kind": "tool",
+        "takes": "Turn on Settings > General > Command line interface in Obsidian 1.12.7+, then `/plugin marketplace add kepano/obsidian-skills` and `/plugin install obsidian@obsidian-skills`; the agent uses `obsidian backlinks`, `links`, `orphans` and `search` on [[wikilinked]] notes.",
+        "runs": "local",
+        "source": "https://obsidian.md/help/cli ; https://github.com/kepano/obsidian-skills",
+        "seen": "2026-10-08 (Obsidian 1.12.7 installer)"
+      },
+      {
+        "name": "Graphify Obsidian export",
+        "kind": "tool",
+        "takes": "Run graphify with `--obsidian` (or `--obsidian-dir <vault>`) to write the extracted graph into an Obsidian vault without touching existing notes.",
+        "runs": "local",
+        "source": "https://github.com/safishamsi/graphify",
+        "seen": "2026-10-08"
+      }
+    ],
+    "ontology": [
+      {
+        "name": "Obsidian properties + Bases",
+        "kind": "tool",
+        "takes": "Give notes typed frontmatter properties (text, list, number, checkbox, date, date & time, tags; one type per name across the vault) and define views over them in `.base` files.",
+        "runs": "local",
+        "source": "https://obsidian.md/help/properties ; https://obsidian.md/help/bases",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "LinkML",
+        "kind": "tool",
+        "takes": "`pip install linkml`, write a YAML schema of classes, slots and relations, validate data against it and generate JSON Schema, SQL DDL, Python or RDF from it.",
+        "runs": "local",
+        "source": "https://linkml.io/linkml/intro/install.html",
+        "seen": "2026-10-08 (no version on page)"
+      },
+      {
+        "name": "Write it yourself",
+        "kind": "build",
+        "takes": "Keep a schema file in the repo (kinds of note, required fields, allowed links) and have a skill or hook check notes against it.",
+        "runs": "local",
+        "source": "https://linkml.io/linkml/intro/install.html",
+        "seen": "2026-10-08 (pattern; no single canonical tool)"
+      }
+    ],
+    "retrieval": [
+      {
+        "name": "qmd",
+        "kind": "tool",
+        "takes": "`claude plugin marketplace add tobi/qmd` then `claude plugin install qmd@qmd` (or `npm install -g @tobilu/qmd` and `qmd mcp`): on-device BM25 + vector + rerank search over notes and docs, local GGUF models.",
+        "runs": "local",
+        "source": "https://github.com/tobi/qmd",
+        "seen": "2026-10-08 (Node 22+, no version shown)"
+      },
+      {
+        "name": "Serena",
+        "kind": "tool",
+        "takes": "`uv tool install -p 3.13 serena-agent` then `serena init`, and add it to Claude Code per its client docs: symbol-level code search and editing via language servers, as an MCP server.",
+        "runs": "local",
+        "source": "https://github.com/oraios/serena",
+        "seen": "2026-10-08 (README warns against marketplace installs)"
+      },
+      {
+        "name": "Claude Code code-intelligence plugins",
+        "kind": "setting",
+        "takes": "Install a language-server plugin from the official marketplace via `/plugin` so Claude jumps to definitions instead of grepping and reading files.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/costs",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Graphify MCP server",
+        "kind": "tool",
+        "takes": "`python -m graphify.serve graphify-out/graph.json` exposes query_graph, get_node, get_neighbors and shortest_path over MCP.",
+        "runs": "local",
+        "source": "https://github.com/safishamsi/graphify",
+        "seen": "2026-10-08"
+      }
+    ],
+    "evals": [
+      {
+        "name": "claude plugin eval",
+        "kind": "setting",
+        "takes": "From a plugin root run `claude plugin eval init` to write cases and graders under evals/, then `claude plugin eval .` (with `--threshold` for CI); each case also runs without the plugin as a baseline.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/plugin-evals",
+        "seen": "2026-10-08 (needs Claude Code v2.1.269+)"
+      },
+      {
+        "name": "promptfoo (Claude Agent SDK provider)",
+        "kind": "tool",
+        "takes": "`npm install promptfoo @anthropic-ai/claude-agent-sdk@^0.3.273` and use provider `anthropic:claude-agent-sdk` (alias `anthropic:claude-code`) with a working_dir; assert on output and on tool calls.",
+        "runs": "local",
+        "source": "https://www.promptfoo.dev/docs/providers/claude-agent-sdk/",
+        "seen": "2026-10-08 (SDK >= 0.3.273)"
+      },
+      {
+        "name": "skill-creator plugin",
+        "kind": "tool",
+        "takes": "Install skill-creator from the official marketplace to run and benchmark evals on one skill inside a conversation (format differs from plugin eval).",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/plugin-evals",
+        "seen": "2026-10-08"
+      }
+    ],
+    "orchestration": [
+      {
+        "name": "Claude Code dynamic workflows",
+        "kind": "setting",
+        "takes": "Ask for a workflow (or include `ultracode`); save a run with `s` in `/workflows` to `.claude/workflows/<name>.js`, a JS script of agent()/pipeline()/parallel() calls that reruns as `/<name>`.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/workflows",
+        "seen": "2026-10-08 (all paid plans; Pro turns on in /config)"
+      },
+      {
+        "name": "LangGraph",
+        "kind": "tool",
+        "takes": "`pip install -U langgraph` and write the agent graph in Python: a low-level runtime for long-running, stateful agents.",
+        "runs": "either",
+        "source": "https://docs.langchain.com/oss/python/langgraph/overview",
+        "seen": "2026-10-08 (no version shown)"
+      },
+      {
+        "name": "Headless claude -p from a script",
+        "kind": "build",
+        "takes": "Drive `claude -p` runs from your own shell/CI script with `--output-format json`, `--max-turns` and `--max-budget-usd`.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/cli-reference",
+        "seen": "2026-10-08"
+      }
+    ],
+    "independent-checker": [
+      {
+        "name": "/code-review",
+        "kind": "setting",
+        "takes": "Run `/code-review [low..max]` (alias `/review`) to review the branch in a background subagent; `--fix` applies findings, `--comment` posts them to the PR.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/code-review",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Ultrareview",
+        "kind": "service",
+        "takes": "`/code-review ultra` or `claude ultrareview <PR>` runs a multi-agent cloud review that verifies each finding; needs a claude.ai login, about $5-25 per run after free runs.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/ultrareview",
+        "seen": "2026-10-08 (research preview)"
+      },
+      {
+        "name": "Claude Code Review (GitHub App)",
+        "kind": "service",
+        "takes": "An Owner enables it at claude.ai/admin-settings/claude-code and installs the Claude GitHub App; reviews post inline on PRs, tuned by REVIEW.md.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/code-review",
+        "seen": "2026-10-08 (Team/Enterprise research preview, ~$15-25/review)"
+      },
+      {
+        "name": "Reviewer subagent",
+        "kind": "build",
+        "takes": "Add a `.claude/agents/<reviewer>.md` with read-only tools and a review prompt, or pass `--agents` JSON.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/cli-reference",
+        "seen": "2026-10-08"
+      }
+    ],
+    "harness-checker": [
+      {
+        "name": "Free Rein /address-findings",
+        "kind": "tool",
+        "takes": "Run Free Rein's `install.sh` to link the skill, then `/address-findings` re-runs `node ~/.claude/free-rein/core/out/src/cli.js lint .` and walks each finding to a fix.",
+        "runs": "local",
+        "source": "skills/address-findings/SKILL.md (this repo)",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "/doctor and claude doctor",
+        "kind": "setting",
+        "takes": "`claude doctor` prints install health and settings-file validation errors; `/doctor` in a session also flags unused skills, MCP servers, plugins and slow hooks against their context cost.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/cli-reference ; https://code.claude.com/docs/en/skills",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "/skill-doctor",
+        "kind": "setting",
+        "takes": "Run `/skill-doctor` to see each skill's context cost and how often it is used, plus plugins not used recently.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/skills",
+        "seen": "2026-10-08 (v2.1.252+)"
+      },
+      {
+        "name": "/insights",
+        "kind": "setting",
+        "takes": "Run `/insights` for an HTML report on recent sessions: friction points and suggestions, written to ~/.claude/usage-data/report.html.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/costs",
+        "seen": "2026-10-08"
+      }
+    ],
+    "feedback": [
+      {
+        "name": "OpenTelemetry tool_decision + feedback_survey events",
+        "kind": "setting",
+        "takes": "With telemetry on and `OTEL_LOGS_EXPORTER=otlp`, every allow/deny is exported as `claude_code.tool_decision` (decision, source: config/hook/user) and survey answers as `claude_code.feedback_survey`, for review in your backend.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/monitoring-usage",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Code Review reactions",
+        "kind": "service",
+        "takes": "Each Code Review PR comment carries thumbs up/down; resolved-comment counts show in claude.ai/analytics/code-review.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/code-review",
+        "seen": "2026-10-08"
+      }
+    ],
+    "telemetry-export": [
+      {
+        "name": "Claude Code OpenTelemetry",
+        "kind": "setting",
+        "takes": "In settings `env`: `CLAUDE_CODE_ENABLE_TELEMETRY=1`, `OTEL_METRICS_EXPORTER=otlp`, `OTEL_LOGS_EXPORTER=otlp`, `OTEL_EXPORTER_OTLP_PROTOCOL` (required), `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_HEADERS`.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/monitoring-usage",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Grafana Cloud Claude Code integration",
+        "kind": "service",
+        "takes": "Add the Claude Code tile in Connections, make a metrics:write+logs:write token, put the OTLP endpoint and Basic auth header in the env block, install the prebuilt dashboards.",
+        "runs": "cloud",
+        "source": "https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-claude-code/",
+        "seen": "2026-10-08 (integration v1.0.0, March 2026)"
+      },
+      {
+        "name": "Langfuse",
+        "kind": "service",
+        "takes": "`claude plugin marketplace add langfuse/Claude-Observability-Plugin` then `claude plugin install langfuse-observability@langfuse-observability` (or a Stop hook script); Langfuse Cloud or self-hosted.",
+        "runs": "either",
+        "source": "https://langfuse.com/integrations/other/claude-code",
+        "seen": "2026-10-08 (langfuse SDK 4.x)"
+      },
+      {
+        "name": "Prometheus (local)",
+        "kind": "setting",
+        "takes": "Set `OTEL_METRICS_EXPORTER=prometheus` and scrape http://localhost:9464/metrics; Anthropic's monitoring guide repo has Docker Compose setups.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/monitoring-usage",
+        "seen": "2026-10-08"
+      }
+    ],
+    "cost-tracking": [
+      {
+        "name": "/usage",
+        "kind": "setting",
+        "takes": "Run `/usage` for the session's token totals and estimated cost, plus plan usage attributed to skills, subagents, plugins and MCP servers.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/costs",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "ccusage",
+        "kind": "tool",
+        "takes": "`npx ccusage@latest daily` (or `session`, `blocks`, `--json`) reads local transcripts and reports cost per day/session.",
+        "runs": "local",
+        "source": "https://github.com/ryoppippi/ccusage",
+        "seen": "2026-10-08 (@latest; no version on page)"
+      },
+      {
+        "name": "OpenTelemetry cost metric",
+        "kind": "setting",
+        "takes": "With telemetry export on, chart `claude_code.cost.usage` (USD) by user, model, skill.name, plugin.name or agent.name.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/monitoring-usage",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Claude Console / Analytics API",
+        "kind": "service",
+        "takes": "API orgs see spend per member at platform.claude.com/claude-code and pull it with the Claude Code Analytics API.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/costs",
+        "seen": "2026-10-08"
+      }
+    ],
+    "visual-check": [
+      {
+        "name": "Claude in Chrome screenshots/GIFs",
+        "kind": "tool",
+        "takes": "With Chrome connected, ask Claude to open localhost, screenshot to disk or record a GIF and compare with the design.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/chrome",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Playwright MCP",
+        "kind": "tool",
+        "takes": "`claude mcp add playwright npx @playwright/mcp@latest`, then have Claude drive the page and take screenshots.",
+        "runs": "local",
+        "source": "https://github.com/microsoft/playwright-mcp",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Claude in Chrome",
+        "kind": "tool",
+        "takes": "Install the Claude in Chrome extension (1.0.36+), start `claude --chrome` or turn on Enabled by default in `/chrome`; needs a claude.ai plan login.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/chrome",
+        "seen": "2026-10-08"
+      }
+    ],
+    "connected-accounts": [
+      {
+        "name": "claude.ai connectors (Gmail, Google Calendar, Google Drive)",
+        "kind": "service",
+        "takes": "Connect them at claude.ai Customize > Connectors; when Claude Code is logged in with that claude.ai account they appear in `/mcp` (not with API-key or cloud-provider auth).",
+        "runs": "cloud",
+        "source": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors ; https://code.claude.com/docs/en/mcp",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Remote MCP servers via claude mcp add",
+        "kind": "setting",
+        "takes": "e.g. `claude mcp add --transport http notion https://mcp.notion.com/mcp`, then authenticate with `/mcp`.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/mcp",
+        "seen": "2026-10-08"
+      }
+    ],
+    "plugins": [
+      {
+        "name": "Official marketplace (claude-plugins-official)",
+        "kind": "setting",
+        "takes": "`/plugin install <name>@claude-plugins-official` (or `claude plugin install ... --scope project`); enabled plugins are recorded in `enabledPlugins` in settings.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/discover-plugins",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Community marketplace",
+        "kind": "setting",
+        "takes": "`/plugin marketplace add anthropics/claude-plugins-community`, install with `@claude-community`.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/plugins/anthropic-marketplaces",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Third-party marketplace",
+        "kind": "setting",
+        "takes": "`/plugin marketplace add <owner>/<repo>` then `/plugin install <plugin>@<marketplace>`; not reviewed by Anthropic.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/plugins/anthropic-marketplaces",
+        "seen": "2026-10-08"
+      }
+    ],
+    "mcp": [
+      {
+        "name": "claude mcp add / .mcp.json",
+        "kind": "setting",
+        "takes": "`claude mcp add --transport http <name> <url>` or `--transport stdio <name> -- <cmd>`; `--scope project` writes a shared `.mcp.json`.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/mcp",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "GitHub MCP server",
+        "kind": "service",
+        "takes": "`claude mcp add --transport http github https://api.githubcopilot.com/mcp/ --header \"Authorization: Bearer <PAT>\"`.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/mcp ; https://github.com/github/github-mcp-server",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Sentry MCP",
+        "kind": "service",
+        "takes": "`claude mcp add --transport http sentry https://mcp.sentry.dev/mcp`, then OAuth via `/mcp`.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/mcp",
+        "seen": "2026-10-08"
+      }
+    ],
+    "sandbox": [
+      {
+        "name": "Claude Code Bash sandbox",
+        "kind": "setting",
+        "takes": "Run `/sandbox` or set `\"sandbox\": {\"enabled\": true}` (optionally `allowUnsandboxedCommands: false`, `failIfUnavailable: true`); covers shell commands only.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandboxing",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Sandbox runtime (srt)",
+        "kind": "tool",
+        "takes": "Write `~/.srt-settings.json`, then `npx @anthropic-ai/sandbox-runtime claude` to put the whole process, MCP servers and hooks included, inside the OS sandbox.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandbox-environments",
+        "seen": "2026-10-08 (beta)"
+      },
+      {
+        "name": "Dev container / Docker Sandboxes",
+        "kind": "tool",
+        "takes": "Copy Anthropic's example `.devcontainer/` (default-deny firewall) into the repo, or run in Docker Sandboxes (microVM).",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandbox-environments",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Git worktree / cloud session",
+        "kind": "setting",
+        "takes": "`claude -w <name>` works in `.claude/worktrees/<name>`; `claude --cloud \"task\"` runs in an Anthropic-managed VM.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/cli-reference",
+        "seen": "2026-10-08"
+      }
+    ],
+    "network-limits": [
+      {
+        "name": "Sandbox network allowlist",
+        "kind": "setting",
+        "takes": "`sandbox.network.allowedDomains` / `deniedDomains`, and `sandbox.network.strictAllowlist: true` (user/managed/--settings only) to refuse other hosts; applies to sandboxed commands.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandboxing",
+        "seen": "2026-10-08 (strictAllowlist v2.1.219+)"
+      },
+      {
+        "name": "WebFetch permission rules",
+        "kind": "setting",
+        "takes": "`permissions.allow`/`deny` entries like `WebFetch(domain:example.com)` gate the in-process fetch tool, which the sandbox does not cover.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandboxing",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Managed lockdown",
+        "kind": "setting",
+        "takes": "`sandbox.network.allowManagedDomainsOnly` in managed settings honors only the organization's domains.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandboxing",
+        "seen": "2026-10-08"
+      }
+    ],
+    "secrets-out": [
+      {
+        "name": "Read deny rules",
+        "kind": "setting",
+        "takes": "`\"permissions\": {\"deny\": [\"Read(./.env)\", \"Read(./.env.*)\"]}`.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/settings",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "sandbox.credentials / filesystem.denyRead",
+        "kind": "setting",
+        "takes": "List files and env vars with `mode: deny` or `mask` under `sandbox.credentials`, and paths under `sandbox.filesystem.denyRead`; credentials entries count only from user/managed settings.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandboxing",
+        "seen": "2026-10-08 (v2.1.246+)"
+      },
+      {
+        "name": "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB",
+        "kind": "setting",
+        "takes": "Set it to strip credentials from every subprocess's environment, sandboxed or not.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sandboxing",
+        "seen": "2026-10-08"
+      }
+    ],
+    "spend-limits": [
+      {
+        "name": "--max-budget-usd / --max-turns",
+        "kind": "setting",
+        "takes": "For unattended `claude -p` runs: `--max-budget-usd 5.00` stops at a client-side cost estimate (subagents count), `--max-turns N` caps turns.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/cli-reference",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Workflow size guideline",
+        "kind": "setting",
+        "takes": "`workflowSizeGuideline: small|medium|large` steers agent counts; the runtime caps 1,000 agents per run.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/workflows",
+        "seen": "2026-10-08 (v2.1.219+)"
+      },
+      {
+        "name": "Plan / Console spend limits",
+        "kind": "service",
+        "takes": "Set a monthly spend limit on usage credits at claude.ai/settings/usage (org: admin-settings/usage), or workspace spend limits in the Claude Console.",
+        "runs": "cloud",
+        "source": "https://code.claude.com/docs/en/costs",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "LiteLLM gateway",
+        "kind": "tool",
+        "takes": "Route Claude Code through a LiteLLM proxy that tracks and caps spend per key.",
+        "runs": "either",
+        "source": "https://code.claude.com/docs/en/costs",
+        "seen": "2026-10-08"
+      }
+    ],
+    "task-list": [
+      {
+        "name": "Shared Claude Code task list",
+        "kind": "setting",
+        "takes": "`CLAUDE_CODE_TASK_LIST_ID=my-project claude` keeps the task list in `~/.claude/tasks/my-project/` across sessions.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/interactive-mode",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Linear MCP",
+        "kind": "service",
+        "takes": "`claude mcp add --transport http linear-server https://mcp.linear.app/mcp`, then `/mcp` to sign in.",
+        "runs": "cloud",
+        "source": "https://linear.app/docs/mcp",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "GitHub Issues via GitHub MCP",
+        "kind": "service",
+        "takes": "Add the GitHub MCP server (see mcp) and have the agent read and update issues.",
+        "runs": "cloud",
+        "source": "https://github.com/github/github-mcp-server",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "A tasks file",
+        "kind": "build",
+        "takes": "Keep a TASKS.md (or vault tasks file) and point CLAUDE.md at it.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/memory",
+        "seen": "2026-10-08"
+      }
+    ],
+    "session-recall": [
+      {
+        "name": "/resume picker search",
+        "kind": "setting",
+        "takes": "`claude --resume` or `/resume`, type to search, Ctrl+A for every project; transcripts kept `cleanupPeriodDays` (30 by default).",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sessions",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "claude-mem",
+        "kind": "tool",
+        "takes": "`npx claude-mem install` (or `/plugin marketplace add thedotmack/claude-mem`); captures observations and adds a mem-search skill and MCP search tools. Local SQLite+Chroma, optional hosted observer.",
+        "runs": "either",
+        "source": "https://github.com/thedotmack/claude-mem",
+        "seen": "2026-10-08 (badge v13.34.2)"
+      },
+      {
+        "name": "Ask an old session",
+        "kind": "setting",
+        "takes": "`claude -p --resume <session-id> --output-format json \"summarize what we changed\"`.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/sessions",
+        "seen": "2026-10-08"
+      }
+    ],
+    "codebase-map": [
+      {
+        "name": "/init",
+        "kind": "setting",
+        "takes": "Run `/init` to generate CLAUDE.md with build/test commands and conventions (`CLAUDE_CODE_NEW_INIT=1` for the multi-phase flow).",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/memory",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "build",
+        "takes": "Write a short bird's-eye overview, a codemap of coarse modules and their relations, invariants, and cross-cutting concerns.",
+        "runs": "local",
+        "source": "https://matklad.github.io/2021/02/06/ARCHITECTURE.md.html",
+        "seen": "2026-10-08 (article 2021-02-06)"
+      },
+      {
+        "name": "Graphify",
+        "kind": "tool",
+        "takes": "`/graphify .` writes GRAPH_REPORT.md and graph.json from a tree-sitter parse.",
+        "runs": "local",
+        "source": "https://github.com/safishamsi/graphify",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Repomix",
+        "kind": "tool",
+        "takes": "`npx repomix@latest` packs the repo into one file; `claude mcp add repomix -- npx -y repomix --mcp` or `/plugin marketplace add yamadashy/repomix`.",
+        "runs": "local",
+        "source": "https://github.com/yamadashy/repomix",
+        "seen": "2026-10-08"
+      }
+    ],
+    "modalities": [
+      {
+        "name": "Audio: whisper.cpp",
+        "kind": "tool",
+        "takes": "Clone and `cmake -B build && cmake --build build -j --config Release`, `sh ./models/download-ggml-model.sh base.en`, then `./build/bin/whisper-cli -f file.wav` (16-bit WAV).",
+        "runs": "local",
+        "source": "https://github.com/ggml-org/whisper.cpp",
+        "seen": "2026-10-08 (no release shown)"
+      },
+      {
+        "name": "Audio: OpenAI transcription",
+        "kind": "service",
+        "takes": "POST to `/v1/audio/transcriptions` with `gpt-transcribe` (recommended) or `whisper-1` for timestamps/translation; 25 MB file limit.",
+        "runs": "cloud",
+        "source": "https://developers.openai.com/api/docs/guides/speech-to-text",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Decisions: TypeSafe Jev",
+        "kind": "service",
+        "takes": "Get a key at console.typesafe.ai, POST `https://api.typesafe.ai/v1/systemone` with model `jev-latest`, a state and typed questions (noul/choice/score).",
+        "runs": "cloud",
+        "source": "https://docs.typesafe.ai/api",
+        "seen": "2026-10-08 (examples show jev-1.13.0)"
+      },
+      {
+        "name": "Decisions: OpenAI Decisions API",
+        "kind": "service",
+        "takes": "POST `/v1/decisions` with model `gpt-6-luna`, input and questions (predicate/choice/score); input-only pricing $0.10/1M tokens.",
+        "runs": "cloud",
+        "source": "https://developers.openai.com/api/docs/guides/decisions",
+        "seen": "2026-10-08 (public beta)"
+      },
+      {
+        "name": "Decisions: Laya",
+        "kind": "tool",
+        "takes": "`pip install laya`, use `Router().predict(state, questions)`, or `laya-serve` for a Jev-compatible `/v1/systemone` endpoint on port 8000; Apache-2.0, ~0.4B params. Also on Vercel AI Gateway as `convaiinnovations/laya`.",
+        "runs": "either",
+        "source": "https://huggingface.co/convaiinnovations/laya ; https://vercel.com/changelog/laya-decision-model-now-available-on-ai-gateway-free-through-october-31",
+        "seen": "2026-10-08 (runtime 0.3.20; gateway free through 2026-10-31)"
+      },
+      {
+        "name": "Vectors: Ollama embeddings",
+        "kind": "tool",
+        "takes": "`ollama run embeddinggemma \"text\"` or POST `http://localhost:11434/api/embed`; also qwen3-embedding, all-minilm.",
+        "runs": "local",
+        "source": "https://docs.ollama.com/capabilities/embeddings",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Vectors: OpenAI embeddings",
+        "kind": "service",
+        "takes": "POST `https://api.openai.com/v1/embeddings` with `text-embedding-3-small` or `-large`.",
+        "runs": "cloud",
+        "source": "https://developers.openai.com/api/docs/guides/embeddings",
+        "seen": "2026-10-08"
+      },
+      {
+        "name": "Vectors: Voyage AI",
+        "kind": "service",
+        "takes": "Install the `voyageai` package, set `VOYAGE_API_KEY`, embed with `voyage-4` / `voyage-4-large`, or `voyage-code-4` for code.",
+        "runs": "cloud",
+        "source": "https://docs.voyageai.com/docs/embeddings",
+        "seen": "2026-10-08"
+      }
+    ],
+    "skills": [
+      {
+        "name": "/skill-doctor",
+        "kind": "setting",
+        "takes": "Run `/skill-doctor` in Claude Code: it shows what each skill costs in context and how often it's used, so you can see which to turn off.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/commands",
+        "seen": "2026-10-08 (page cites v2.1.287; needs v2.1.252+)"
+      },
+      {
+        "name": "Turn skills off",
+        "kind": "setting",
+        "takes": "In `/skills`, press Space on a skill to hide it from Claude, or set it to \"off\" under `skillOverrides` in settings; `disableBundledSkills` turns off every bundled one.",
+        "runs": "local",
+        "source": "https://code.claude.com/docs/en/skills",
+        "seen": "2026-10-08"
+      }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+[mcp_servers.docs]
+command = 'x'
+[mcp_servers.search-web]
+command = 'y'

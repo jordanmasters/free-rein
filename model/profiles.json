@@ -1,0 +1,2030 @@
+{
+  "note": "What each harness gives you out of the box, before anything of yours: runtimes (scannable), products on rails (described from their docs), and reference designs Free Rein defines (hand-made chatbots on a model API; source \"reference\"). ships is the piece level you get by default (0-3); what's possible is each piece's runtime answer in pieces.json. Each entry names its source.",
+  "profiles": [
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "kind": "runtime",
+      "build": "workbench",
+      "version": "2.1.288",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "skills",
+          "ships": 2,
+          "note": "20 bundled skills: 13 always there (/code-review, /verify, /run, /loop, /doctor…), 7 when artifacts, Chrome or workflows are on",
+          "source": "https://code.claude.com/docs/en/commands",
+          "items": [
+            "batch",
+            "claude-api",
+            "code-review",
+            "dataviz",
+            "debug",
+            "doctor",
+            "fewer-permission-prompts",
+            "loop",
+            "run",
+            "run-skill-generator",
+            "simplify",
+            "update-config",
+            "verify"
+          ],
+          "items_note": "Every entry the commands reference marks as a bundled skill (read 2026-10-08, page cites up to v2.1.287): 13 always there, 7 only under a condition. disableBundledSkills turns them all off; skillOverrides turns one off.",
+          "items_when": {
+            "artifact-capabilities": "where artifacts are available",
+            "artifact-diagramming": "where artifacts are available (v2.1.221+)",
+            "design": "where artifacts and the Design template are available, on the Anthropic API",
+            "design-sync": "on the Anthropic API, through claude.ai",
+            "slides": "where artifacts and the Slides template are available, on the Anthropic API",
+            "claude-in-chrome": "when Chrome is turned on (claude --chrome)",
+            "workflow-authoring": "when dynamic workflows are on (v2.1.248+)"
+          }
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "WebSearch and WebFetch built in",
+          "source": "https://code.claude.com/docs/en/tools-reference"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "Built-in Explore, Plan, general-purpose",
+          "source": "https://code.claude.com/docs/en/sub-agents"
+        },
+        {
+          "type": "modes",
+          "ships": 1,
+          "note": "Plan mode: a posture the session enters and stays in (plan, don't edit). Permission modes are about approvals, not kinds of work, so they don't count here",
+          "source": "https://code.claude.com/docs/en/permission-modes"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 1,
+          "note": "/loop, session cron and /schedule available; nothing scheduled",
+          "source": "https://code.claude.com/docs/en/tools-reference"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Permission prompts; starts in auto mode (a classifier decides) since 2.1.283",
+          "source": "https://code.claude.com/docs/en/permission-modes"
+        },
+        {
+          "type": "permissions",
+          "ships": 1,
+          "note": "Rules engine and protected paths; no rules of yours",
+          "source": "https://code.claude.com/docs/en/permissions"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 1,
+          "note": "/code-review bundled; nothing runs it for you",
+          "source": "https://code.claude.com/docs/en/skills"
+        },
+        {
+          "type": "event-log",
+          "ships": 1,
+          "note": "Session transcripts kept 30 days",
+          "source": "https://code.claude.com/docs/en/monitoring-usage"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 2,
+          "note": "Auto memory on: typed local files, index loaded each session",
+          "source": "https://code.claude.com/docs/en/memory"
+        },
+        {
+          "type": "session-state",
+          "ships": 1,
+          "note": "Checkpoints and /rewind; sessions resumable",
+          "source": "https://code.claude.com/docs/en/checkpointing"
+        },
+        {
+          "type": "rewind",
+          "ships": 2,
+          "note": "Checkpoints of its file edits, built in: /rewind or Esc Esc",
+          "source": "https://code.claude.com/docs/en/checkpointing"
+        },
+        {
+          "type": "transcripts",
+          "ships": 2,
+          "note": "Every session kept in ~/.claude/projects/, about 30 days by default (cleanupPeriodDays)",
+          "source": "https://code.claude.com/docs/en/sessions"
+        },
+        {
+          "type": "review-workflow",
+          "ships": 1,
+          "note": "Bundled /code-review and /security-review",
+          "source": "https://code.claude.com/docs/en/code-review"
+        },
+        {
+          "type": "task-list",
+          "ships": 1,
+          "note": "Task tools track work inside a session; nothing carries it to the next",
+          "source": "https://code.claude.com/docs/en/tools-reference"
+        },
+        {
+          "type": "session-recall",
+          "ships": 1,
+          "note": "--resume and --continue reopen an earlier session; no search across them",
+          "source": "https://code.claude.com/docs/en/sessions"
+        },
+        {
+          "type": "plan-first",
+          "ships": 1,
+          "note": "Plan mode is there to switch into (Shift+Tab, /plan); it isn't the starting mode",
+          "source": "https://code.claude.com/docs/en/permission-modes"
+        },
+        {
+          "type": "modalities",
+          "ships": 1,
+          "note": "Its core model, Opus 5.5 by default, takes in text and images and gives back text",
+          "source": "https://platform.claude.com/docs/en/about-claude/models/overview"
+        }
+      ]
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "kind": "runtime",
+      "build": "workbench",
+      "version": "CLI 0.160.0",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "skills",
+          "ships": 2,
+          "note": "System skills ($skill-creator, $skill-installer, plan)",
+          "source": "https://learn.chatgpt.com/docs/skills-and-plugins"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "Web search, cached index by default",
+          "source": "https://learn.chatgpt.com/docs/config-file/config-reference"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "Built-in default, worker, explorer",
+          "source": "https://learn.chatgpt.com/docs/agent-configuration/subagents"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 1,
+          "note": "Scheduled and event-triggered tasks in the app and web",
+          "source": "https://learn.chatgpt.com/docs/automations"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Approvals on request",
+          "source": "https://learn.chatgpt.com/docs/agent-approvals-security"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "Approval policy; .git, .agents, .codex, .aws kept read-only",
+          "source": "https://learn.chatgpt.com/docs/agent-approvals-security"
+        },
+        {
+          "type": "sandbox",
+          "ships": 2,
+          "note": "workspace-write in a version-controlled folder, network off",
+          "source": "https://learn.chatgpt.com/docs/agent-approvals-security"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 1,
+          "note": "/review available; auto-review opt-in",
+          "source": "https://learn.chatgpt.com/docs/code-review"
+        },
+        {
+          "type": "event-log",
+          "ships": 1,
+          "note": "history.jsonl",
+          "source": "https://learn.chatgpt.com/docs/config-file/config-reference"
+        }
+      ]
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "kind": "runtime",
+      "build": "workbench",
+      "version": "changelog 2026-09-23",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "skills",
+          "ships": 2,
+          "note": "Built-in /canvas, /review, /shell",
+          "source": "https://cursor.com/docs/context/skills"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "Web search and fetch built in",
+          "source": "https://cursor.com/docs/agent/tools"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "Built-in Explore, Bash, Browser",
+          "source": "https://cursor.com/docs/subagents"
+        },
+        {
+          "type": "modes",
+          "ships": 2,
+          "note": "Agent, Ask, Plan, Debug",
+          "source": "https://cursor.com/docs/agent/tools"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 1,
+          "note": "Cloud agent automations on paid plans",
+          "source": "https://cursor.com/docs/cloud-agent/automations"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Auto-review: a classifier decides, allowlisted calls run",
+          "source": "https://cursor.com/docs/agent/security/run-modes"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "Run modes with file-deletion and external-file protections",
+          "source": "https://cursor.com/docs/agent/security/run-modes"
+        },
+        {
+          "type": "sandbox",
+          "ships": 2,
+          "note": "Sandbox on for macOS and Linux, network allowlist",
+          "source": "https://cursor.com/docs/agent/security/run-modes"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 1,
+          "note": "Bugbot available, off until enabled per repo",
+          "source": "https://cursor.com/docs/bugbot"
+        }
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini CLI",
+      "kind": "runtime",
+      "build": "workbench",
+      "version": "v0.62.0",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "google_web_search and web_fetch built in",
+          "source": "https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/tools.md"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "Built-in codebase_investigator, cli_help, generalist",
+          "source": "https://geminicli.com/docs/core/subagents"
+        },
+        {
+          "type": "modes",
+          "ships": 1,
+          "note": "Approval modes and Plan Mode",
+          "source": "https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Writes and shell ask first",
+          "source": "https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/tools.md"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "Policy engine: reads allow, writes ask",
+          "source": "https://geminicli.com/docs/reference/policy-engine"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 2,
+          "note": "The agent writes facts into GEMINI.md tiers when asked; Auto Memory off",
+          "source": "https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/memory.md"
+        }
+      ]
+    },
+    {
+      "id": "opencode",
+      "name": "OpenCode",
+      "kind": "runtime",
+      "build": "workbench",
+      "version": "v1.18.34",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "webfetch built in; search needs a flag or the OpenCode provider",
+          "source": "https://opencode.ai/docs/tools/"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "Built-in General, Explore, Scout",
+          "source": "https://opencode.ai/docs/agents/"
+        },
+        {
+          "type": "modes",
+          "ships": 2,
+          "note": "Build and Plan agents",
+          "source": "https://opencode.ai/docs/agents/"
+        },
+        {
+          "type": "human-gate",
+          "ships": 1,
+          "note": "The question tool; almost everything else allowed",
+          "source": "https://opencode.ai/docs/permissions/"
+        },
+        {
+          "type": "permissions",
+          "ships": 1,
+          "note": "Nearly everything allowed; reading .env denied",
+          "source": "https://opencode.ai/docs/permissions/"
+        },
+        {
+          "type": "session-state",
+          "ships": 2,
+          "note": "Sessions saved and resumable; snapshots for undo",
+          "source": "https://opencode.ai/docs/config/"
+        }
+      ]
+    },
+    {
+      "id": "copilot",
+      "name": "GitHub Copilot in VS Code (Local agent)",
+      "kind": "runtime",
+      "core": "copilot",
+      "build": "workbench",
+      "version": "VS Code Aug 2026",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "modes",
+          "ships": 2,
+          "note": "Built-in Agent, Plan and Ask",
+          "source": "https://code.visualstudio.com/docs/agents/overview"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "#web fetch; each URL approved",
+          "source": "https://code.visualstudio.com/docs/agents/agent-tools"
+        },
+        {
+          "type": "subagents",
+          "ships": 1,
+          "note": "#runSubagent available",
+          "source": "https://code.visualstudio.com/docs/agents/agent-tools"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Manual permission level by default",
+          "source": "https://code.visualstudio.com/docs/agents/approvals"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "Read-only terminal commands auto-approved, risky ones ask; URL approval",
+          "source": "https://code.visualstudio.com/docs/agents/approvals"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 1,
+          "note": "Local memory, saved only when you ask",
+          "source": "https://code.visualstudio.com/docs/agents/run/memory"
+        },
+        {
+          "type": "session-state",
+          "ships": 2,
+          "note": "Checkpoints and undo on",
+          "source": "https://code.visualstudio.com/docs/copilot/chat/chat-checkpoints"
+        }
+      ]
+    },
+    {
+      "id": "copilot-cli",
+      "name": "GitHub Copilot CLI (and VS Code's Copilot harness)",
+      "kind": "runtime",
+      "core": "copilot",
+      "build": "workbench",
+      "version": "docs, undated",
+      "checked_on": "2026-10-13",
+      "ships": [
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "github-mcp-server, playwright, fetch and time built in",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "modes",
+          "ships": 2,
+          "note": "Standard, plan and autopilot modes (Shift+Tab)",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "plan-first",
+          "ships": 1,
+          "note": "/plan writes a plan before coding",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 1,
+          "note": "/autopilot works toward an objective on its own",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "permissions",
+          "ships": 1,
+          "note": "--allow-tool and --deny-tool patterns; deny wins, even over --allow-all",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Tools and paths ask for approval until you allow them (/permissions reset asks again)",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "task tool runs subagents; /fleet runs them in parallel",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "web",
+          "ships": 1,
+          "note": "web_fetch tool",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "session-state",
+          "ships": 2,
+          "note": "/resume and --continue pick up earlier sessions",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        },
+        {
+          "type": "rewind",
+          "ships": 2,
+          "note": "/undo or /rewind rolls back the conversation, or the conversation and files",
+          "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference"
+        }
+      ]
+    },
+    {
+      "id": "copilot-cloud",
+      "name": "Copilot cloud agent",
+      "kind": "runtime",
+      "core": "copilot",
+      "build": "service",
+      "checked_on": "2026-10-03",
+      "ships": [
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "GitHub MCP (read-only, this repo) and Playwright MCP",
+          "source": "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/extend-cloud-agent-with-mcp"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 2,
+          "note": "Works an assigned issue on its own, up to 59 minutes",
+          "source": "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent"
+        },
+        {
+          "type": "sandbox",
+          "ships": 2,
+          "note": "Firewall on its processes; pushes only to its own branch",
+          "source": "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-firewall"
+        },
+        {
+          "type": "hard-gate",
+          "ships": 2,
+          "note": "Branch protection; CI waits for approval; can't approve or merge its own PR",
+          "source": "https://docs.github.com/en/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "A person reviews and merges the pull request",
+          "source": "https://docs.github.com/en/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations"
+        },
+        {
+          "type": "completion-check",
+          "ships": 2,
+          "note": "Runs tests, linters, CodeQL, dependency and secret scanning before finishing",
+          "source": "https://github.blog/changelog/2025-10-28-copilot-coding-agent-now-automatically-validates-code-security-and-quality/"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 2,
+          "note": "Copilot code review of its own work",
+          "source": "https://docs.github.com/en/copilot/concepts/agents/code-review"
+        },
+        {
+          "type": "event-log",
+          "ships": 2,
+          "note": "Session logs with reasoning, tools and tokens",
+          "source": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/monitor-agentic-activity"
+        },
+        {
+          "type": "receipts",
+          "ships": 2,
+          "note": "Commits co-authored with a link to the session log",
+          "source": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/monitor-agentic-activity"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 2,
+          "note": "Copilot Memory on for Pro and Pro+: repo facts with citations, expire after 28 days",
+          "source": "https://docs.github.com/en/copilot/concepts/agents/copilot-memory"
+        }
+      ]
+    },
+    {
+      "id": "chatbot-bare",
+      "name": "Hand-made chatbot: bare",
+      "kind": "reference",
+      "core": "open",
+      "build": "companion",
+      "checked_on": "2026-10-03",
+      "about": "A system prompt and a chat loop around a model API. History lives in memory for the session.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "A system prompt in the code",
+          "source": "reference"
+        },
+        {
+          "type": "session-state",
+          "ships": 1,
+          "note": "Chat history kept in memory until the process ends",
+          "source": "reference"
+        }
+      ]
+    },
+    {
+      "id": "chatbot-tools",
+      "name": "Hand-made chatbot: with tools",
+      "kind": "reference",
+      "core": "open",
+      "build": "companion",
+      "checked_on": "2026-10-03",
+      "about": "The bare chatbot plus function calling: a few tools the model can call, and request logs.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "A system prompt in the code",
+          "source": "reference"
+        },
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "Tools offered through the API's function calling",
+          "source": "reference"
+        },
+        {
+          "type": "web",
+          "ships": 1,
+          "note": "A search or fetch tool, if you wrote one",
+          "source": "reference"
+        },
+        {
+          "type": "permissions",
+          "ships": 1,
+          "note": "Which tools exist is fixed in code; nothing asks before a call",
+          "source": "reference"
+        },
+        {
+          "type": "session-state",
+          "ships": 1,
+          "note": "Chat history kept in memory",
+          "source": "reference"
+        },
+        {
+          "type": "event-log",
+          "ships": 1,
+          "note": "Request and response logs",
+          "source": "reference"
+        }
+      ]
+    },
+    {
+      "id": "chatbot-rag",
+      "name": "Hand-made chatbot: RAG",
+      "kind": "reference",
+      "core": "open",
+      "build": "companion",
+      "checked_on": "2026-10-03",
+      "about": "A chatbot that answers from your documents: an index, a search step before each answer, and saved conversations.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "A system prompt that says to answer from the documents",
+          "source": "reference"
+        },
+        {
+          "type": "knowledge-base",
+          "ships": 2,
+          "note": "Your documents, chunked and indexed",
+          "source": "reference"
+        },
+        {
+          "type": "retrieval",
+          "ships": 2,
+          "note": "A search step before each answer, with citations",
+          "source": "reference"
+        },
+        {
+          "type": "mcp",
+          "ships": 1,
+          "note": "Tools, if any, through function calling",
+          "source": "reference"
+        },
+        {
+          "type": "session-state",
+          "ships": 2,
+          "note": "Conversations saved to a database",
+          "source": "reference"
+        },
+        {
+          "type": "event-log",
+          "ships": 1,
+          "note": "Request and response logs",
+          "source": "reference"
+        }
+      ]
+    },
+    {
+      "id": "chatbot-production",
+      "name": "Hand-made chatbot: production service",
+      "kind": "reference",
+      "core": "open",
+      "build": "service",
+      "checked_on": "2026-10-03",
+      "about": "A chatbot run for other people: users sign in, sensitive data is involved, and it's deployed, monitored and evaluated.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "A versioned system prompt",
+          "source": "reference"
+        },
+        {
+          "type": "contracts",
+          "ships": 1,
+          "note": "Prompt templates per task",
+          "source": "reference"
+        },
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "Tools through function calling",
+          "source": "reference"
+        },
+        {
+          "type": "knowledge-base",
+          "ships": 2,
+          "note": "Indexed documents",
+          "source": "reference"
+        },
+        {
+          "type": "retrieval",
+          "ships": 2,
+          "note": "Search before answering",
+          "source": "reference"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "Hands the conversation to a person when unsure",
+          "source": "reference"
+        },
+        {
+          "type": "hard-gate",
+          "ships": 2,
+          "note": "Moderation on input and output that refuses",
+          "source": "reference"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "Sign-in and per-user access to data and tools",
+          "source": "reference"
+        },
+        {
+          "type": "sandbox",
+          "ships": 1,
+          "note": "Tools run with limited credentials",
+          "source": "reference"
+        },
+        {
+          "type": "schema",
+          "ships": 2,
+          "note": "Structured output checked against a schema",
+          "source": "reference"
+        },
+        {
+          "type": "check-commands",
+          "ships": 2,
+          "note": "Tests in CI",
+          "source": "reference"
+        },
+        {
+          "type": "criteria",
+          "ships": 1,
+          "note": "What a good answer is, written down",
+          "source": "reference"
+        },
+        {
+          "type": "evals",
+          "ships": 2,
+          "note": "An eval set run before each release",
+          "source": "reference"
+        },
+        {
+          "type": "feedback",
+          "ships": 2,
+          "note": "Thumbs up and down from users, reviewed",
+          "source": "reference"
+        },
+        {
+          "type": "event-log",
+          "ships": 2,
+          "note": "Every request logged",
+          "source": "reference"
+        },
+        {
+          "type": "telemetry-export",
+          "ships": 2,
+          "note": "Traces to your monitoring",
+          "source": "reference"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 1,
+          "note": "Per-user memory",
+          "source": "reference"
+        },
+        {
+          "type": "session-state",
+          "ships": 2,
+          "note": "Conversations saved per user",
+          "source": "reference"
+        },
+        {
+          "type": "setup",
+          "ships": 2,
+          "note": "A container or setup script",
+          "source": "reference"
+        },
+        {
+          "type": "pins",
+          "ships": 2,
+          "note": "Pinned dependencies and model version",
+          "source": "reference"
+        },
+        {
+          "type": "installer",
+          "ships": 1,
+          "note": "A deploy pipeline",
+          "source": "reference"
+        }
+      ]
+    },
+    {
+      "id": "example-first",
+      "name": "Example: a first CLAUDE.md",
+      "kind": "example",
+      "core": "claude",
+      "build": "workbench",
+      "checked_on": "2026-10-09",
+      "about": "Not a real harness. Day one on Claude Code: a CLAUDE.md, a lockfile, the built-in web tools, and a few things started (a skill, a permission rule, a test command).",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "In place (example): CLAUDE.md with the commit convention and vault rules",
+          "source": "example"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "In place (example): WebSearch and WebFetch",
+          "source": "example"
+        },
+        {
+          "type": "pins",
+          "ships": 2,
+          "note": "In place (example): a lockfile plus .nvmrc or .python-version",
+          "source": "example"
+        },
+        {
+          "type": "personal-instructions",
+          "ships": 1,
+          "note": "Started (example): ~/.claude/CLAUDE.md: concise responses, no emojis",
+          "source": "example"
+        },
+        {
+          "type": "skills",
+          "ships": 1,
+          "note": "Started (example): /commit, /release, /changelog",
+          "source": "example"
+        },
+        {
+          "type": "permissions",
+          "ships": 1,
+          "note": "Started (example): allow npm test, ask before git push",
+          "source": "example"
+        },
+        {
+          "type": "check-commands",
+          "ships": 1,
+          "note": "Started (example): npm test, make check",
+          "source": "example"
+        }
+      ]
+    },
+    {
+      "id": "example-solo",
+      "name": "Example: a solo project, set up",
+      "kind": "example",
+      "core": "claude",
+      "build": "workbench",
+      "checked_on": "2026-10-09",
+      "about": "Not a real harness. One person's project after a few weeks: instructions per folder, skills and commands, an MCP server, plan mode, permission rules, tests it runs, a task list and a codebase map.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "In place (example): CLAUDE.md with the commit convention and vault rules",
+          "source": "example"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "In place (example): WebSearch and WebFetch",
+          "source": "example"
+        },
+        {
+          "type": "pins",
+          "ships": 2,
+          "note": "In place (example): a lockfile plus .nvmrc or .python-version",
+          "source": "example"
+        },
+        {
+          "type": "personal-instructions",
+          "ships": 2,
+          "note": "In place (example): ~/.claude/CLAUDE.md: concise responses, no emojis",
+          "source": "example"
+        },
+        {
+          "type": "folder-instructions",
+          "ships": 2,
+          "note": "In place (example): web/CLAUDE.md with the frontend's conventions",
+          "source": "example"
+        },
+        {
+          "type": "skills",
+          "ships": 2,
+          "note": "In place (example): /commit, /release, /changelog",
+          "source": "example"
+        },
+        {
+          "type": "commands",
+          "ships": 2,
+          "note": "In place (example): /release that bumps, tags and writes the notes",
+          "source": "example"
+        },
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "In place (example): a browser MCP so it can check the UI it builds",
+          "source": "example"
+        },
+        {
+          "type": "plan-first",
+          "ships": 2,
+          "note": "In place (example): starts every session in plan mode",
+          "source": "example"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "In place (example): allow npm test, ask before git push",
+          "source": "example"
+        },
+        {
+          "type": "check-commands",
+          "ships": 2,
+          "note": "In place (example): npm test, make check",
+          "source": "example"
+        },
+        {
+          "type": "settings-split",
+          "ships": 2,
+          "note": "In place (example): settings.json checked in, settings.local.json ignored",
+          "source": "example"
+        },
+        {
+          "type": "env-keys",
+          "ships": 2,
+          "note": "In place (example): an apiKeyHelper that reads the key from the keychain",
+          "source": "example"
+        },
+        {
+          "type": "rewind",
+          "ships": 2,
+          "note": "In place (example): /rewind to before the refactor",
+          "source": "example"
+        },
+        {
+          "type": "transcripts",
+          "ships": 2,
+          "note": "In place (example): sessions kept for 90 days",
+          "source": "example"
+        },
+        {
+          "type": "task-list",
+          "ships": 2,
+          "note": "In place (example): TASKS.md, or issues through an MCP server",
+          "source": "example"
+        },
+        {
+          "type": "codebase-map",
+          "ships": 2,
+          "note": "In place (example): ARCHITECTURE.md, linked from CLAUDE.md",
+          "source": "example"
+        },
+        {
+          "type": "status-line",
+          "ships": 2,
+          "note": "In place (example): a status line with the mode and today's spend",
+          "source": "example"
+        },
+        {
+          "type": "notifications",
+          "ships": 2,
+          "note": "In place (example): a desktop alert when it needs an answer",
+          "source": "example"
+        },
+        {
+          "type": "auto-fix",
+          "ships": 2,
+          "note": "In place (example): prettier runs on each file it writes",
+          "source": "example"
+        },
+        {
+          "type": "git-workflow",
+          "ships": 1,
+          "note": "Started (example): a commit skill plus a commit-msg hook for action(target): message",
+          "source": "example"
+        },
+        {
+          "type": "progress-log",
+          "ships": 1,
+          "note": "Started (example): PROGRESS.md updated at the end of every session",
+          "source": "example"
+        },
+        {
+          "type": "setup",
+          "ships": 1,
+          "note": "Started (example): init.sh that installs, checks, then prints how to start",
+          "source": "example"
+        }
+      ]
+    },
+    {
+      "id": "example-team",
+      "name": "Example: a team repo with guardrails",
+      "kind": "example",
+      "core": "claude",
+      "build": "workbench",
+      "checked_on": "2026-10-09",
+      "about": "Not a real harness. A shared repo: a team plugin, review before merge, blocking hooks, a sensitive data guard, a completion check that runs the tests, an independent reviewer, a decision log and an event log.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 2,
+          "note": "In place (example): CLAUDE.md with the commit convention and vault rules",
+          "source": "example"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "In place (example): WebSearch and WebFetch",
+          "source": "example"
+        },
+        {
+          "type": "pins",
+          "ships": 2,
+          "note": "In place (example): a lockfile plus .nvmrc or .python-version",
+          "source": "example"
+        },
+        {
+          "type": "personal-instructions",
+          "ships": 2,
+          "note": "In place (example): ~/.claude/CLAUDE.md: concise responses, no emojis",
+          "source": "example"
+        },
+        {
+          "type": "folder-instructions",
+          "ships": 2,
+          "note": "In place (example): web/CLAUDE.md with the frontend's conventions",
+          "source": "example"
+        },
+        {
+          "type": "skills",
+          "ships": 2,
+          "note": "In place (example): /commit, /release, /changelog",
+          "source": "example"
+        },
+        {
+          "type": "commands",
+          "ships": 2,
+          "note": "In place (example): /release that bumps, tags and writes the notes",
+          "source": "example"
+        },
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "In place (example): a browser MCP so it can check the UI it builds",
+          "source": "example"
+        },
+        {
+          "type": "plan-first",
+          "ships": 2,
+          "note": "In place (example): starts every session in plan mode",
+          "source": "example"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "In place (example): allow npm test, ask before git push",
+          "source": "example"
+        },
+        {
+          "type": "check-commands",
+          "ships": 2,
+          "note": "In place (example): npm test, make check",
+          "source": "example"
+        },
+        {
+          "type": "settings-split",
+          "ships": 2,
+          "note": "In place (example): settings.json checked in, settings.local.json ignored",
+          "source": "example"
+        },
+        {
+          "type": "env-keys",
+          "ships": 2,
+          "note": "In place (example): an apiKeyHelper that reads the key from the keychain",
+          "source": "example"
+        },
+        {
+          "type": "rewind",
+          "ships": 2,
+          "note": "In place (example): /rewind to before the refactor",
+          "source": "example"
+        },
+        {
+          "type": "transcripts",
+          "ships": 2,
+          "note": "In place (example): sessions kept for 90 days",
+          "source": "example"
+        },
+        {
+          "type": "task-list",
+          "ships": 2,
+          "note": "In place (example): TASKS.md, or issues through an MCP server",
+          "source": "example"
+        },
+        {
+          "type": "codebase-map",
+          "ships": 2,
+          "note": "In place (example): ARCHITECTURE.md, linked from CLAUDE.md",
+          "source": "example"
+        },
+        {
+          "type": "status-line",
+          "ships": 2,
+          "note": "In place (example): a status line with the mode and today's spend",
+          "source": "example"
+        },
+        {
+          "type": "notifications",
+          "ships": 2,
+          "note": "In place (example): a desktop alert when it needs an answer",
+          "source": "example"
+        },
+        {
+          "type": "auto-fix",
+          "ships": 2,
+          "note": "In place (example): prettier runs on each file it writes",
+          "source": "example"
+        },
+        {
+          "type": "git-workflow",
+          "ships": 2,
+          "note": "In place (example): a commit skill plus a commit-msg hook for action(target): message",
+          "source": "example"
+        },
+        {
+          "type": "progress-log",
+          "ships": 2,
+          "note": "In place (example): PROGRESS.md updated at the end of every session",
+          "source": "example"
+        },
+        {
+          "type": "setup",
+          "ships": 2,
+          "note": "In place (example): init.sh that installs, checks, then prints how to start",
+          "source": "example"
+        },
+        {
+          "type": "installer",
+          "ships": 2,
+          "note": "In place (example): install.sh links skills into ~/.claude/skills",
+          "source": "example"
+        },
+        {
+          "type": "plugins",
+          "ships": 2,
+          "note": "In place (example): a team plugin with the commit skill and the format hook",
+          "source": "example"
+        },
+        {
+          "type": "review-workflow",
+          "ships": 2,
+          "note": "In place (example): /code-review on every change before it merges",
+          "source": "example"
+        },
+        {
+          "type": "hard-gate",
+          "ships": 2,
+          "note": "In place (example): a hook refuses an unreviewed write to decisions.md",
+          "source": "example"
+        },
+        {
+          "type": "secrets-out",
+          "ships": 2,
+          "note": "In place (example): deny Read(./.env), Read(~/.ssh/**) and Read(./private/**)",
+          "source": "example"
+        },
+        {
+          "type": "completion-check",
+          "ships": 2,
+          "note": "In place (example): a Stop hook that runs the tests and refuses if they fail",
+          "source": "example"
+        },
+        {
+          "type": "managed-policy",
+          "ships": 2,
+          "note": "In place (example): the company's managed settings deny pushing to main",
+          "source": "example",
+          "control": "org"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 2,
+          "note": "In place (example): a reviewer subagent that only sees the diff and the success criteria",
+          "source": "example"
+        },
+        {
+          "type": "schema",
+          "ships": 2,
+          "note": "In place (example): required frontmatter fields on every feature file",
+          "source": "example"
+        },
+        {
+          "type": "criteria",
+          "ships": 2,
+          "note": "In place (example): done when: lint reports zero naked writes",
+          "source": "example"
+        },
+        {
+          "type": "subagents",
+          "ships": 2,
+          "note": "In place (example): a researcher agent with read-only tools",
+          "source": "example"
+        },
+        {
+          "type": "decisions",
+          "ships": 2,
+          "note": "In place (example): ADR-0007: queue jobs in Postgres",
+          "source": "example"
+        },
+        {
+          "type": "knowledge-base",
+          "ships": 2,
+          "note": "In place (example): docs/ of Markdown: decisions, features, reference",
+          "source": "example"
+        },
+        {
+          "type": "event-log",
+          "ships": 2,
+          "note": "In place (example): events.jsonl: approvals, mode changes, choices",
+          "source": "example"
+        },
+        {
+          "type": "cost-tracking",
+          "ships": 2,
+          "note": "In place (example): daily spend from the usage metrics",
+          "source": "example"
+        },
+        {
+          "type": "live-injection",
+          "ships": 2,
+          "note": "In place (example): a SessionStart hook that prints the open tasks, and a banner on every prompt",
+          "source": "example"
+        },
+        {
+          "type": "contracts",
+          "ships": 2,
+          "note": "In place (example): Steward: nothing writes without passing review",
+          "source": "example"
+        },
+        {
+          "type": "modes",
+          "ships": 1,
+          "note": "Started (example): /review-mode for code review, /docs-mode for writing docs",
+          "source": "example"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 1,
+          "note": "Started (example): memory/: the API moved to v2 in March",
+          "source": "example"
+        },
+        {
+          "type": "receipts",
+          "ships": 1,
+          "note": "Started (example): 4 approved, 2 parked, 1 rejected, 3 files touched",
+          "source": "example"
+        }
+      ]
+    },
+    {
+      "id": "example-unattended",
+      "name": "Example: guarded unattended runs",
+      "kind": "example",
+      "core": "claude",
+      "build": "workbench",
+      "checked_on": "2026-10-09",
+      "about": "Not a real harness. A team repo that also runs on its own: sandboxed, with network and spend limits, human approvals for what matters, evals and a feedback loop, receipts and telemetry.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 3,
+          "note": "Hardened (example): CLAUDE.md with the commit convention and vault rules",
+          "source": "example"
+        },
+        {
+          "type": "skills",
+          "ships": 3,
+          "note": "Hardened (example): /commit, /release, /changelog",
+          "source": "example"
+        },
+        {
+          "type": "git-workflow",
+          "ships": 3,
+          "note": "Hardened (example): a commit skill plus a commit-msg hook for action(target): message",
+          "source": "example"
+        },
+        {
+          "type": "check-commands",
+          "ships": 3,
+          "note": "Hardened (example): npm test, make check",
+          "source": "example"
+        },
+        {
+          "type": "subagents",
+          "ships": 3,
+          "note": "Hardened (example): a researcher agent with read-only tools",
+          "source": "example"
+        },
+        {
+          "type": "knowledge-base",
+          "ships": 3,
+          "note": "Hardened (example): docs/ of Markdown: decisions, features, reference",
+          "source": "example"
+        },
+        {
+          "type": "decisions",
+          "ships": 3,
+          "note": "Hardened (example): ADR-0007: queue jobs in Postgres",
+          "source": "example"
+        },
+        {
+          "type": "event-log",
+          "ships": 3,
+          "note": "Hardened (example): events.jsonl: approvals, mode changes, choices",
+          "source": "example"
+        },
+        {
+          "type": "web",
+          "ships": 2,
+          "note": "In place (example): WebSearch and WebFetch",
+          "source": "example"
+        },
+        {
+          "type": "pins",
+          "ships": 2,
+          "note": "In place (example): a lockfile plus .nvmrc or .python-version",
+          "source": "example"
+        },
+        {
+          "type": "personal-instructions",
+          "ships": 2,
+          "note": "In place (example): ~/.claude/CLAUDE.md: concise responses, no emojis",
+          "source": "example"
+        },
+        {
+          "type": "folder-instructions",
+          "ships": 2,
+          "note": "In place (example): web/CLAUDE.md with the frontend's conventions",
+          "source": "example"
+        },
+        {
+          "type": "commands",
+          "ships": 2,
+          "note": "In place (example): /release that bumps, tags and writes the notes",
+          "source": "example"
+        },
+        {
+          "type": "mcp",
+          "ships": 2,
+          "note": "In place (example): a browser MCP so it can check the UI it builds",
+          "source": "example"
+        },
+        {
+          "type": "plan-first",
+          "ships": 2,
+          "note": "In place (example): starts every session in plan mode",
+          "source": "example"
+        },
+        {
+          "type": "permissions",
+          "ships": 2,
+          "note": "In place (example): allow npm test, ask before git push",
+          "source": "example"
+        },
+        {
+          "type": "settings-split",
+          "ships": 2,
+          "note": "In place (example): settings.json checked in, settings.local.json ignored",
+          "source": "example"
+        },
+        {
+          "type": "env-keys",
+          "ships": 2,
+          "note": "In place (example): an apiKeyHelper that reads the key from the keychain",
+          "source": "example"
+        },
+        {
+          "type": "rewind",
+          "ships": 2,
+          "note": "In place (example): /rewind to before the refactor",
+          "source": "example"
+        },
+        {
+          "type": "transcripts",
+          "ships": 2,
+          "note": "In place (example): sessions kept for 90 days",
+          "source": "example"
+        },
+        {
+          "type": "task-list",
+          "ships": 2,
+          "note": "In place (example): TASKS.md, or issues through an MCP server",
+          "source": "example"
+        },
+        {
+          "type": "codebase-map",
+          "ships": 2,
+          "note": "In place (example): ARCHITECTURE.md, linked from CLAUDE.md",
+          "source": "example"
+        },
+        {
+          "type": "status-line",
+          "ships": 2,
+          "note": "In place (example): a status line with the mode and today's spend",
+          "source": "example"
+        },
+        {
+          "type": "notifications",
+          "ships": 2,
+          "note": "In place (example): a desktop alert when it needs an answer",
+          "source": "example"
+        },
+        {
+          "type": "auto-fix",
+          "ships": 2,
+          "note": "In place (example): prettier runs on each file it writes",
+          "source": "example"
+        },
+        {
+          "type": "progress-log",
+          "ships": 2,
+          "note": "In place (example): PROGRESS.md updated at the end of every session",
+          "source": "example"
+        },
+        {
+          "type": "setup",
+          "ships": 2,
+          "note": "In place (example): init.sh that installs, checks, then prints how to start",
+          "source": "example"
+        },
+        {
+          "type": "installer",
+          "ships": 2,
+          "note": "In place (example): install.sh links skills into ~/.claude/skills",
+          "source": "example"
+        },
+        {
+          "type": "plugins",
+          "ships": 2,
+          "note": "In place (example): a team plugin with the commit skill and the format hook",
+          "source": "example"
+        },
+        {
+          "type": "review-workflow",
+          "ships": 2,
+          "note": "In place (example): /code-review on every change before it merges",
+          "source": "example"
+        },
+        {
+          "type": "hard-gate",
+          "ships": 2,
+          "note": "In place (example): a hook refuses an unreviewed write to decisions.md",
+          "source": "example"
+        },
+        {
+          "type": "secrets-out",
+          "ships": 2,
+          "note": "In place (example): deny Read(./.env), Read(~/.ssh/**) and Read(./private/**)",
+          "source": "example"
+        },
+        {
+          "type": "completion-check",
+          "ships": 2,
+          "note": "In place (example): a Stop hook that runs the tests and refuses if they fail",
+          "source": "example"
+        },
+        {
+          "type": "managed-policy",
+          "ships": 2,
+          "note": "In place (example): the company's managed settings deny pushing to main",
+          "source": "example"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 2,
+          "note": "In place (example): a reviewer subagent that only sees the diff and the success criteria",
+          "source": "example"
+        },
+        {
+          "type": "schema",
+          "ships": 2,
+          "note": "In place (example): required frontmatter fields on every feature file",
+          "source": "example"
+        },
+        {
+          "type": "criteria",
+          "ships": 2,
+          "note": "In place (example): done when: lint reports zero naked writes",
+          "source": "example"
+        },
+        {
+          "type": "cost-tracking",
+          "ships": 2,
+          "note": "In place (example): daily spend from the usage metrics",
+          "source": "example"
+        },
+        {
+          "type": "live-injection",
+          "ships": 2,
+          "note": "In place (example): a SessionStart hook that prints the open tasks, and a banner on every prompt",
+          "source": "example"
+        },
+        {
+          "type": "contracts",
+          "ships": 2,
+          "note": "In place (example): Steward: nothing writes without passing review",
+          "source": "example"
+        },
+        {
+          "type": "modes",
+          "ships": 2,
+          "note": "In place (example): /review-mode for code review, /docs-mode for writing docs",
+          "source": "example"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 2,
+          "note": "In place (example): memory/: the API moved to v2 in March",
+          "source": "example"
+        },
+        {
+          "type": "receipts",
+          "ships": 2,
+          "note": "In place (example): 4 approved, 2 parked, 1 rejected, 3 files touched",
+          "source": "example"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 2,
+          "note": "In place (example): a nightly check that retries up to 3 times, then asks",
+          "source": "example"
+        },
+        {
+          "type": "orchestration",
+          "ships": 2,
+          "note": "In place (example): fan out reviewers, then verify each finding",
+          "source": "example"
+        },
+        {
+          "type": "sandbox",
+          "ships": 2,
+          "note": "In place (example): work in a git worktree, merge after review",
+          "source": "example"
+        },
+        {
+          "type": "network-limits",
+          "ships": 2,
+          "note": "In place (example): commands reach github.com and the package registry, nothing else",
+          "source": "example"
+        },
+        {
+          "type": "spend-limits",
+          "ships": 2,
+          "note": "In place (example): unattended runs stop after 30 turns or $5",
+          "source": "example"
+        },
+        {
+          "type": "human-gate",
+          "ships": 2,
+          "note": "In place (example): “Approve, modify, reject, or park?” before a vault write",
+          "source": "example"
+        },
+        {
+          "type": "telemetry-export",
+          "ships": 2,
+          "note": "In place (example): OpenTelemetry export to your collector",
+          "source": "example"
+        },
+        {
+          "type": "evals",
+          "ships": 2,
+          "note": "In place (example): scored outputs on a set of known tasks",
+          "source": "example"
+        },
+        {
+          "type": "feedback",
+          "ships": 2,
+          "note": "In place (example): approve and reject rates reviewed each week",
+          "source": "example"
+        },
+        {
+          "type": "visual-check",
+          "ships": 2,
+          "note": "In place (example): it opens the new page in Chrome and clicks through it, or playwright tests with screenshots",
+          "source": "example"
+        },
+        {
+          "type": "harness-checker",
+          "ships": 2,
+          "note": "In place (example): naked writes, broken links, docs that overclaim",
+          "source": "example"
+        },
+        {
+          "type": "model-routing",
+          "ships": 2,
+          "note": "In place (example): a reviewer agent on the strongest model, a searcher on the fastest",
+          "source": "example"
+        },
+        {
+          "type": "session-recall",
+          "ships": 2,
+          "note": "In place (example): search last week's sessions for why a test was skipped",
+          "source": "example"
+        },
+        {
+          "type": "retrieval",
+          "ships": 2,
+          "note": "In place (example): search over the vault, or embeddings",
+          "source": "example"
+        },
+        {
+          "type": "connected-accounts",
+          "ships": 2,
+          "note": "In place (example): your Gmail and calendar, through claude.ai connectors",
+          "source": "example"
+        }
+      ]
+    },
+    {
+      "id": "example-maxed",
+      "name": "Example: every piece in place, hardened",
+      "kind": "example",
+      "core": "claude",
+      "build": "workbench",
+      "checked_on": "2026-10-09",
+      "about": "Not a real harness. A Claude Code harness with every piece Free Rein knows in place, every one hardened: the top of the scale. In a real harness a piece hardens when it blocks on its own, or when a safeguard guards it; an example can simply say so.",
+      "ships": [
+        {
+          "type": "proj-instructions",
+          "ships": 3,
+          "note": "Hardened (example): CLAUDE.md with the commit convention and vault rules",
+          "source": "example"
+        },
+        {
+          "type": "personal-instructions",
+          "ships": 3,
+          "note": "Hardened (example): ~/.claude/CLAUDE.md: concise responses, no emojis",
+          "source": "example"
+        },
+        {
+          "type": "folder-instructions",
+          "ships": 3,
+          "note": "Hardened (example): web/CLAUDE.md with the frontend's conventions",
+          "source": "example"
+        },
+        {
+          "type": "live-injection",
+          "ships": 3,
+          "note": "Hardened (example): a SessionStart hook that prints the open tasks, and a banner on every prompt",
+          "source": "example"
+        },
+        {
+          "type": "contracts",
+          "ships": 3,
+          "note": "Hardened (example): Steward: nothing writes without passing review",
+          "source": "example"
+        },
+        {
+          "type": "modes",
+          "ships": 3,
+          "note": "Hardened (example): /review-mode for code review, /docs-mode for writing docs",
+          "source": "example"
+        },
+        {
+          "type": "plan-first",
+          "ships": 3,
+          "note": "Hardened (example): starts every session in plan mode",
+          "source": "example"
+        },
+        {
+          "type": "commands",
+          "ships": 3,
+          "note": "Hardened (example): /release that bumps, tags and writes the notes",
+          "source": "example"
+        },
+        {
+          "type": "git-workflow",
+          "ships": 3,
+          "note": "Hardened (example): a commit skill plus a commit-msg hook for action(target): message",
+          "source": "example"
+        },
+        {
+          "type": "review-workflow",
+          "ships": 3,
+          "note": "Hardened (example): /code-review on every change before it merges",
+          "source": "example"
+        },
+        {
+          "type": "skills",
+          "ships": 3,
+          "note": "Hardened (example): /commit, /release, /changelog",
+          "source": "example"
+        },
+        {
+          "type": "mcp",
+          "ships": 3,
+          "note": "Hardened (example): a browser MCP so it can check the UI it builds",
+          "source": "example"
+        },
+        {
+          "type": "plugins",
+          "ships": 3,
+          "note": "Hardened (example): a team plugin with the commit skill and the format hook",
+          "source": "example"
+        },
+        {
+          "type": "web",
+          "ships": 3,
+          "note": "Hardened (example): WebSearch and WebFetch",
+          "source": "example"
+        },
+        {
+          "type": "connected-accounts",
+          "ships": 3,
+          "note": "Hardened (example): your Gmail and calendar, through claude.ai connectors",
+          "source": "example"
+        },
+        {
+          "type": "subagents",
+          "ships": 3,
+          "note": "Hardened (example): a researcher agent with read-only tools",
+          "source": "example"
+        },
+        {
+          "type": "orchestration",
+          "ships": 3,
+          "note": "Hardened (example): fan out reviewers, then verify each finding",
+          "source": "example"
+        },
+        {
+          "type": "autonomous-runs",
+          "ships": 3,
+          "note": "Hardened (example): a nightly check that retries up to 3 times, then asks",
+          "source": "example"
+        },
+        {
+          "type": "model-routing",
+          "ships": 3,
+          "note": "Hardened (example): a reviewer agent on the strongest model, a searcher on the fastest",
+          "source": "example"
+        },
+        {
+          "type": "modalities",
+          "ships": 3,
+          "note": "Hardened (example): a text-only local model for the work, a vision model for screenshots, Whisper for audio",
+          "source": "example"
+        },
+        {
+          "type": "installer",
+          "ships": 3,
+          "note": "Hardened (example): install.sh links skills into ~/.claude/skills",
+          "source": "example"
+        },
+        {
+          "type": "setup",
+          "ships": 3,
+          "note": "Hardened (example): init.sh that installs, checks, then prints how to start",
+          "source": "example"
+        },
+        {
+          "type": "pins",
+          "ships": 3,
+          "note": "Hardened (example): a lockfile plus .nvmrc or .python-version",
+          "source": "example"
+        },
+        {
+          "type": "settings-split",
+          "ships": 3,
+          "note": "Hardened (example): settings.json checked in, settings.local.json ignored",
+          "source": "example"
+        },
+        {
+          "type": "env-keys",
+          "ships": 3,
+          "note": "Hardened (example): an apiKeyHelper that reads the key from the keychain",
+          "source": "example"
+        },
+        {
+          "type": "managed-policy",
+          "ships": 3,
+          "note": "Hardened (example): the company's managed settings deny pushing to main",
+          "source": "example"
+        },
+        {
+          "type": "permissions",
+          "ships": 3,
+          "note": "Hardened (example): allow npm test, ask before git push",
+          "source": "example"
+        },
+        {
+          "type": "hard-gate",
+          "ships": 3,
+          "note": "Hardened (example): a hook refuses an unreviewed write to decisions.md",
+          "source": "example"
+        },
+        {
+          "type": "secrets-out",
+          "ships": 3,
+          "note": "Hardened (example): deny Read(./.env), Read(~/.ssh/**) and Read(./private/**)",
+          "source": "example"
+        },
+        {
+          "type": "sandbox",
+          "ships": 3,
+          "note": "Hardened (example): work in a git worktree, merge after review",
+          "source": "example"
+        },
+        {
+          "type": "network-limits",
+          "ships": 3,
+          "note": "Hardened (example): commands reach github.com and the package registry, nothing else",
+          "source": "example"
+        },
+        {
+          "type": "spend-limits",
+          "ships": 3,
+          "note": "Hardened (example): unattended runs stop after 30 turns or $5",
+          "source": "example"
+        },
+        {
+          "type": "human-gate",
+          "ships": 3,
+          "note": "Hardened (example): “Approve, modify, reject, or park?” before a vault write",
+          "source": "example"
+        },
+        {
+          "type": "notifications",
+          "ships": 3,
+          "note": "Hardened (example): a desktop alert when it needs an answer",
+          "source": "example"
+        },
+        {
+          "type": "completion-check",
+          "ships": 3,
+          "note": "Hardened (example): a Stop hook that runs the tests and refuses if they fail",
+          "source": "example"
+        },
+        {
+          "type": "rewind",
+          "ships": 3,
+          "note": "Hardened (example): /rewind to before the refactor",
+          "source": "example"
+        },
+        {
+          "type": "check-commands",
+          "ships": 3,
+          "note": "Hardened (example): npm test, make check",
+          "source": "example"
+        },
+        {
+          "type": "schema",
+          "ships": 3,
+          "note": "Hardened (example): required frontmatter fields on every feature file",
+          "source": "example"
+        },
+        {
+          "type": "auto-fix",
+          "ships": 3,
+          "note": "Hardened (example): prettier runs on each file it writes",
+          "source": "example"
+        },
+        {
+          "type": "independent-checker",
+          "ships": 3,
+          "note": "Hardened (example): a reviewer subagent that only sees the diff and the success criteria",
+          "source": "example"
+        },
+        {
+          "type": "visual-check",
+          "ships": 3,
+          "note": "Hardened (example): it opens the new page in Chrome and clicks through it, or playwright tests with screenshots",
+          "source": "example"
+        },
+        {
+          "type": "harness-checker",
+          "ships": 3,
+          "note": "Hardened (example): naked writes, broken links, docs that overclaim",
+          "source": "example"
+        },
+        {
+          "type": "criteria",
+          "ships": 3,
+          "note": "Hardened (example): done when: lint reports zero naked writes",
+          "source": "example"
+        },
+        {
+          "type": "evals",
+          "ships": 3,
+          "note": "Hardened (example): scored outputs on a set of known tasks",
+          "source": "example"
+        },
+        {
+          "type": "feedback",
+          "ships": 3,
+          "note": "Hardened (example): approve and reject rates reviewed each week",
+          "source": "example"
+        },
+        {
+          "type": "event-log",
+          "ships": 3,
+          "note": "Hardened (example): events.jsonl: approvals, mode changes, choices",
+          "source": "example"
+        },
+        {
+          "type": "receipts",
+          "ships": 3,
+          "note": "Hardened (example): 4 approved, 2 parked, 1 rejected, 3 files touched",
+          "source": "example"
+        },
+        {
+          "type": "transcripts",
+          "ships": 3,
+          "note": "Hardened (example): sessions kept for 90 days",
+          "source": "example"
+        },
+        {
+          "type": "status-line",
+          "ships": 3,
+          "note": "Hardened (example): a status line with the mode and today's spend",
+          "source": "example"
+        },
+        {
+          "type": "telemetry-export",
+          "ships": 3,
+          "note": "Hardened (example): OpenTelemetry export to your collector",
+          "source": "example"
+        },
+        {
+          "type": "cost-tracking",
+          "ships": 3,
+          "note": "Hardened (example): daily spend from the usage metrics",
+          "source": "example"
+        },
+        {
+          "type": "session-state",
+          "ships": 3,
+          "note": "Hardened (example): .claude/state/mode.json",
+          "source": "example"
+        },
+        {
+          "type": "task-list",
+          "ships": 3,
+          "note": "Hardened (example): TASKS.md, or issues through an MCP server",
+          "source": "example"
+        },
+        {
+          "type": "saved-facts",
+          "ships": 3,
+          "note": "Hardened (example): memory/: the API moved to v2 in March",
+          "source": "example"
+        },
+        {
+          "type": "progress-log",
+          "ships": 3,
+          "note": "Hardened (example): PROGRESS.md updated at the end of every session",
+          "source": "example"
+        },
+        {
+          "type": "session-recall",
+          "ships": 3,
+          "note": "Hardened (example): search last week's sessions for why a test was skipped",
+          "source": "example"
+        },
+        {
+          "type": "knowledge-base",
+          "ships": 3,
+          "note": "Hardened (example): docs/ of Markdown: decisions, features, reference",
+          "source": "example"
+        },
+        {
+          "type": "decisions",
+          "ships": 3,
+          "note": "Hardened (example): ADR-0007: queue jobs in Postgres",
+          "source": "example"
+        },
+        {
+          "type": "codebase-map",
+          "ships": 3,
+          "note": "Hardened (example): ARCHITECTURE.md, linked from CLAUDE.md",
+          "source": "example"
+        },
+        {
+          "type": "ontology",
+          "ships": 3,
+          "note": "Hardened (example): a schema of features, decisions and tasks and their links",
+          "source": "example"
+        },
+        {
+          "type": "knowledge-graph",
+          "ships": 3,
+          "note": "Hardened (example): wikilinks between notes, extracted as a graph",
+          "source": "example"
+        },
+        {
+          "type": "retrieval",
+          "ships": 3,
+          "note": "Hardened (example): search over the vault, or embeddings",
+          "source": "example"
+        }
+      ]
+    }
+  ]
+}

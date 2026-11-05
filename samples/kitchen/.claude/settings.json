@@ -1,0 +1,142 @@
+{
+  "model": "opusplan",
+  "availableModels": [
+    "sonnet",
+    "llama3.2:1b"
+  ],
+  "outputStyle": "Explanatory",
+  "attribution": {
+    "commit": ""
+  },
+  "skillOverrides": {
+    "simplify": "off"
+  },
+  "deniedMcpServers": [
+    "claude.ai Gmail"
+  ],
+  "autoMode": {
+    "environment": [
+      "trusted"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "echo cost"
+  },
+  "enabledPlugins": {
+    "ts-lsp@market": true,
+    "off@market": false
+  },
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
+    "GREETING": "café 🎉 ünïcode",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "ANTHROPIC_BASE_URL": "http://localhost:4000"
+  },
+  "sandbox": {
+    "enabled": true,
+    "network": {
+      "allowedDomains": [
+        "example.com"
+      ]
+    },
+    "filesystem": {
+      "denyRead": [
+        "~/.ssh"
+      ]
+    }
+  },
+  "permissions": {
+    "defaultMode": "plan",
+    "allow": [
+      "Bash(npm test)",
+      "WebFetch(domain:example.com)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Bash(git push --force)"
+    ],
+    "ask": [
+      "WebFetch",
+      "Bash(git push)",
+      "Bash(npm publish:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/log-skill.sh"
+          },
+          {
+            "type": "command",
+            "command": "python3 scripts/validate_skills.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier --write ."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/done.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/start.py"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "say done"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git stash"
+          }
+        ]
+      }
+    ]
+  }
+}

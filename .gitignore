@@ -1,0 +1,24 @@
+.DS_Store
+node_modules/
+core/out/
+vscode/out/
+*.vsix
+examples/preview/*.html
+.vscode-test/
+# built by vscode/scripts/build-board.mjs
+vscode/media/*
+!vscode/media/lucide.min.js
+!vscode/media/lucide.LICENSE.txt
+!vscode/media/free-rein.svg
+
+# personal Claude Code settings
+/.claude/settings.local.json
+/CLAUDE.local.md
+# an agent kit's own state and telemetry (kept on this machine, never committed)
+/.claude/state/
+/.claude/telemetry/
+
+# secrets and logs never belong in the repo (the sample harnesses keep their own files)
+/.env
+/.env.*
+*.log

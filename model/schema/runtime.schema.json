@@ -1,0 +1,667 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "free-rein.runtime/1",
+  "title": "A runtime: what it is, its sources, and how it does each piece",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "name",
+    "answers"
+  ],
+  "properties": {
+    "schema": {
+      "const": "free-rein.runtime/1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version_checked": {
+      "type": "string"
+    },
+    "checked_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "title",
+          "kind",
+          "checked"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "checked": {
+            "type": "object",
+            "required": [
+              "on"
+            ],
+            "properties": {
+              "on": {
+                "type": "string",
+                "format": "date"
+              },
+              "version": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "from": {
+                "const": "runtime",
+                "description": "No check date of its own: the runtime's checked_on is used"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "run_modes": {
+      "description": "How much it does without asking: its modes by the names it shows, each on the shared ladder, the default, and where a harness sets the mode it starts in",
+      "type": "object",
+      "required": [
+        "modes",
+        "default",
+        "status"
+      ],
+      "properties": {
+        "modes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "level"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "level": {
+                "enum": [
+                  "read-only",
+                  "asks",
+                  "edits",
+                  "checker",
+                  "all",
+                  "allowed-only",
+                  "follows"
+                ],
+                "description": "reads but doesn't change anything (plan, ask); asks before acting; edits without asking; a checker model decides; runs everything; only what rules allow; follows: set by the mode chosen in the other control (Cursor's Agent follows its run mode)"
+              },
+              "picker": {
+                "type": "string",
+                "description": "The control it's chosen in, when a runtime has two (a chat mode picker and a run mode setting)"
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "default": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "description": "The mode it starts in when nothing sets one; one per control when it has two"
+        },
+        "default_note": {
+          "type": "string"
+        },
+        "set_by": {
+          "type": "array",
+          "description": "Where a harness sets the mode it starts in, most specific first; the first that's set wins",
+          "items": {
+            "type": "object",
+            "required": [
+              "file",
+              "key"
+            ],
+            "properties": {
+              "file": {
+                "type": "string",
+                "description": "Relative to the harness, or ~/ for the home folder"
+              },
+              "format": {
+                "enum": [
+                  "json",
+                  "json-flat",
+                  "toml",
+                  "yaml"
+                ],
+                "description": "json-flat: one key with dots in it, as VS Code writes settings"
+              },
+              "key": {
+                "type": "string",
+                "description": "A dotted path; for toml, table.key"
+              },
+              "values": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "description": "A value in the file to a mode id; others are taken as mode ids"
+              },
+              "ignore": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Values the runtime ignores in this file"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "believed",
+            "none"
+          ]
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sandbox": {
+      "description": "Its sandbox, which works apart from the modes",
+      "type": "object",
+      "required": [
+        "default",
+        "status"
+      ],
+      "properties": {
+        "default": {
+          "enum": [
+            "on",
+            "off",
+            "none"
+          ]
+        },
+        "how": {
+          "type": "string"
+        },
+        "network": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "believed",
+            "none"
+          ]
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "layers": {
+      "description": "The levels it reads a harness at, the way it names them: each scope (most specific first, for settings), what it reads there, the folders and the session, and how the levels combine",
+      "type": "object",
+      "required": [
+        "scopes"
+      ],
+      "properties": {
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "files",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "enum": [
+                  "org",
+                  "local",
+                  "project",
+                  "user"
+                ],
+                "description": "org: what an organization manages; local: this repo, just you; project: this repo, shared; user: you, in every repo"
+              },
+              "name": {
+                "type": "string"
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "What it reads at this level, in the runtime's words"
+              },
+              "readable": {
+                "type": "boolean",
+                "description": "false when the runtime keeps it where Free Rein can't read it (inside the app)"
+              },
+              "status": {
+                "enum": [
+                  "confirmed",
+                  "believed",
+                  "none"
+                ]
+              },
+              "source": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "folders": {
+          "type": "object",
+          "required": [
+            "how",
+            "status"
+          ],
+          "properties": {
+            "how": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "confirmed",
+                "believed",
+                "none"
+              ]
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "session": {
+          "type": "object",
+          "required": [
+            "how",
+            "status"
+          ],
+          "properties": {
+            "how": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "confirmed",
+                "believed",
+                "none"
+              ]
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "combine": {
+          "type": "object",
+          "properties": {
+            "settings": {
+              "type": "object",
+              "required": [
+                "how",
+                "status"
+              ],
+              "properties": {
+                "how": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "confirmed",
+                    "believed",
+                    "none"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "rules": {
+              "type": "object",
+              "required": [
+                "how",
+                "status"
+              ],
+              "properties": {
+                "how": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "confirmed",
+                    "believed",
+                    "none"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "instructions": {
+              "type": "object",
+              "required": [
+                "how",
+                "status"
+              ],
+              "properties": {
+                "how": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "confirmed",
+                    "believed",
+                    "none"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "models": {
+      "type": "object",
+      "required": [
+        "how",
+        "status"
+      ],
+      "properties": {
+        "providers": {
+          "enum": [
+            "one",
+            "several",
+            "any"
+          ],
+          "description": "one: only its vendor's models; several: a fixed menu across vendors; any: any model through providers you configure"
+        },
+        "vendors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Whose models it runs out of the box"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "value",
+              "name"
+            ],
+            "properties": {
+              "value": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "example": {
+                "type": "boolean",
+                "description": "For an any-provider runtime: one the docs show as an example, not a fixed list"
+              }
+            },
+            "additionalProperties": false
+          },
+          "description": "The names its model picker, setting or flag takes, as its docs list them"
+        },
+        "default": {
+          "type": "string",
+          "description": "What it runs when nothing sets a model"
+        },
+        "set_by": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "how": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "confirmed",
+            "believed",
+            "none"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "variants": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "how",
+              "status"
+            ],
+            "properties": {
+              "providers": {
+                "enum": [
+                  "one",
+                  "several",
+                  "any"
+                ],
+                "description": "one: only its vendor's models; several: a fixed menu across vendors; any: any model through providers you configure"
+              },
+              "vendors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Whose models it runs out of the box"
+              },
+              "choices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "value",
+                    "name"
+                  ],
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "example": {
+                      "type": "boolean",
+                      "description": "For an any-provider runtime: one the docs show as an example, not a fixed list"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "description": "The names its model picker, setting or flag takes, as its docs list them"
+              },
+              "default": {
+                "type": "string",
+                "description": "What it runs when nothing sets a model"
+              },
+              "set_by": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "key": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "how": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "confirmed",
+                  "believed",
+                  "none"
+                ]
+              },
+              "source": {
+                "type": "string"
+              },
+              "repo": {
+                "type": "object",
+                "required": [
+                  "file",
+                  "format",
+                  "key",
+                  "source"
+                ],
+                "description": "Where a harness sets the model inside the repo, so a draft can try another: the file (from the repo's root), its format, and the key (dotted for a nested JSON key)",
+                "properties": {
+                  "file": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "enum": [
+                      "json",
+                      "toml"
+                    ]
+                  },
+                  "key": {
+                    "type": "string"
+                  },
+                  "note": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "repo": {
+          "type": "object",
+          "required": [
+            "file",
+            "format",
+            "key",
+            "source"
+          ],
+          "description": "Where a harness sets the model inside the repo, so a draft can try another: the file (from the repo's root), its format, and the key (dotted for a nested JSON key)",
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "format": {
+              "enum": [
+                "json",
+                "toml"
+              ]
+            },
+            "key": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            },
+            "source": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "The models it can run, as its docs say: whose, the names it takes, its default, where it's set. variants: a runtime Free Rein reads several ways (Copilot in VS Code, its CLI, its cloud agent) answers per variant"
+    },
+    "answers": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9-]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "how",
+          "status"
+        ],
+        "properties": {
+          "how": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "confirmed",
+              "believed",
+              "none"
+            ]
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

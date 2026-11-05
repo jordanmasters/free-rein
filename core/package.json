@@ -1,0 +1,31 @@
+{
+  "name": "free-rein",
+  "version": "0.2.0",
+  "license": "MIT",
+  "repository": {"type": "git", "url": "https://github.com/jordanmasters/free-rein.git", "directory": "core"},
+  "private": false,
+  "description": "Free Rein's core: reads an AI agent's harness, evaluates its pieces, plays out situations, and writes upgrades. Tested by its own behaviour tests and saved outputs (test/golden).",
+  "main": "out/src/index.js",
+  "files": ["out/src", "!out/src/**/*.map", "model", "README.md", "LICENSE"],
+  "engines": {"node": ">=22"},
+  "types": "out/src/index.d.ts",
+  "bin": {
+    "free-rein": "out/src/cli.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "prepack": "npm run build && node scripts/pack-model.mjs",
+    "postpack": "node scripts/pack-model.mjs --remove",
+    "build": "tsc -p .",
+    "test": "npm run build && node --test out/test/*.test.js out/test/behaviour/*.test.js",
+    "golden": "npm run build && FREE_REIN_GOLDEN=1 node --test out/test/golden.test.js out/test/behaviour/harness.test.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.4.0"
+  }
+}

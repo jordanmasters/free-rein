@@ -1,0 +1,18 @@
+{
+  "name": "free-rein-repo",
+  "version": "0.2.0",
+  "license": "MIT",
+  "private": true,
+  "description": "Free Rein: the core (core/), the VS Code extension (vscode/), and Free Rein's data (model/). Each has its own package; these scripts run them together.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "setup": "npm ci --prefix core && npm ci --prefix vscode && npm run hooks",
+    "test": "npm test --prefix core && npm test --prefix vscode",
+    "golden": "npm run golden --prefix core",
+    "e2e": "npm run e2e --prefix vscode",
+    "package": "npm run package --prefix vscode",
+    "hooks": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true"
+  }
+}

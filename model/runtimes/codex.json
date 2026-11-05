@@ -1,0 +1,692 @@
+{
+  "schema": "free-rein.runtime/1",
+  "id": "codex",
+  "name": "Codex",
+  "opacity": "open source",
+  "provides": [
+    "hook-runtime",
+    "subagent-runtime"
+  ],
+  "transparency": "open",
+  "license": "Apache-2.0",
+  "version_checked": "rust-v0.163.0",
+  "checked_on": "2026-10-15",
+  "sources": {
+    "config": {
+      "title": "Codex configuration reference",
+      "url": "https://learn.chatgpt.com/docs/config-file/config-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "hooks": {
+      "title": "Codex hooks",
+      "url": "https://learn.chatgpt.com/docs/hooks",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "subagents": {
+      "title": "Codex subagents",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "source": {
+      "title": "openai/codex repository",
+      "url": "https://github.com/openai/codex",
+      "kind": "source-code",
+      "checked": {
+        "on": "2026-10-01",
+        "note": "Codex rust-v0.160.0, checked 2026-10-01"
+      }
+    },
+    "browser": {
+      "title": "Browser",
+      "url": "https://learn.chatgpt.com/docs/browser",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "agent_security": {
+      "title": "Codex agent approvals & security",
+      "url": "https://learn.chatgpt.com/docs/agent-approvals-security",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "config_advanced": {
+      "title": "Codex Advanced Configuration",
+      "url": "https://learn.chatgpt.com/docs/config-file/config-advanced",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "managed": {
+      "title": "Codex Managed configuration",
+      "url": "https://learn.chatgpt.com/docs/enterprise/managed-configuration",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "custom_prompts": {
+      "title": "Codex Custom Prompts",
+      "url": "https://learn.chatgpt.com/docs/custom-prompts",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "permissions": {
+      "title": "Codex Permissions",
+      "url": "https://learn.chatgpt.com/docs/permissions",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "commands": {
+      "title": "Codex developer commands and slash commands",
+      "url": "https://learn.chatgpt.com/docs/developer-commands?surface=cli",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "env_vars": {
+      "title": "Codex environment variables",
+      "url": "https://learn.chatgpt.com/docs/config-file/environment-variables",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "plugins": {
+      "title": "Codex Plugins",
+      "url": "https://learn.chatgpt.com/docs/plugins",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "github_action": {
+      "title": "Codex GitHub Action",
+      "url": "https://learn.chatgpt.com/docs/github-action",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "0.161.0",
+        "note": "Codex CLI 0.161.0 (GitHub release rust-v0.161.0, 2026-10-07)"
+      }
+    },
+    "agents_md": {
+      "title": "Custom instructions with AGENTS.md",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "codex-config-types": {
+      "title": "Codex source: config/src/types.rs",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-01",
+        "note": "Codex rust-v0.160.0, checked 2026-10-01"
+      }
+    },
+    "skills": {
+      "title": "Codex: build skills",
+      "url": "https://learn.chatgpt.com/docs/build-skills",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "note": "no version on the page; read 2026-10-15"
+      }
+    },
+    "slash": {
+      "title": "Slash commands",
+      "url": "https://learn.chatgpt.com/docs/cli/slash-commands",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "memories": {
+      "title": "Memories",
+      "url": "https://learn.chatgpt.com/docs/customization/memories",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "source-0163": {
+      "title": "Codex source at rust-v0.163.0",
+      "url": "https://github.com/openai/codex/tree/rust-v0.163.0",
+      "kind": "source",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "0.163.0",
+        "note": "Codex 0.163.0, read 2026-10-15"
+      }
+    },
+    "models": {
+      "title": "Codex models",
+      "url": "https://learn.chatgpt.com/docs/models",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; the page states no version"
+      }
+    }
+  },
+  "run_modes": {
+    "modes": [
+      {
+        "id": "read-only",
+        "name": "Read-only",
+        "level": "asks"
+      },
+      {
+        "id": "ask",
+        "name": "Ask for approval",
+        "level": "edits",
+        "note": "edits inside the sandbox; asks to go beyond it"
+      },
+      {
+        "id": "approve",
+        "name": "Approve for me",
+        "level": "checker",
+        "note": "a reviewer agent approves what would ask"
+      },
+      {
+        "id": "full",
+        "name": "Full access",
+        "level": "all"
+      },
+      {
+        "id": "plan",
+        "name": "Plan (/plan)",
+        "level": "read-only"
+      }
+    ],
+    "default": "ask",
+    "default_note": "in a folder under version control; read-only elsewhere",
+    "set_by": [
+      {
+        "file": ".codex/config.toml",
+        "format": "toml",
+        "key": "approvals_reviewer",
+        "values": {
+          "auto_review": "approve",
+          "user": "ask"
+        }
+      },
+      {
+        "file": ".codex/config.toml",
+        "format": "toml",
+        "key": "sandbox_mode",
+        "values": {
+          "read-only": "read-only",
+          "workspace-write": "ask",
+          "danger-full-access": "full"
+        }
+      },
+      {
+        "file": "~/.codex/config.toml",
+        "format": "toml",
+        "key": "approvals_reviewer",
+        "values": {
+          "auto_review": "approve",
+          "user": "ask"
+        }
+      },
+      {
+        "file": "~/.codex/config.toml",
+        "format": "toml",
+        "key": "sandbox_mode",
+        "values": {
+          "read-only": "read-only",
+          "workspace-write": "ask",
+          "danger-full-access": "full"
+        }
+      }
+    ],
+    "status": "confirmed",
+    "source": "agent_security"
+  },
+  "sandbox": {
+    "default": "on",
+    "how": "workspace-write: edits inside the project only",
+    "network": "off by default",
+    "status": "confirmed",
+    "source": "agent_security"
+  },
+  "layers": {
+    "scopes": [
+      {
+        "id": "org",
+        "name": "Your organization",
+        "files": [
+          "requirements.toml from an admin or the cloud"
+        ],
+        "status": "confirmed",
+        "source": "managed"
+      },
+      {
+        "id": "project",
+        "name": "This repo, shared",
+        "files": [
+          "AGENTS.md",
+          ".codex/config.toml (in trusted projects)"
+        ],
+        "status": "confirmed",
+        "source": "agents_md"
+      },
+      {
+        "id": "user",
+        "name": "You, every repo",
+        "files": [
+          "~/.codex/AGENTS.md (or AGENTS.override.md)",
+          "~/.codex/config.toml"
+        ],
+        "status": "confirmed",
+        "source": "agents_md"
+      }
+    ],
+    "folders": {
+      "how": "AGENTS.md in each folder from the project root down to the working folder, joined in order",
+      "status": "confirmed",
+      "source": "agents_md"
+    },
+    "combine": {
+      "instructions": {
+        "how": "The AGENTS.md files are joined, the root's first and the working folder's last, up to 32 KB",
+        "status": "confirmed",
+        "source": "agents_md"
+      }
+    }
+  },
+  "models": {
+    "providers": "any",
+    "vendors": [
+      "OpenAI"
+    ],
+    "choices": [
+      {
+        "value": "gpt-6-astra",
+        "name": "Astra"
+      },
+      {
+        "value": "gpt-6.1-sol",
+        "name": "6.1 Sol"
+      },
+      {
+        "value": "gpt-6.1-terra",
+        "name": "6.1 Terra"
+      },
+      {
+        "value": "gpt-6-luna",
+        "name": "6 Luna"
+      }
+    ],
+    "default": "a recommended model, not named",
+    "set_by": {
+      "file": "~/.codex/config.toml",
+      "key": "model (provider: model_provider)"
+    },
+    "how": "Runs OpenAI's models by default, and other providers set up in config (Ollama, LM Studio, Amazon Bedrock, Google Vertex, or any endpoint that speaks the Responses API); pick one with /model, --model or model in config.toml.",
+    "status": "confirmed",
+    "source": "models",
+    "repo": {
+      "file": ".codex/config.toml",
+      "format": "toml",
+      "key": "model",
+      "note": "loads only in trusted projects",
+      "source": "config_advanced"
+    }
+  },
+  "answers": {
+    "proj-instructions": {
+      "how": "AGENTS.md at the repo root, joined with those in the folders below; 32 KB in total (project_doc_max_bytes); no imports",
+      "status": "confirmed",
+      "source": "agents_md"
+    },
+    "personal-instructions": {
+      "how": "~/.codex/AGENTS.override.md, or else ~/.codex/AGENTS.md",
+      "status": "confirmed",
+      "source": "agents_md"
+    },
+    "folder-instructions": {
+      "how": "AGENTS.md (or AGENTS.override.md) in each folder from the project root down to the working folder, joined in order",
+      "status": "confirmed",
+      "source": "agents_md"
+    },
+    "live-injection": {
+      "how": "A UserPromptSubmit or SessionStart hook that adds context",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "contracts": {
+      "how": "The same files, referenced from AGENTS.md",
+      "status": "believed",
+      "source": "config"
+    },
+    "modes": {
+      "how": "Custom prompts, with no persistent mode state",
+      "status": "believed",
+      "source": "config"
+    },
+    "plan-first": {
+      "how": "/plan switches the chat into plan mode; plan mode can have its own reasoning effort",
+      "status": "confirmed",
+      "source": "commands"
+    },
+    "commands": {
+      "how": "Markdown prompts in ~/.codex/prompts run as /prompts:name with arguments; deprecated in favour of skills",
+      "status": "confirmed",
+      "source": "custom_prompts"
+    },
+    "git-workflow": {
+      "how": "No commit-attribution setting; rules can make git commit need approval, and .git stays read-only in workspace-write",
+      "status": "believed",
+      "source": "config_advanced"
+    },
+    "review-workflow": {
+      "how": "/review and codex review check uncommitted changes, a base branch or a commit; review_model picks the model",
+      "status": "confirmed",
+      "source": "commands"
+    },
+    "skills": {
+      "how": "Skills in .agents/skills, from the working folder up to the repo root, and ~/.agents/skills; per-skill overrides under skills.* in config.toml",
+      "status": "confirmed",
+      "source": "skills"
+    },
+    "mcp": {
+      "how": "[mcp_servers] in config.toml, with per-tool approval modes",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "plugins": {
+      "how": "Plugins bundle skills, MCP servers and hooks; installed from marketplaces with codex plugin or /plugins",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "web": {
+      "how": "Built-in web search: web_search = cached (default), indexed, live, or disabled",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "connected-accounts": {
+      "how": "Plugins such as Gmail, Google Drive and Slack connect personal accounts; /apps lists connected apps",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "subagents": {
+      "how": "Custom agents under agents.* in config.toml; subagents are on by default",
+      "status": "confirmed",
+      "source": "subagents"
+    },
+    "orchestration": {
+      "how": "Parallel subagent workflows (spawn, then collect results); no scripted orchestration documented",
+      "status": "believed",
+      "source": "subagents"
+    },
+    "autonomous-runs": {
+      "how": "/goal keeps a persistent objective for long tasks (on by default), with a token budget (goals.max_goal_token_budget); Codex Cloud runs tasks remotely",
+      "status": "confirmed",
+      "source": "slash"
+    },
+    "model-routing": {
+      "how": "Default model for subagents, per-role config layers, and a separate model for /review",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "installer": {
+      "how": "An install script",
+      "status": "believed",
+      "source": "config"
+    },
+    "setup": {
+      "how": "A setup script the agent runs first",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "pins": {
+      "how": "A lockfile and a runtime version file in the repo",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "settings-split": {
+      "how": "~/.codex/config.toml is personal; .codex/config.toml in the repo is shared and loads only in trusted projects",
+      "status": "confirmed",
+      "source": "config_advanced"
+    },
+    "env-keys": {
+      "how": "Provider API key from a named env var, a token command, shell environment set/filter rules, and documented Codex env vars",
+      "status": "confirmed",
+      "source": "env_vars"
+    },
+    "managed-policy": {
+      "how": "Admin requirements.toml and cloud-managed requirements users can't override",
+      "status": "confirmed",
+      "source": "managed"
+    },
+    "permissions": {
+      "how": "approval_policy (on-request, never, or granular) plus sandbox_mode or a named permission profile; approvals_reviewer = auto_review lets a reviewer approve (Approve for me); untrusted was retired in 0.149.0",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "hard-gate": {
+      "how": "A PreToolUse hook in config.toml or hooks.json; whether it can refuse isn't confirmed",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "secrets-out": {
+      "how": "Permission profiles can mark paths or globs (such as **/*.env) as deny so they can't be read",
+      "status": "confirmed",
+      "source": "permissions"
+    },
+    "sandbox": {
+      "how": "sandbox_mode: read-only, workspace-write, or danger-full-access",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "network-limits": {
+      "how": "Sandbox network off by default; a network proxy with allow/deny domain rules per permission profile",
+      "status": "confirmed",
+      "source": "agent_security"
+    },
+    "spend-limits": {
+      "how": "A token budget per goal (goals.max_goal_token_budget); no turn or cost cap",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "human-gate": {
+      "how": "Approval steps written into prompts; approval_policy on-request asks before going beyond the sandbox",
+      "status": "confirmed",
+      "source": "agent_security"
+    },
+    "notifications": {
+      "how": "TUI notifications (when unfocused or always) and a notify command run when a turn completes",
+      "status": "confirmed",
+      "source": "config_advanced"
+    },
+    "completion-check": {
+      "how": "A Stop hook in config.toml or hooks.json",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "rewind": {
+      "how": "Double Escape edits the last message and forks the chat; there is no file undo (removed), so git is the safety net",
+      "status": "confirmed",
+      "source": "source-0163"
+    },
+    "check-commands": {
+      "how": "Scripts in package.json or a Makefile, listed in AGENTS.md",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "schema": {
+      "how": "Validators it runs",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "auto-fix": {
+      "how": "PostToolUse hooks can match file edits (apply_patch/Edit/Write); no formatter recipe is documented",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "independent-checker": {
+      "how": "A reviewer under agents.*, or approvals_reviewer = auto_review",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "visual-check": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "harness-checker": {
+      "how": "Free Rein's checks (/address-findings), with a Codex adapter (not built)",
+      "status": "believed",
+      "source": "config"
+    },
+    "criteria": {
+      "how": "The same field, read from files",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "evals": {
+      "how": "An eval suite it runs",
+      "status": "believed",
+      "source": "config"
+    },
+    "feedback": {
+      "how": "Logging plus a review step",
+      "status": "believed",
+      "source": "config"
+    },
+    "event-log": {
+      "how": "Hooks such as PostToolUse and Stop that append to a log",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "receipts": {
+      "how": "A SessionEnd or Stop hook that writes a summary",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "transcripts": {
+      "how": "Saved under CODEX_HOME (history.jsonl); history.persistence turns it off, history.max_bytes caps size",
+      "status": "confirmed",
+      "source": "config_advanced"
+    },
+    "status-line": {
+      "how": "/statusline or tui.status_line picks and orders built-in footer items; no custom script",
+      "status": "believed",
+      "source": "commands"
+    },
+    "telemetry-export": {
+      "how": "[otel] in config.toml",
+      "status": "confirmed",
+      "source": "codex-config-types"
+    },
+    "cost-tracking": {
+      "how": "/status shows token use and rate limits; /usage shows daily, weekly or total token activity",
+      "status": "confirmed",
+      "source": "commands"
+    },
+    "session-state": {
+      "how": "SessionStart and SessionEnd hooks that keep a state file",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "task-list": {
+      "how": "The agent has an update_plan tool for step plans, and /goal keeps a persisted objective; no task list file",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "saved-facts": {
+      "how": "Memories, off by default (features.memories), generated in the background into ~/.codex/memories; not for editing by hand",
+      "status": "confirmed",
+      "source": "memories"
+    },
+    "progress-log": {
+      "how": "A progress file referenced from AGENTS.md",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "session-recall": {
+      "how": "codex resume / /resume reopen saved chats; codex fork / /fork branch them",
+      "status": "confirmed",
+      "source": "commands"
+    },
+    "knowledge-base": {
+      "how": "The same files",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "decisions": {
+      "how": "The same file",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "codebase-map": {
+      "how": "/init generates an AGENTS.md scaffold; no separate architecture index file",
+      "status": "believed",
+      "source": "commands"
+    },
+    "ontology": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "knowledge-graph": {
+      "how": "The same files and extractor",
+      "status": "believed",
+      "source": "config"
+    },
+    "retrieval": {
+      "how": "An MCP search server",
+      "status": "confirmed",
+      "source": "config"
+    }
+  }
+}

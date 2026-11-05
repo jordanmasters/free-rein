@@ -1,0 +1,100 @@
+[
+ {
+  "piece": "contracts",
+  "name": "Working protocols",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "modes",
+  "name": "Working modes",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "orchestration",
+  "name": "Orchestration",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "installer",
+  "name": "Installer",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "managed-policy",
+  "name": "Managed policy",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "sandbox",
+  "name": "Sandboxed action",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "schema",
+  "name": "Shape checks",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "harness-checker",
+  "name": "Harness checker",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "evals",
+  "name": "Evals",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "feedback",
+  "name": "Feedback loop",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "receipts",
+  "name": "Session receipts",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": true
+ },
+ {
+  "piece": "telemetry-export",
+  "name": "Telemetry export",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "knowledge-graph",
+  "name": "Knowledge graph",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "retrieval",
+  "name": "Retrieval",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ }
+]

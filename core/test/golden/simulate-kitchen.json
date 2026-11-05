@@ -1,0 +1,331 @@
+[
+ {
+  "runtime": "claude",
+  "ran_hooks": false,
+  "steps": [
+   {
+    "kind": "edit",
+    "label": "Edit",
+    "target": ".env",
+    "work": "Edit files",
+    "outcome": "decides",
+    "why": [
+     {
+      "what": "A hook runs first and could refuse it (not run: turn on running hooks to see)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 72,
+      "observed": false,
+      "hook": true
+     },
+     {
+      "what": "No rule of yours covers it, so Claude Code's default applies: from v2.1.283 it starts in auto mode, where a classifier decides (Manual mode would ask you)",
+      "source": "https://code.claude.com/docs/en/permission-modes",
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "sandbox",
+      "name": "Sandboxed action"
+     }
+    ],
+    "recorded": true,
+    "backed": 81
+   },
+   {
+    "kind": "command",
+    "label": "Run",
+    "target": "git push --force",
+    "work": "Run commands",
+    "outcome": "blocked",
+    "why": [
+     {
+      "what": "A hook runs first and could refuse it (not run: turn on running hooks to see)",
+      "path": "<kitchen>/.claude/settings.local.json",
+      "line": 10,
+      "observed": false,
+      "hook": true
+     },
+     {
+      "what": "A permission rule denies it: Bash(git push --force)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 57,
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "sandbox",
+      "name": "Sandboxed action"
+     }
+    ],
+    "recorded": true,
+    "backed": 62
+   },
+   {
+    "kind": "knowledge",
+    "label": "Change what it knows:",
+    "target": "vault/decisions.md",
+    "work": "Change what it knows",
+    "outcome": "decides",
+    "why": [
+     {
+      "what": "A hook runs first and could refuse it (not run: turn on running hooks to see)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 72,
+      "observed": false,
+      "hook": true
+     },
+     {
+      "what": "No rule of yours covers it, so Claude Code's default applies: from v2.1.283 it starts in auto mode, where a classifier decides (Manual mode would ask you)",
+      "source": "https://code.claude.com/docs/en/permission-modes",
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "harness-checker",
+      "name": "Harness checker"
+     }
+    ],
+    "recorded": true,
+    "backed": 71
+   },
+   {
+    "kind": "done",
+    "label": "Say it's done",
+    "target": "",
+    "work": "Decide it's done",
+    "outcome": "checked",
+    "why": [
+     {
+      "what": "A hook runs when it stops (not run: turn on running hooks to see what it does)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 106,
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "evals",
+      "name": "Evals"
+     }
+    ],
+    "recorded": true,
+    "backed": 80
+   }
+  ],
+  "summary": {
+   "alone": 3,
+   "stops": 1,
+   "blocked": 1
+  }
+ },
+ {
+  "runtime": "claude",
+  "ran_hooks": false,
+  "steps": [
+   {
+    "kind": "edit",
+    "label": "Edit",
+    "target": ".env",
+    "work": "Edit files",
+    "outcome": "asks",
+    "why": [
+     {
+      "what": "A hook runs first and could refuse it (not run: turn on running hooks to see)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 72,
+      "observed": false,
+      "hook": true
+     },
+     {
+      "what": "No rule of yours covers it, and in Manual mode Claude Code asks you first",
+      "source": "https://code.claude.com/docs/en/permission-modes",
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "sandbox",
+      "name": "Sandboxed action"
+     }
+    ],
+    "recorded": true,
+    "backed": 81
+   },
+   {
+    "kind": "command",
+    "label": "Run",
+    "target": "git push --force",
+    "work": "Run commands",
+    "outcome": "blocked",
+    "why": [
+     {
+      "what": "A hook runs first and could refuse it (not run: turn on running hooks to see)",
+      "path": "<kitchen>/.claude/settings.local.json",
+      "line": 10,
+      "observed": false,
+      "hook": true
+     },
+     {
+      "what": "A permission rule denies it: Bash(git push --force)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 57,
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "sandbox",
+      "name": "Sandboxed action"
+     }
+    ],
+    "recorded": true,
+    "backed": 62
+   },
+   {
+    "kind": "knowledge",
+    "label": "Change what it knows:",
+    "target": "vault/decisions.md",
+    "work": "Change what it knows",
+    "outcome": "asks",
+    "why": [
+     {
+      "what": "A hook runs first and could refuse it (not run: turn on running hooks to see)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 72,
+      "observed": false,
+      "hook": true
+     },
+     {
+      "what": "No rule of yours covers it, and in Manual mode Claude Code asks you first",
+      "source": "https://code.claude.com/docs/en/permission-modes",
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "harness-checker",
+      "name": "Harness checker"
+     }
+    ],
+    "recorded": true,
+    "backed": 71
+   },
+   {
+    "kind": "done",
+    "label": "Say it's done",
+    "target": "",
+    "work": "Decide it's done",
+    "outcome": "checked",
+    "why": [
+     {
+      "what": "A hook runs when it stops (not run: turn on running hooks to see what it does)",
+      "path": "<kitchen>/.claude/settings.json",
+      "line": 106,
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "evals",
+      "name": "Evals"
+     }
+    ],
+    "recorded": true,
+    "backed": 80
+   }
+  ],
+  "summary": {
+   "alone": 1,
+   "stops": 3,
+   "blocked": 1
+  }
+ },
+ {
+  "runtime": "cursor",
+  "ran_hooks": false,
+  "steps": [
+   {
+    "kind": "edit",
+    "label": "Edit",
+    "target": ".env",
+    "work": "Edit files",
+    "outcome": "asks",
+    "why": [
+     {
+      "what": "Free Rein reads cursor's rules only as pieces, not one by one: in place for this kind of work: Blocking hooks, Permission rules, Sandboxed action, Check commands, Independent checker, Completion check",
+      "observed": false
+     }
+    ],
+    "missing": [],
+    "recorded": true,
+    "backed": 100
+   },
+   {
+    "kind": "command",
+    "label": "Run",
+    "target": "git push --force",
+    "work": "Run commands",
+    "outcome": "asks",
+    "why": [
+     {
+      "what": "Free Rein reads cursor's rules only as pieces, not one by one: in place for this kind of work: Permission rules, Sandboxed action, Event log",
+      "observed": false
+     }
+    ],
+    "missing": [],
+    "recorded": true,
+    "backed": 100
+   },
+   {
+    "kind": "knowledge",
+    "label": "Change what it knows:",
+    "target": "vault/decisions.md",
+    "work": "Change what it knows",
+    "outcome": "asks",
+    "why": [
+     {
+      "what": "Free Rein reads cursor's rules only as pieces, not one by one: in place for this kind of work: Human approvals, Blocking hooks, Decision log",
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "harness-checker",
+      "name": "Harness checker"
+     }
+    ],
+    "recorded": true,
+    "backed": 71
+   },
+   {
+    "kind": "done",
+    "label": "Say it's done",
+    "target": "",
+    "work": "Decide it's done",
+    "outcome": "asks",
+    "why": [
+     {
+      "what": "Free Rein reads cursor's rules only as pieces, not one by one: in place for this kind of work: Success criteria, Completion check, Independent checker, Check commands",
+      "observed": false
+     }
+    ],
+    "missing": [
+     {
+      "id": "evals",
+      "name": "Evals"
+     }
+    ],
+    "recorded": true,
+    "backed": 80
+   }
+  ],
+  "summary": {
+   "alone": 0,
+   "stops": 4,
+   "blocked": 0
+  }
+ }
+]

@@ -1,0 +1,91 @@
+# The checks the git hooks (.githooks/) run before each commit, run again here, where nobody can skip them:
+# no secrets, no private words, no home-folder paths, no huge files, CATALOG.md matching its JSON, and each new
+# commit's message in the action(target): message form. On a pull request, every commit is also signed off (DCO).
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+# the same gitleaks as the pre-commit hook's (brew install gitleaks), checked against its published checksum
+env:
+  GITLEAKS_VERSION: "8.30.1"
+  GITLEAKS_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # the commits this push or pull request brings; empty means a new branch: then everything
+      - name: The new commits
+        id: range
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "range=${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ github.event.before }}" ] && ! printf '%s' "${{ github.event.before }}" | grep -qE '^0+$' \
+               && git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
+            echo "range=${{ github.event.before }}..${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "range=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: No secrets (gitleaks)
+        run: |
+          curl -sSfL -o gitleaks.tgz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks && rm gitleaks.tgz
+          range="${{ steps.range.outputs.range }}"
+          if [ -n "$range" ]; then ./gitleaks git --redact --no-banner -v --log-opts="$range" .
+          else ./gitleaks git --redact --no-banner -v .; fi
+
+      - name: No home-folder paths, no huge files, the catalog matches
+        run: |
+          fail=0
+          hits="$(git ls-files -z | xargs -0 grep -InE '(/Users|/home)/[A-Za-z][A-Za-z0-9._-]*/' 2>/dev/null | cut -c1-160 || true)"
+          if [ -n "$hits" ]; then echo "::error::a path into someone's home folder:"; echo "$hits"; fail=1; fi
+          while IFS= read -r -d '' f; do
+            s=$(wc -c < "$f"); if [ "$s" -gt 2097152 ]; then echo "::error file=$f::$f is $((s / 1048576)) MB: is it meant to be in git?"; fail=1; fi
+          done < <(git ls-files -z)
+          node model/parts/render.mjs --check >/dev/null || { echo "::error::model/parts/CATALOG.md doesn't match catalog.json: run node model/parts/render.mjs"; fail=1; }
+          exit $fail
+
+      # the owner's own list of words that must never be published, kept as a repository secret (one regular
+      # expression a line). Without the secret this step does nothing. It prints where a word is, never the word
+      - name: No private words
+        env:
+          PRIVATE_NAMES: ${{ secrets.FREE_REIN_PRIVATE_NAMES }}
+        run: |
+          [ -n "$PRIVATE_NAMES" ] || { echo "no private-words list set (secret FREE_REIN_PRIVATE_NAMES): skipped"; exit 0; }
+          pattern="$(printf '%s\n' "$PRIVATE_NAMES" | grep -v '^#' | grep -v '^$' | paste -sd'|' -)"
+          where="$(git ls-files -z | xargs -0 grep -IlE -i "$pattern" 2>/dev/null || true)"
+          if [ -n "$where" ]; then echo "::error::private words in:"; printf '%s\n' "$where"; exit 1; fi
+          echo "clean"
+
+      - name: Commit messages (and sign-off on pull requests)
+        run: |
+          range="${{ steps.range.outputs.range }}"
+          [ -n "$range" ] || { echo "a new branch: messages are checked on its pull request"; exit 0; }
+          fail=0
+          for c in $(git rev-list --no-merges "$range"); do
+            first="$(git log -1 --format=%s "$c")"
+            if ! printf '%s' "$first" | grep -qE '^(feat|fix|refactor|docs|chore)\((core|vscode|data|infra)\): .+'; then
+              echo "::error::${c:0:7}: the first line should be action(target): message (got: $first)"; fail=1
+            fi
+            if [ "${{ github.event_name }}" = "pull_request" ] && ! git log -1 --format=%B "$c" | grep -qE '^Signed-off-by: .+ <.+>'; then
+              echo "::error::${c:0:7}: not signed off; commit with git commit -s (see CONTRIBUTING.md)"; fail=1
+            fi
+          done
+          exit $fail

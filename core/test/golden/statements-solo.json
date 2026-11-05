@@ -1,0 +1,192 @@
+[
+ {
+  "id": "CLAUDE.md:3:0343a10d",
+  "kind": "residual",
+  "text": "A small app.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 3,
+   "node": "surface:project-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:3:a4e1d4ad",
+  "kind": "direction",
+  "text": "Run `npm test` before you say you're done.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 3,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "run"
+   }
+  ],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:5:50e1e572",
+  "kind": "rule",
+  "text": "- Never edit `.env`.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 5,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "write"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "edit"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:6:da56d48d",
+  "kind": "direction",
+  "text": "- Ask before pushing to main.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 6,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "push"
+   }
+  ],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "~/.claude/CLAUDE.md:3:06369aa6",
+  "kind": "rule",
+  "text": "Always answer in English.",
+  "source": {
+   "file": "~/.claude/CLAUDE.md",
+   "line": 3,
+   "node": "surface:global-claude-md"
+  },
+  "about": [],
+  "strength": "must",
+  "matched": [
+   "Always"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "personal-instructions"
+ },
+ {
+  "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+  "kind": "rule",
+  "text": "Never commit secrets.",
+  "source": {
+   "file": "~/.claude/CLAUDE.md",
+   "line": 3,
+   "node": "surface:global-claude-md"
+  },
+  "about": [
+   {
+    "action": "commit"
+   },
+   {
+    "action": "read-secrets"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "commit",
+   "secrets"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "personal-instructions"
+ },
+ {
+  "id": ".claude/skills/release/SKILL.md:3:9b8457c1",
+  "kind": "trigger",
+  "text": "Cut a release: bump the version, tag it, write the notes.",
+  "source": {
+   "file": ".claude/skills/release/SKILL.md",
+   "line": 3,
+   "node": "unit:release"
+  },
+  "about": [
+   {
+    "action": "publish"
+   },
+   {
+    "action": "write"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "from": "frontmatter description",
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/release/SKILL.md:6:fd5e9145",
+  "kind": "residual",
+  "text": "Bump the version in package.json.",
+  "source": {
+   "file": ".claude/skills/release/SKILL.md",
+   "line": 6,
+   "node": "unit:release"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/release/SKILL.md:7:3999f5bb",
+  "kind": "residual",
+  "text": "Tag it and write the release notes.",
+  "source": {
+   "file": ".claude/skills/release/SKILL.md",
+   "line": 7,
+   "node": "unit:release"
+  },
+  "about": [
+   {
+    "action": "publish"
+   },
+   {
+    "action": "write"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ }
+]

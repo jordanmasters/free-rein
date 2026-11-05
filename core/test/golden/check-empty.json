@@ -1,0 +1,246 @@
+{
+ "text": "Warnings (3)\n  Read secrets: Exposed: nothing stops it (refuse: Read(.env))\n  Stops when it says it's done: The agent decides when it's done.\n  ~/.claude/CLAUDE.md:3  \"Never commit secrets.\": nothing of yours makes it so in Edit secrets, Read secrets\n\nNotes (9)\n  Delete a folder: Claude Code decides: no rule of yours (ask first: Bash(rm -rf:*))\n  Throw away uncommitted changes: Claude Code decides: no rule of yours (ask first: Bash(git reset --hard:*))\n  Run a script from the web: Claude Code decides: no rule of yours (ask first: Bash(curl -fsSL https://example.com/install.sh | sh))\n  Push: Claude Code decides: no rule of yours (ask first: Bash(git push:*))\n  Force push: rewrite shared history: Claude Code decides: no rule of yours (ask first: Bash(git push --force:*))\n  Publish a package: Claude Code decides: no rule of yours (ask first: Bash(npm publish:*))\n  Change its instructions: Claude Code decides: no rule of yours (ask first: Edit(CLAUDE.md) or add Blocking hooks)\n  Change its own permissions and hooks: Claude Code decides: no rule of yours (ask first: Edit(.claude/settings.json) or add Blocking hooks)\n  Edit secrets: Claude Code decides: no rule of yours (refuse: Edit(.env) or add Blocking hooks)\n\n0 errors, 3 warnings, 9 notes (read in auto mode)\n",
+ "sarif": {
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+   {
+    "tool": {
+     "driver": {
+      "name": "Free Rein",
+      "version": "0.0.0",
+      "semanticVersion": "0.0.0",
+      "rules": [
+       {
+        "id": "exposed",
+        "name": "Exposed",
+        "shortDescription": {
+         "text": "Something risky goes ahead with nothing stopping it"
+        },
+        "fullDescription": {
+         "text": "A high-stakes action (pushing, deleting, touching secrets, changing its own safeguards or what it knows) runs without asking you, and nothing of yours refuses it."
+        },
+        "help": {
+         "text": "Usually a rule of yours allows it, or nothing covers it in a mode that doesn't ask. If the agent does it by mistake, nothing catches it. Add a permission rule that asks first (or refuses), or a hook that can refuse it.",
+         "markdown": "A high-stakes action (pushing, deleting, touching secrets, changing its own safeguards or what it knows) runs without asking you, and nothing of yours refuses it.\n\n**Why it matters:** Usually a rule of yours allows it, or nothing covers it in a mode that doesn't ask. If the agent does it by mistake, nothing catches it.\n\n**What to do:** Add a permission rule that asks first (or refuses), or a hook that can refuse it."
+        },
+        "defaultConfiguration": {
+         "level": "warning"
+        }
+       },
+       {
+        "id": "left-to-claude-code",
+        "name": "LeftToClaudeCode",
+        "shortDescription": {
+         "text": "Claude Code's safety check decides, not a rule of yours"
+        },
+        "fullDescription": {
+         "text": "In auto mode, a high-stakes action with no rule of yours is judged by Claude Code's own classifier."
+        },
+        "help": {
+         "text": "It may well stop it, but you can't see or set its rules, so the harness doesn't say what should happen. Make the call yourself: a permission rule that allows, asks or refuses.",
+         "markdown": "In auto mode, a high-stakes action with no rule of yours is judged by Claude Code's own classifier.\n\n**Why it matters:** It may well stop it, but you can't see or set its rules, so the harness doesn't say what should happen.\n\n**What to do:** Make the call yourself: a permission rule that allows, asks or refuses."
+        },
+        "defaultConfiguration": {
+         "level": "note"
+        }
+       },
+       {
+        "id": "loop-self-declared",
+        "name": "LoopSelfDeclared",
+        "shortDescription": {
+         "text": "It stops when it says it's done"
+        },
+        "fullDescription": {
+         "text": "Nothing checks the work before it ends: the agent decides it's finished."
+        },
+        "help": {
+         "text": "Loop on evidence, not confidence. Saying it's done is never enough. Add a completion check: a Stop hook that runs the check commands and sends failures back.",
+         "markdown": "Nothing checks the work before it ends: the agent decides it's finished.\n\n**Why it matters:** Loop on evidence, not confidence. Saying it's done is never enough.\n\n**What to do:** Add a completion check: a Stop hook that runs the check commands and sends failures back."
+        },
+        "defaultConfiguration": {
+         "level": "warning"
+        }
+       },
+       {
+        "id": "unbacked-rule",
+        "name": "UnbackedRule",
+        "shortDescription": {
+         "text": "A rule in your instructions that nothing enforces"
+        },
+        "fullDescription": {
+         "text": "Your instructions say never, always or ask first about an action, but no permission rule, hook or approval step makes it so."
+        },
+        "help": {
+         "text": "It holds only if the model follows the instruction every time. Back it with a permission rule or a hook, or reword it as guidance.",
+         "markdown": "Your instructions say never, always or ask first about an action, but no permission rule, hook or approval step makes it so.\n\n**Why it matters:** It holds only if the model follows the instruction every time.\n\n**What to do:** Back it with a permission rule or a hook, or reword it as guidance."
+        },
+        "defaultConfiguration": {
+         "level": "warning"
+        }
+       }
+      ]
+     }
+    },
+    "originalUriBaseIds": {
+     "SRCROOT": {
+      "description": {
+       "text": "The harness that was checked"
+      }
+     }
+    },
+    "results": [
+     {
+      "ruleId": "exposed",
+      "ruleIndex": 0,
+      "level": "warning",
+      "message": {
+       "text": "Read secrets: Exposed: nothing stops it (refuse: Read(.env))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "02a514d262722cb9f420844edd049bc5"
+      }
+     },
+     {
+      "ruleId": "loop-self-declared",
+      "ruleIndex": 2,
+      "level": "warning",
+      "message": {
+       "text": "Stops when it says it's done: The agent decides when it's done."
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "d243fc22c8bd6a33a622851582c9cc4b"
+      }
+     },
+     {
+      "ruleId": "unbacked-rule",
+      "ruleIndex": 3,
+      "level": "warning",
+      "message": {
+       "text": "\"Never commit secrets.\": nothing of yours makes it so in Edit secrets, Read secrets"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": "~/.claude/CLAUDE.md",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 3,
+          "endLine": 3
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "916d14eae1c2f742535b9da825687aad"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Delete a folder: Claude Code decides: no rule of yours (ask first: Bash(rm -rf:*))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "064b3f3ab58c9d65187591de49518baf"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Throw away uncommitted changes: Claude Code decides: no rule of yours (ask first: Bash(git reset --hard:*))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "7ca1d27fd08bd1d0d8050134e2f7d77a"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Run a script from the web: Claude Code decides: no rule of yours (ask first: Bash(curl -fsSL https://example.com/install.sh | sh))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "42f566bbe0fb60859c75b351da7dc2ff"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Push: Claude Code decides: no rule of yours (ask first: Bash(git push:*))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "aeaf7170080126b5eeccda54c87c1473"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Force push: rewrite shared history: Claude Code decides: no rule of yours (ask first: Bash(git push --force:*))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "ecfd92c65db0744349cced8b92056030"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Publish a package: Claude Code decides: no rule of yours (ask first: Bash(npm publish:*))"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "625f9725bb88bc09dcb4e55bc92b1c1b"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Change its instructions: Claude Code decides: no rule of yours (ask first: Edit(CLAUDE.md) or add Blocking hooks)"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "aa043f33a43d96cd3813c1066c55f5b6"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Change its own permissions and hooks: Claude Code decides: no rule of yours (ask first: Edit(.claude/settings.json) or add Blocking hooks)"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "92a4eb36649dfced85801b061cfa9b9b"
+      }
+     },
+     {
+      "ruleId": "left-to-claude-code",
+      "ruleIndex": 1,
+      "level": "note",
+      "message": {
+       "text": "Edit secrets: Claude Code decides: no rule of yours (refuse: Edit(.env) or add Blocking hooks)"
+      },
+      "partialFingerprints": {
+       "freeReinFinding": "719af5a429096066ca750dced3ded0ad"
+      }
+     }
+    ],
+    "properties": {
+     "mode": "auto"
+    }
+   }
+  ]
+ }
+}

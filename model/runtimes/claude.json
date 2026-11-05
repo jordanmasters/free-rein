@@ -1,0 +1,857 @@
+{
+  "schema": "free-rein.runtime/1",
+  "id": "claude",
+  "name": "Claude Code",
+  "opacity": "black box",
+  "provides": [
+    "hook-runtime",
+    "structured-prompt",
+    "subagent-runtime",
+    "schedule-runtime"
+  ],
+  "transparency": "closed",
+  "license": "proprietary (all rights reserved)",
+  "version_checked": "2.1.301",
+  "checked_on": "2026-10-15",
+  "sources": {
+    "observed": {
+      "title": "Observed in a running Claude Code 2.1.150 session",
+      "kind": "own-test",
+      "checked": {
+        "on": "2026-10-01",
+        "note": "Claude Code 2.1.150, checked 2026-10-01"
+      }
+    },
+    "license": {
+      "title": "anthropics/claude-code LICENSE.md",
+      "url": "https://github.com/anthropics/claude-code/blob/main/LICENSE.md",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-01",
+        "note": "Claude Code 2.1.150, checked 2026-10-01"
+      }
+    },
+    "cc-skills": {
+      "title": "Extend Claude with skills",
+      "url": "https://code.claude.com/docs/en/skills",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-modes": {
+      "title": "Choose a permission mode",
+      "url": "https://code.claude.com/docs/en/permission-modes",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-permissions": {
+      "title": "Configure permissions",
+      "url": "https://code.claude.com/docs/en/permissions",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-settings": {
+      "title": "Settings files and precedence",
+      "url": "https://code.claude.com/docs/en/settings",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-24",
+        "note": "docs read 2026-10-24; the page states no version"
+      }
+    },
+    "cc-memory": {
+      "title": "How Claude remembers your project",
+      "url": "https://code.claude.com/docs/en/memory",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-24",
+        "note": "docs read 2026-10-24; the page states no version"
+      }
+    },
+    "cc-hooks": {
+      "title": "Hooks reference",
+      "url": "https://code.claude.com/docs/en/hooks",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-output-styles": {
+      "title": "Output styles",
+      "url": "https://code.claude.com/docs/en/output-styles",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-code-review": {
+      "title": "Code Review",
+      "url": "https://code.claude.com/docs/en/code-review",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-plugins": {
+      "title": "Plugins overview",
+      "url": "https://code.claude.com/docs/en/plugins/overview",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-lsp": {
+      "title": "Code intelligence plugins",
+      "url": "https://code.claude.com/docs/en/plugins/code-intelligence",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-chrome": {
+      "title": "Use Claude Code with Chrome",
+      "url": "https://code.claude.com/docs/en/chrome",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-mcp": {
+      "title": "Connect Claude Code to tools via MCP",
+      "url": "https://code.claude.com/docs/en/mcp",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-subagents": {
+      "title": "Subagents",
+      "url": "https://code.claude.com/docs/en/sub-agents",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-actions": {
+      "title": "Claude Code GitHub Actions",
+      "url": "https://code.claude.com/docs/en/github-actions",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-headless": {
+      "title": "Run Claude Code programmatically",
+      "url": "https://code.claude.com/docs/en/headless",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-sandbox": {
+      "title": "Configure the sandboxed Bash tool",
+      "url": "https://code.claude.com/docs/en/sandboxing",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-checkpoints": {
+      "title": "Checkpointing",
+      "url": "https://code.claude.com/docs/en/checkpointing",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-terminal": {
+      "title": "Configure your terminal for Claude Code",
+      "url": "https://code.claude.com/docs/en/terminal-config",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-costs": {
+      "title": "Manage costs effectively",
+      "url": "https://code.claude.com/docs/en/costs",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-managed": {
+      "title": "Deploy managed settings",
+      "url": "https://code.claude.com/docs/en/managed-settings",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-statusline": {
+      "title": "Customize your status line",
+      "url": "https://code.claude.com/docs/en/statusline",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "2.1.288",
+        "note": "docs ~v2.1.288, read 2026-10-07"
+      }
+    },
+    "cc-sessions": {
+      "title": "Manage sessions",
+      "url": "https://code.claude.com/docs/en/sessions",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-tools": {
+      "title": "Tools reference",
+      "url": "https://code.claude.com/docs/en/tools-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-monitoring": {
+      "title": "Monitoring (Claude Code docs)",
+      "url": "https://code.claude.com/docs/en/monitoring-usage",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-01",
+        "note": "Claude Code 2.1.150, checked 2026-10-01"
+      }
+    },
+    "claude-models": {
+      "title": "Claude models overview",
+      "url": "https://platform.claude.com/docs/en/about-claude/models/overview",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-08",
+        "note": "read 2026-10-08"
+      }
+    },
+    "free-rein-address-findings": {
+      "title": "Free Rein's /address-findings skill (skills/address-findings/SKILL.md)",
+      "kind": "own-test",
+      "checked": {
+        "on": "2026-10-03",
+        "note": "Free Rein, checked 2026-10-03"
+      }
+    },
+    "cc-cli": {
+      "title": "CLI reference",
+      "url": "https://code.claude.com/docs/en/cli-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-workflows": {
+      "title": "Workflows",
+      "url": "https://code.claude.com/docs/en/workflows",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-scheduled": {
+      "title": "Scheduled tasks",
+      "url": "https://code.claude.com/docs/en/scheduled-tasks",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    },
+    "cc-model-config": {
+      "title": "Model configuration",
+      "url": "https://code.claude.com/docs/en/model-config",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; the page states no version"
+      }
+    },
+    "cc-context": {
+      "title": "The context window",
+      "url": "https://code.claude.com/docs/en/context-window",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "2.1.301",
+        "note": "docs ~v2.1.301, read 2026-10-15"
+      }
+    }
+  },
+  "run_modes": {
+    "modes": [
+      {
+        "id": "default",
+        "name": "Manual",
+        "level": "asks"
+      },
+      {
+        "id": "acceptEdits",
+        "name": "Edit automatically",
+        "level": "edits"
+      },
+      {
+        "id": "auto",
+        "name": "Auto",
+        "level": "checker",
+        "note": "a separate model checks each action; your ask rules still prompt"
+      },
+      {
+        "id": "bypassPermissions",
+        "name": "Bypass permissions",
+        "level": "all",
+        "note": "only when enabled at launch; deny rules still hold"
+      },
+      {
+        "id": "plan",
+        "name": "Plan",
+        "level": "read-only"
+      },
+      {
+        "id": "dontAsk",
+        "name": "Don't ask",
+        "level": "allowed-only",
+        "note": "for CI: what would ask is refused"
+      }
+    ],
+    "default": "auto",
+    "default_note": "the default from 2.1.283; Manual where Auto isn't available",
+    "set_by": [
+      {
+        "file": ".claude/settings.local.json",
+        "format": "json",
+        "key": "permissions.defaultMode",
+        "values": {
+          "manual": "default"
+        },
+        "ignore": [
+          "auto",
+          "bypassPermissions"
+        ]
+      },
+      {
+        "file": ".claude/settings.json",
+        "format": "json",
+        "key": "permissions.defaultMode",
+        "values": {
+          "manual": "default"
+        },
+        "ignore": [
+          "auto",
+          "bypassPermissions"
+        ]
+      },
+      {
+        "file": "~/.claude/settings.json",
+        "format": "json",
+        "key": "permissions.defaultMode",
+        "values": {
+          "manual": "default"
+        }
+      }
+    ],
+    "status": "confirmed",
+    "source": "cc-modes"
+  },
+  "sandbox": {
+    "default": "off",
+    "how": "sandbox.enabled or /sandbox; shell commands only",
+    "network": "set in the sandbox's settings",
+    "status": "confirmed",
+    "source": "cc-sandbox"
+  },
+  "layers": {
+    "scopes": [
+      {
+        "id": "org",
+        "name": "Your organization",
+        "files": [
+          "managed-settings.json, MDM or server-managed settings",
+          "the managed CLAUDE.md"
+        ],
+        "status": "confirmed",
+        "source": "cc-settings"
+      },
+      {
+        "id": "local",
+        "name": "This repo, just you",
+        "files": [
+          ".claude/settings.local.json",
+          "CLAUDE.local.md"
+        ],
+        "status": "confirmed",
+        "source": "cc-settings"
+      },
+      {
+        "id": "project",
+        "name": "This repo, shared",
+        "files": [
+          "CLAUDE.md (or AGENTS.md when there's no CLAUDE.md)",
+          ".claude/settings.json",
+          ".claude/ skills, agents, commands and rules"
+        ],
+        "status": "confirmed",
+        "source": "cc-memory"
+      },
+      {
+        "id": "user",
+        "name": "You, every repo",
+        "files": [
+          "~/.claude/CLAUDE.md",
+          "~/.claude/settings.json",
+          "~/.claude/ skills, agents and commands"
+        ],
+        "status": "confirmed",
+        "source": "cc-settings"
+      }
+    ],
+    "folders": {
+      "how": "A subfolder's CLAUDE.md, and .claude/rules scoped by paths, load once it works in that folder",
+      "status": "confirmed",
+      "source": "cc-memory"
+    },
+    "session": {
+      "how": "--settings, flags such as --model and --permission-mode, and choices made during a run",
+      "status": "confirmed",
+      "source": "cc-settings"
+    },
+    "combine": {
+      "settings": {
+        "how": "The most specific level that sets a key wins: your organization, then --settings, then this repo just you, this repo shared, and you",
+        "status": "confirmed",
+        "source": "cc-settings"
+      },
+      "rules": {
+        "how": "Permission rules from every level are merged; an allow from one file doesn't outrank an ask from another",
+        "status": "confirmed",
+        "source": "cc-settings"
+      },
+      "instructions": {
+        "how": "Every level's CLAUDE.md is loaded and joined, broadest first; none replaces another",
+        "status": "confirmed",
+        "source": "cc-memory"
+      }
+    }
+  },
+  "models": {
+    "providers": "one",
+    "vendors": [
+      "Anthropic"
+    ],
+    "choices": [
+      {
+        "value": "default",
+        "name": "Account default"
+      },
+      {
+        "value": "best",
+        "name": "Fable where available, else Opus"
+      },
+      {
+        "value": "fable",
+        "name": "Fable 5.1"
+      },
+      {
+        "value": "opus",
+        "name": "Opus"
+      },
+      {
+        "value": "sonnet",
+        "name": "Sonnet"
+      },
+      {
+        "value": "haiku",
+        "name": "Haiku"
+      },
+      {
+        "value": "opus[1m]",
+        "name": "Opus, 1M-token context"
+      },
+      {
+        "value": "sonnet[1m]",
+        "name": "Sonnet, 1M-token context"
+      },
+      {
+        "value": "opusplan",
+        "name": "Opus to plan, Sonnet to execute"
+      }
+    ],
+    "default": "Opus 5.5 on most accounts and clouds (Sonnet 4.5 on Microsoft Foundry); an organization can set its own default",
+    "set_by": {
+      "file": "~/.claude/settings.json or .claude/settings.json",
+      "key": "model"
+    },
+    "how": "Runs only Anthropic's Claude models, directly or through Amazon, Google Cloud or Microsoft; pick one with /model, --model, ANTHROPIC_MODEL or model in settings. Admins can limit the list with availableModels.",
+    "status": "confirmed",
+    "source": "cc-model-config"
+  },
+  "answers": {
+    "proj-instructions": {
+      "how": "CLAUDE.md at the repo root; AGENTS.md only when there is no CLAUDE.md (from 2.1.277), which instructionFiles changes",
+      "status": "confirmed",
+      "source": "cc-memory"
+    },
+    "personal-instructions": {
+      "how": "~/.claude/CLAUDE.md",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "folder-instructions": {
+      "how": "CLAUDE.md in subfolders, .claude/rules/ (optionally scoped by paths), @ imports",
+      "status": "confirmed",
+      "source": "cc-memory"
+    },
+    "live-injection": {
+      "how": "UserPromptSubmit, SessionStart, PreCompact or PostCompact hooks; or a Compact instructions section in CLAUDE.md",
+      "status": "confirmed",
+      "source": "cc-hooks"
+    },
+    "contracts": {
+      "how": "Protocol files a mode skill tells it to read",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "modes": {
+      "how": "Mode skills plus a hook that keeps the mode active",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "plan-first": {
+      "how": "permissions.defaultMode \"plan\" in settings, or a planning step in a skill",
+      "status": "confirmed",
+      "source": "cc-modes"
+    },
+    "commands": {
+      "how": "A skill you start with /name, or .claude/commands/<name>.md (commands are now part of skills)",
+      "status": "confirmed",
+      "source": "cc-skills"
+    },
+    "git-workflow": {
+      "how": "attribution in settings; the convention itself lives in CLAUDE.md, a commit skill or a git hook",
+      "status": "believed",
+      "source": "cc-settings"
+    },
+    "review-workflow": {
+      "how": "Bundled /code-review and /security-review; REVIEW.md guides GitHub Code Review",
+      "status": "confirmed",
+      "source": "cc-code-review"
+    },
+    "skills": {
+      "how": ".claude/skills/<name>/SKILL.md",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "mcp": {
+      "how": "claude mcp add, or .mcp.json",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "plugins": {
+      "how": "enabledPlugins in settings; a repo packaged with .claude-plugin/",
+      "status": "confirmed",
+      "source": "cc-plugins"
+    },
+    "web": {
+      "how": "Built-in WebSearch and WebFetch",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "connected-accounts": {
+      "how": "claude.ai connectors (signed in with a claude.ai account), or MCP servers for mail, calendar and drives; disableClaudeAiConnectors turns them off",
+      "status": "confirmed",
+      "source": "cc-mcp"
+    },
+    "subagents": {
+      "how": ".claude/agents/<name>.md, run through the Agent tool",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "orchestration": {
+      "how": "Workflow scripts: agent(), parallel(), pipeline(); with Ultracode on, each substantial task runs as one",
+      "status": "confirmed",
+      "source": "cc-workflows"
+    },
+    "autonomous-runs": {
+      "how": "/loop and scheduled tasks inside a session (recurring ones expire after 7 days); Routines in the cloud and Desktop scheduled tasks run on their own; --bg for background agents",
+      "status": "confirmed",
+      "source": "cc-scheduled"
+    },
+    "model-routing": {
+      "how": "model in a subagent's frontmatter; model and availableModels in settings",
+      "status": "confirmed",
+      "source": "cc-subagents"
+    },
+    "modalities": {
+      "how": "Claude models take in text and images, and give back text; audio, video, decisions and vectors come from a model you add",
+      "status": "confirmed",
+      "source": "claude-models"
+    },
+    "installer": {
+      "how": "An install script, or plugin packaging",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "setup": {
+      "how": "A setup script or devcontainer the agent runs first",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "pins": {
+      "how": "A lockfile and a runtime version file in the repo; Claude Code itself through autoUpdatesChannel (latest or stable) and managed requiredMinimumVersion and requiredMaximumVersion",
+      "status": "confirmed",
+      "source": "cc-settings"
+    },
+    "settings-split": {
+      "how": ".claude/settings.json (shared) and .claude/settings.local.json (personal, kept out of git)",
+      "status": "confirmed",
+      "source": "cc-settings"
+    },
+    "env-keys": {
+      "how": "env and apiKeyHelper in settings",
+      "status": "confirmed",
+      "source": "cc-settings"
+    },
+    "managed-policy": {
+      "how": "managed-settings.json in the system location, MDM, or server-managed settings",
+      "status": "confirmed",
+      "source": "cc-managed"
+    },
+    "permissions": {
+      "how": "allow, ask and deny rules in settings; permissions.defaultMode picks the starting mode: Manual, Edit automatically, Plan, Auto (the default from 2.1.283) or Bypass permissions",
+      "status": "confirmed",
+      "source": "cc-modes"
+    },
+    "hard-gate": {
+      "how": "A PreToolUse hook that exits non-zero",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "secrets-out": {
+      "how": "Read and Edit deny rules on secret paths; the sandbox's denyRead for commands",
+      "status": "confirmed",
+      "source": "cc-permissions"
+    },
+    "sandbox": {
+      "how": "The sandbox: sandbox.enabled or /sandbox. It covers shell commands only, is off by default, and runs on macOS, Linux and WSL2; worktrees separate work but don't sandbox it",
+      "status": "confirmed",
+      "source": "cc-sandbox"
+    },
+    "network-limits": {
+      "how": "The sandbox's network allowedDomains for commands; WebFetch(domain:…) rules for fetching",
+      "status": "confirmed",
+      "source": "cc-sandbox"
+    },
+    "spend-limits": {
+      "how": "--max-turns and --max-budget-usd on headless runs only; maxTurns on subagents; maxEffortLevel caps effort; no budget in interactive sessions",
+      "status": "confirmed",
+      "source": "cc-cli"
+    },
+    "human-gate": {
+      "how": "Approval steps in skills; option pickers through AskUserQuestion; ask rules, which prompt in every mode, Bypass included",
+      "status": "confirmed",
+      "source": "cc-modes"
+    },
+    "notifications": {
+      "how": "A Notification hook, or preferredNotifChannel in settings",
+      "status": "confirmed",
+      "source": "cc-hooks"
+    },
+    "completion-check": {
+      "how": "A Stop hook that exits non-zero when the checks fail",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "rewind": {
+      "how": "Built-in checkpoints of its file edits, up to 100 a session: /rewind or Esc Esc; command side effects and subagent edits are not tracked; off on headless runs unless turned on",
+      "status": "confirmed",
+      "source": "cc-checkpoints"
+    },
+    "check-commands": {
+      "how": "Scripts in package.json or a Makefile, listed in CLAUDE.md",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "schema": {
+      "how": "Validators run by a hook or a skill",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "auto-fix": {
+      "how": "A PostToolUse hook on Edit|Write that runs a formatter",
+      "status": "confirmed",
+      "source": "cc-hooks"
+    },
+    "independent-checker": {
+      "how": ".claude/agents/<name>.md with a review role, run after the work",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "visual-check": {
+      "how": "Claude in Chrome (claude --chrome) or a browser MCP server to look at it; browser tests to prove it",
+      "status": "confirmed",
+      "source": "cc-chrome"
+    },
+    "harness-checker": {
+      "how": "Free Rein's /address-findings skill: re-reads the harness, runs Free Rein's checks, and fixes what they find",
+      "status": "confirmed",
+      "source": "free-rein-address-findings"
+    },
+    "criteria": {
+      "how": "A done_when field on each task or feature",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "evals": {
+      "how": "An eval suite it runs, or a Workflow that scores",
+      "status": "believed",
+      "source": "observed"
+    },
+    "feedback": {
+      "how": "Telemetry events plus a review step",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "event-log": {
+      "how": "JSONL written from hooks",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "receipts": {
+      "how": "A receipt written on mode exit",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "transcripts": {
+      "how": "Session transcripts in ~/.claude/projects/, kept 30 days by default (cleanupPeriodDays)",
+      "status": "confirmed",
+      "source": "cc-sessions"
+    },
+    "status-line": {
+      "how": "statusLine in settings runs a command that prints it",
+      "status": "confirmed",
+      "source": "cc-statusline"
+    },
+    "telemetry-export": {
+      "how": "OpenTelemetry export, set in settings or env",
+      "status": "confirmed",
+      "source": "cc-monitoring"
+    },
+    "cost-tracking": {
+      "how": "/usage in a session; cost metrics through OpenTelemetry",
+      "status": "confirmed",
+      "source": "cc-monitoring"
+    },
+    "session-state": {
+      "how": ".claude/state/mode.json, kept by hooks",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "task-list": {
+      "how": "Task tools track work inside a session; a task file or an issues server carries it across",
+      "status": "believed",
+      "source": "cc-tools"
+    },
+    "saved-facts": {
+      "how": "Auto memory, on by default, in ~/.claude/projects/<project>/memory/; the first 200 lines or 25 KB of MEMORY.md load at the start",
+      "status": "confirmed",
+      "source": "cc-memory"
+    },
+    "progress-log": {
+      "how": "A progress file the agent reads first and updates last",
+      "status": "confirmed",
+      "source": "observed"
+    },
+    "session-recall": {
+      "how": "--resume and --continue reopen a session, /branch and --fork-session branch one; searching across sessions needs a skill or server",
+      "status": "believed",
+      "source": "cc-sessions"
+    },
+    "knowledge-base": {
+      "how": "No feature of its own: Markdown files the instructions point to",
+      "status": "believed",
+      "source": "cc-memory"
+    },
+    "decisions": {
+      "how": "No feature of its own: a decision log in the repo, named in CLAUDE.md",
+      "status": "believed",
+      "source": "cc-memory"
+    },
+    "codebase-map": {
+      "how": "No feature of its own: an architecture file, imported or named in CLAUDE.md",
+      "status": "believed",
+      "source": "cc-memory"
+    },
+    "ontology": {
+      "how": "No feature of its own: a schema or ontology file the agent reads, named or imported in CLAUDE.md",
+      "status": "believed",
+      "source": "cc-memory"
+    },
+    "knowledge-graph": {
+      "how": "No feature of its own: wikilinks between notes the agent reads",
+      "status": "believed",
+      "source": "observed"
+    },
+    "retrieval": {
+      "how": "An MCP search server, or a grep-then-read skill",
+      "status": "confirmed",
+      "source": "observed"
+    }
+  }
+}

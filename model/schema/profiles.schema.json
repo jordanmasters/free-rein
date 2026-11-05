@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "free-rein.profiles/1",
+  "title": "Out-of-the-box profiles: what a runtime, product, reference design or example ships",
+  "type": "object",
+  "required": ["profiles"],
+  "properties": {
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "kind", "ships"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "kind": {"enum": ["runtime", "product", "reference", "example"]},
+          "checked_on": {"type": "string", "format": "date"},
+          "ships": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["type", "ships", "note", "source"],
+              "properties": {
+                "type": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+                "ships": {"enum": [0, 1, 2, 3]},
+                "note": {"type": "string"},
+                "source": {"type": "string"},
+                "confidence": {"enum": ["confirmed", "believed"], "description": "believed: inferred, or from a third party; absent: the vendor's own docs say it"},
+                "control": {"enum": ["vendor", "platform", "org", "you", "default"], "description": "Who decides it: vendor (a product fixes it), platform (enforced outside your files), org (your organization's managed policy), you, or default (ships with the runtime; you can change it)"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

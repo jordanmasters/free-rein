@@ -1,0 +1,345 @@
+[
+ {
+  "piece": "proj-instructions",
+  "name": "Project instructions",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": true
+ },
+ {
+  "piece": "folder-instructions",
+  "name": "Folder instructions",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "live-injection",
+  "name": "Injected context",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "contracts",
+  "name": "Working protocols",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "modes",
+  "name": "Working modes",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "plan-first",
+  "name": "Plan first",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "commands",
+  "name": "Commands",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "git-workflow",
+  "name": "Git workflow",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "review-workflow",
+  "name": "Review workflow",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "mcp",
+  "name": "MCP tools",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "plugins",
+  "name": "Plugins",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "orchestration",
+  "name": "Orchestration",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "autonomous-runs",
+  "name": "Autonomous runs",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "model-routing",
+  "name": "Model routing",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "modalities",
+  "name": "Modalities",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "installer",
+  "name": "Installer",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "setup",
+  "name": "Reproducible setup",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "pins",
+  "name": "Pinned versions",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "settings-split",
+  "name": "Shared and personal settings",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "env-keys",
+  "name": "Env and keys",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "managed-policy",
+  "name": "Managed policy",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "hard-gate",
+  "name": "Blocking hooks",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": true
+ },
+ {
+  "piece": "sandbox",
+  "name": "Sandboxed action",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "network-limits",
+  "name": "Network limits",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "spend-limits",
+  "name": "Spend or turn limits",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "notifications",
+  "name": "Notifications",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "completion-check",
+  "name": "Completion check",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": true
+ },
+ {
+  "piece": "check-commands",
+  "name": "Check commands",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "schema",
+  "name": "Shape checks",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "independent-checker",
+  "name": "Independent checker",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": true
+ },
+ {
+  "piece": "harness-checker",
+  "name": "Harness checker",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "criteria",
+  "name": "Success criteria",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "evals",
+  "name": "Evals",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "feedback",
+  "name": "Feedback loop",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "event-log",
+  "name": "Event log",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": true
+ },
+ {
+  "piece": "receipts",
+  "name": "Session receipts",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": true
+ },
+ {
+  "piece": "status-line",
+  "name": "Status line",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "telemetry-export",
+  "name": "Telemetry export",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "cost-tracking",
+  "name": "Cost tracking",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "session-state",
+  "name": "Session state",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "task-list",
+  "name": "Task list",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "progress-log",
+  "name": "Progress log",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": true
+ },
+ {
+  "piece": "session-recall",
+  "name": "Past-session recall",
+  "maturity": 1,
+  "upgrade_xp": 25,
+  "template": false
+ },
+ {
+  "piece": "knowledge-base",
+  "name": "Knowledge base",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "decisions",
+  "name": "Decision log",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "codebase-map",
+  "name": "Codebase map",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "ontology",
+  "name": "Ontology",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "knowledge-graph",
+  "name": "Knowledge graph",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ },
+ {
+  "piece": "retrieval",
+  "name": "Retrieval",
+  "maturity": 0,
+  "upgrade_xp": 35,
+  "template": false
+ }
+]

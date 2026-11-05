@@ -1,0 +1,12 @@
+[
+ {
+  "class": "reply-looks-required",
+  "severity": "warning",
+  "subject": ".claude/skills/review-work/SKILL.md:18",
+  "title": "Make clear which words count as a yes",
+  "what": "A checkpoint gives example words for approving, and the agent can end up repeating them as if they were required.",
+  "why": "People start wondering whether their approval counts, and phrase their answers to fit a rule they can't see.",
+  "remedy": "What would change: the checkpoint says any clear yes counts, or it asks with buttons so there is nothing to phrase.",
+  "detail": "example replies 'yes, ship it', 'approved' — nothing says other wording works"
+ }
+]

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Before each push: the full test suite (the core's tests and saved outputs, then the extension's). About a minute.
+# Skip once, knowingly: git push --no-verify.
+cd "$(git rev-parse --show-toplevel)"
+log="${TMPDIR:-/tmp}/free-rein-pre-push.log"
+npm test --silent >"$log" 2>&1 || { printf 'pre-push: the tests failed; see %s. Nothing was pushed.\n' "$log" >&2; exit 1; }

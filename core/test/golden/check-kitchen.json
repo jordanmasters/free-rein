@@ -1,0 +1,208 @@
+{
+ "text": "Warnings (1)\n  .claude/skills/review-work/SKILL.md:18  Make clear which words count as a yes: example replies 'yes, ship it', 'approved' — nothing says other wording works\n\nNotes (4)\n  .claude/settings.json:1  Measured, but nothing comes back: It's measured, but nothing turns what's found into work.\n  .claude/skills/commit-it/SKILL.md:1  /commit-it: a very short description, so the model may pick it wrongly\n  .claude/skills/commit-it/SKILL.md:1  /commit-it: no procedure: no steps or sections saying what it does, in order\n  .claude/skills/tidy-notes/SKILL.md:1  /tidy-notes: a very short description, so the model may pick it wrongly\n\n0 errors, 1 warnings, 4 notes (read in manual mode)\n",
+ "sarif": {
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+   {
+    "tool": {
+     "driver": {
+      "name": "Free Rein",
+      "version": "0.0.0",
+      "semanticVersion": "0.0.0",
+      "rules": [
+       {
+        "id": "loop-no-send-back",
+        "name": "LoopNoSendBack",
+        "shortDescription": {
+         "text": "It checks, but doesn't send the work back"
+        },
+        "fullDescription": {
+         "text": "A check reports a problem, but nothing returns the work to be fixed."
+        },
+        "help": {
+         "text": "A check only helps the agent if its result comes back as work. Make the check block, or route what it finds back as tasks.",
+         "markdown": "A check reports a problem, but nothing returns the work to be fixed.\n\n**Why it matters:** A check only helps the agent if its result comes back as work.\n\n**What to do:** Make the check block, or route what it finds back as tasks."
+        },
+        "defaultConfiguration": {
+         "level": "note"
+        }
+       },
+       {
+        "id": "reply-looks-required",
+        "name": "ReplyLooksRequired",
+        "shortDescription": {
+         "text": "Make clear which words count as a yes"
+        },
+        "fullDescription": {
+         "text": "A checkpoint gives example words for approving, and the agent can end up repeating them as if they were required."
+        },
+        "help": {
+         "text": "People start wondering whether their approval counts, and phrase their answers to fit a rule they can't see. What would change: the checkpoint says any clear yes counts, or it asks with buttons so there is nothing to phrase.",
+         "markdown": "A checkpoint gives example words for approving, and the agent can end up repeating them as if they were required.\n\n**Why it matters:** People start wondering whether their approval counts, and phrase their answers to fit a rule they can't see.\n\n**What to do:** What would change: the checkpoint says any clear yes counts, or it asks with buttons so there is nothing to phrase."
+        },
+        "defaultConfiguration": {
+         "level": "warning"
+        }
+       },
+       {
+        "id": "skill-issue",
+        "name": "SkillIssue",
+        "shortDescription": {
+         "text": "A skill the model may misuse"
+        },
+        "fullDescription": {
+         "text": "A skill has a problem in its own text: no description, no steps, a name that doesn't match its folder, or rules that contradict."
+        },
+        "help": {
+         "text": "The model picks skills by their description and follows their steps; a vague or broken one fires wrongly or does the wrong thing. Fix the skill's text as the message says.",
+         "markdown": "A skill has a problem in its own text: no description, no steps, a name that doesn't match its folder, or rules that contradict.\n\n**Why it matters:** The model picks skills by their description and follows their steps; a vague or broken one fires wrongly or does the wrong thing.\n\n**What to do:** Fix the skill's text as the message says."
+        },
+        "defaultConfiguration": {
+         "level": "note"
+        }
+       }
+      ]
+     }
+    },
+    "originalUriBaseIds": {
+     "SRCROOT": {
+      "description": {
+       "text": "The harness that was checked"
+      }
+     }
+    },
+    "results": [
+     {
+      "ruleId": "reply-looks-required",
+      "ruleIndex": 1,
+      "level": "warning",
+      "message": {
+       "text": "Make clear which words count as a yes: example replies 'yes, ship it', 'approved' — nothing says other wording works"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/skills/review-work/SKILL.md",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 18,
+          "endLine": 18
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "71c237300e2b5fa2f9eac5951ed9a303"
+      }
+     },
+     {
+      "ruleId": "loop-no-send-back",
+      "ruleIndex": 0,
+      "level": "note",
+      "message": {
+       "text": "Measured, but nothing comes back: It's measured, but nothing turns what's found into work."
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/settings.json",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "d34235e6395af7c9a9d646a6e2be6053"
+      }
+     },
+     {
+      "ruleId": "skill-issue",
+      "ruleIndex": 2,
+      "level": "note",
+      "message": {
+       "text": "/commit-it: a very short description, so the model may pick it wrongly"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/skills/commit-it/SKILL.md",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "49d54b5a0d0c2a1dbf8fdac7701de2fb"
+      }
+     },
+     {
+      "ruleId": "skill-issue",
+      "ruleIndex": 2,
+      "level": "note",
+      "message": {
+       "text": "/commit-it: no procedure: no steps or sections saying what it does, in order"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/skills/commit-it/SKILL.md",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "3d9a039780fe49e2cfd20445569f173e"
+      }
+     },
+     {
+      "ruleId": "skill-issue",
+      "ruleIndex": 2,
+      "level": "note",
+      "message": {
+       "text": "/tidy-notes: a very short description, so the model may pick it wrongly"
+      },
+      "locations": [
+       {
+        "physicalLocation": {
+         "artifactLocation": {
+          "uri": ".claude/skills/tidy-notes/SKILL.md",
+          "uriBaseId": "SRCROOT"
+         },
+         "region": {
+          "startLine": 1,
+          "endLine": 1
+         }
+        }
+       }
+      ],
+      "partialFingerprints": {
+       "freeReinFinding": "a91eb0586fc6edfd80c748f539ed4852"
+      }
+     }
+    ],
+    "properties": {
+     "mode": "manual"
+    }
+   }
+  ]
+ }
+}

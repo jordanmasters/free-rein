@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Free Rein on a scratch copy (safe to change)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "/tmp/free-rein-scratch/kitchen"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      "preLaunchTask": "watch + scratch"
+    },
+    {
+      "name": "Free Rein on this repo",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}/.."
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      "preLaunchTask": "watch"
+    }
+  ]
+}

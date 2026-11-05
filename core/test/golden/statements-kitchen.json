@@ -1,0 +1,1007 @@
+[
+ {
+  "id": "CLAUDE.md:3:ebe294de",
+  "kind": "residual",
+  "text": "A sample harness with one of everything, for Free Rein's tests.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 3,
+   "node": "surface:project-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:3:0edfa7ab",
+  "kind": "residual",
+  "text": "Café rules apply.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 3,
+   "node": "surface:project-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:5:a56b1f91",
+  "kind": "direction",
+  "text": "Start here: docs/map-schema.md and ARCHITECTURE.md. @docs/extra.md",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 5,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "path": "docs/map-schema.md"
+   },
+   {
+    "path": "docs/extra.md"
+   }
+  ],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:10:ca0722fb",
+  "kind": "direction",
+  "text": "Keep the plan.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 10,
+   "node": "surface:project-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:12:4cc95702",
+  "kind": "rule",
+  "text": "- Never push to main without a review.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 12,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "push"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "push"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:13:ba37f724",
+  "kind": "rule",
+  "text": "- Always run /review-work before /commit-it.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 13,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "commit"
+   },
+   {
+    "action": "run"
+   },
+   {
+    "skill": "review-work"
+   },
+   {
+    "skill": "commit-it"
+   }
+  ],
+  "strength": "must",
+  "matched": [
+   "Always",
+   "commit",
+   "run"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:14:9bf74e5d",
+  "kind": "claim",
+  "text": "- Don't edit vault/decisions.md directly; it is gated.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 14,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "write"
+   },
+   {
+    "path": "vault/decisions.md"
+   }
+  ],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:15:3ff85dec",
+  "kind": "direction",
+  "text": "- Use `lib/tools.py` for exports.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 15,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "path": "lib/tools.py"
+   }
+  ],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:16:e55b6caa",
+  "kind": "direction",
+  "text": "- Stop.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 16,
+   "node": "surface:project-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:17:412a6663",
+  "kind": "rule",
+  "text": "- Never publish a package.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 17,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "publish"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "publish"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:18:e6fb489b",
+  "kind": "rule",
+  "text": "- Never edit `vault/notes/` without asking first.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 18,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "write"
+   },
+   {
+    "path": "vault/notes/"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "edit"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.md:19:5fd17c4e",
+  "kind": "rule",
+  "text": "- Always ask before you write to the vault.",
+  "source": {
+   "file": "CLAUDE.md",
+   "line": 19,
+   "node": "surface:project-claude-md"
+  },
+  "about": [
+   {
+    "action": "write"
+   },
+   {
+    "store": "knowledge-base"
+   }
+  ],
+  "strength": "must",
+  "matched": [
+   "Always",
+   "write"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "AGENTS.md:1:73f58484",
+  "kind": "residual",
+  "text": "﻿# Agents",
+  "source": {
+   "file": "AGENTS.md",
+   "line": 1,
+   "node": "surface:project-agents-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "AGENTS.md:3:d8848ab2",
+  "kind": "residual",
+  "text": "Shared instructions for every runtime.",
+  "source": {
+   "file": "AGENTS.md",
+   "line": 3,
+   "node": "surface:project-agents-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "AGENTS.md:3:5b3d360f",
+  "kind": "claim",
+  "text": "Hooks block force pushes.",
+  "source": {
+   "file": "AGENTS.md",
+   "line": 3,
+   "node": "surface:project-agents-md"
+  },
+  "about": [
+   {
+    "action": "force-push"
+   }
+  ],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "CLAUDE.local.md:1:2451644a",
+  "kind": "residual",
+  "text": "Personal: prefer short answers.",
+  "source": {
+   "file": "CLAUDE.local.md",
+   "line": 1,
+   "node": "surface:local-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": ".claude/CLAUDE.md:1:0ab2e7c1",
+  "kind": "residual",
+  "text": "Project notes in .claude.",
+  "source": {
+   "file": ".claude/CLAUDE.md",
+   "line": 1,
+   "node": "surface:project-dotclaude-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": ".claude/CLAUDE.md:1:4f27c11c",
+  "kind": "residual",
+  "text": "Lone CR line.",
+  "source": {
+   "file": ".claude/CLAUDE.md",
+   "line": 1,
+   "node": "surface:project-dotclaude-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": ".claude/CLAUDE.md:1:c5b1f394",
+  "kind": "residual",
+  "text": "Another.",
+  "source": {
+   "file": ".claude/CLAUDE.md",
+   "line": 1,
+   "node": "surface:project-dotclaude-claude-md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "proj-instructions"
+ },
+ {
+  "id": "~/.claude/CLAUDE.md:3:06369aa6",
+  "kind": "rule",
+  "text": "Always answer in English.",
+  "source": {
+   "file": "~/.claude/CLAUDE.md",
+   "line": 3,
+   "node": "surface:global-claude-md"
+  },
+  "about": [],
+  "strength": "must",
+  "matched": [
+   "Always"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "personal-instructions"
+ },
+ {
+  "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+  "kind": "rule",
+  "text": "Never commit secrets.",
+  "source": {
+   "file": "~/.claude/CLAUDE.md",
+   "line": 3,
+   "node": "surface:global-claude-md"
+  },
+  "about": [
+   {
+    "action": "commit"
+   },
+   {
+    "action": "read-secrets"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "commit",
+   "secrets"
+  ],
+  "scope": "harness",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "personal-instructions"
+ },
+ {
+  "id": ".claude/rules/style.md:1:09f4e460",
+  "kind": "residual",
+  "text": "- Prefer plain words.",
+  "source": {
+   "file": ".claude/rules/style.md",
+   "line": 1,
+   "node": ".claude/rules/style.md"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "folder",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "folder-instructions"
+ },
+ {
+  "id": ".claude/rules/style.md:2:f57acff6",
+  "kind": "rule",
+  "text": "- You must cite sources.",
+  "source": {
+   "file": ".claude/rules/style.md",
+   "line": 2,
+   "node": ".claude/rules/style.md"
+  },
+  "about": [],
+  "strength": "must",
+  "matched": [
+   "must"
+  ],
+  "scope": "folder",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "folder-instructions"
+ },
+ {
+  "id": ".claude/skills/commit-it/SKILL.md:3:3b34c48e",
+  "kind": "trigger",
+  "text": "Commit with a message",
+  "source": {
+   "file": ".claude/skills/commit-it/SKILL.md",
+   "line": 3,
+   "node": "unit:commit-it"
+  },
+  "about": [
+   {
+    "action": "commit"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "from": "frontmatter description",
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/commit-it/SKILL.md:5:172678c4",
+  "kind": "direction",
+  "text": "Commit the changes.",
+  "source": {
+   "file": ".claude/skills/commit-it/SKILL.md",
+   "line": 5,
+   "node": "unit:commit-it"
+  },
+  "about": [
+   {
+    "action": "commit"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/commit-it/SKILL.md:5:496fe40e",
+  "kind": "rule",
+  "text": "Never force-push.",
+  "source": {
+   "file": ".claude/skills/commit-it/SKILL.md",
+   "line": 5,
+   "node": "unit:commit-it"
+  },
+  "about": [
+   {
+    "action": "force-push"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "force-push"
+  ],
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/commit-it/SKILL.md:5:cd60e8fb",
+  "kind": "residual",
+  "text": "Writes progress.md.",
+  "source": {
+   "file": ".claude/skills/commit-it/SKILL.md",
+   "line": 5,
+   "node": "unit:commit-it"
+  },
+  "about": [
+   {
+    "action": "write"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/lint-notes/SKILL.md:3:2e4228f2",
+  "kind": "trigger",
+  "text": "Use when the user asks to check the notes for broken links before committing them.",
+  "source": {
+   "file": ".claude/skills/lint-notes/SKILL.md",
+   "line": 3,
+   "node": "unit:lint-notes"
+  },
+  "about": [
+   {
+    "action": "commit"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "from": "frontmatter description",
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/lint-notes/SKILL.md:5:8394b2f7",
+  "kind": "pointer",
+  "text": "Read every note.",
+  "source": {
+   "file": ".claude/skills/lint-notes/SKILL.md",
+   "line": 5,
+   "node": "unit:lint-notes"
+  },
+  "about": [
+   {
+    "tool": "Read"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/lint-notes/SKILL.md:6:12e2da25",
+  "kind": "direction",
+  "text": "Report each broken link with its line.",
+  "source": {
+   "file": ".claude/skills/lint-notes/SKILL.md",
+   "line": 6,
+   "node": "unit:lint-notes"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:3:9191cc00",
+  "kind": "trigger",
+  "text": "Use when the user asks to review work before it ships; triggers on 'review'.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 3,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "from": "frontmatter description",
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:7:e0f4a5f7",
+  "kind": "pointer",
+  "text": "Goal: Review the draft and record a verdict in vault/reviews.md.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 7,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "path": "vault/reviews.md"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:11:6f35cf2a",
+  "kind": "direction",
+  "text": "**Read the draft** from drafts/current.md.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 11,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "tool": "Read"
+   },
+   {
+    "path": "drafts/current.md"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:12:3de24e50",
+  "kind": "direction",
+  "text": "**Show the findings for review** and await approval before writing.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 12,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "action": "write"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:13:561184eb",
+  "kind": "direction",
+  "text": "**Write the verdict** to vault/reviews.md and log it with `emit.py review-done`.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 13,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "action": "write"
+   },
+   {
+    "tool": "Write"
+   },
+   {
+    "path": "vault/reviews.md"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:13:433829a3",
+  "kind": "direction",
+  "text": "**Step 4 — Sign off on the result.**",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 13,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "step",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:16:4787246a",
+  "kind": "residual",
+  "text": "If the user says no, stop.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 16,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:16:33915313",
+  "kind": "residual",
+  "text": "When in doubt, ask: \"Proceed?\"",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 16,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:18:aa108ef5",
+  "kind": "rule",
+  "text": "The user must say something like \"yes, ship it\" or \"approved\"; a second confirmation is required for `vault/decisions.md`.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 18,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "path": "vault/decisions.md"
+   }
+  ],
+  "strength": "must",
+  "matched": [
+   "must"
+  ],
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:20:c2398994",
+  "kind": "pointer",
+  "text": "Then call /commit-it and see lib/tools.py and engines/review/PROTOCOL.md.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 20,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "action": "commit"
+   },
+   {
+    "path": "lib/tools.py"
+   },
+   {
+    "path": "engines/review/PROTOCOL.md"
+   },
+   {
+    "skill": "commit-it"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:29:1eb58044",
+  "kind": "rule",
+  "text": "- Never write to vault/ without approval.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 29,
+   "node": "unit:review-work"
+  },
+  "about": [
+   {
+    "action": "write"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "Never",
+   "write"
+  ],
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:30:a24bf4a2",
+  "kind": "rule",
+  "text": "- Don't skip the tests.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 30,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": "must-not",
+  "matched": [
+   "Don't"
+  ],
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:32:e4adf2eb",
+  "kind": "residual",
+  "text": "Bad bytes:  café  end.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 32,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/review-work/SKILL.md:32:1a0c7ef7",
+  "kind": "residual",
+  "text": "Templates live in templates/ — ✨ emoji ✨.",
+  "source": {
+   "file": ".claude/skills/review-work/SKILL.md",
+   "line": 32,
+   "node": "unit:review-work"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/tidy-notes/SKILL.md:3:f52ced3e",
+  "kind": "trigger",
+  "text": "Formats notes in the vault nicely",
+  "source": {
+   "file": ".claude/skills/tidy-notes/SKILL.md",
+   "line": 3,
+   "node": "unit:tidy-notes"
+  },
+  "about": [
+   {
+    "store": "knowledge-base"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "from": "frontmatter description",
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/tidy-notes/SKILL.md:5:1b084e14",
+  "kind": "pointer",
+  "text": "Read the notes.",
+  "source": {
+   "file": ".claude/skills/tidy-notes/SKILL.md",
+   "line": 5,
+   "node": "unit:tidy-notes"
+  },
+  "about": [
+   {
+    "tool": "Read"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": ".claude/skills/tidy-notes/SKILL.md:6:b317dedf",
+  "kind": "residual",
+  "text": "Fix the formatting.",
+  "source": {
+   "file": ".claude/skills/tidy-notes/SKILL.md",
+   "line": 6,
+   "node": "unit:tidy-notes"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": "skills/commit-it/SKILL.md:3:a27c6359",
+  "kind": "trigger",
+  "text": "Another copy",
+  "source": {
+   "file": "skills/commit-it/SKILL.md",
+   "line": 3,
+   "node": "unit:commit-it@skills"
+  },
+  "about": [],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "from": "frontmatter description",
+  "piece": "skills"
+ },
+ {
+  "id": "skills/commit-it/SKILL.md:5:e312ab61",
+  "kind": "residual",
+  "text": "A different commit skill.",
+  "source": {
+   "file": "skills/commit-it/SKILL.md",
+   "line": 5,
+   "node": "unit:commit-it@skills"
+  },
+  "about": [
+   {
+    "action": "commit"
+   }
+  ],
+  "strength": null,
+  "scope": "unit",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "skills"
+ },
+ {
+  "id": "sub/CLAUDE.md:3:47cf7ddb",
+  "kind": "rule",
+  "text": "Rules for the sub folder: never delete files in data/.",
+  "source": {
+   "file": "sub/CLAUDE.md",
+   "line": 3,
+   "node": "surface:nested-claude-md:sub"
+  },
+  "about": [
+   {
+    "action": "delete"
+   }
+  ],
+  "strength": "must-not",
+  "matched": [
+   "never",
+   "delete"
+  ],
+  "scope": "folder",
+  "read_by": "pattern",
+  "believed": false,
+  "piece": "folder-instructions"
+ }
+]

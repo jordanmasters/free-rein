@@ -1,0 +1,387 @@
+{
+  "name": "free-rein",
+  "displayName": "Free Rein",
+  "description": "Look before you let go: see what your agent's harness has, what it lacks, and how far it's trusted.",
+  "version": "0.2.0",
+  "repository": {"type": "git", "url": "https://github.com/jordanmasters/free-rein.git", "directory": "vscode"},
+  "homepage": "https://github.com/jordanmasters/free-rein#readme",
+  "bugs": {"url": "https://github.com/jordanmasters/free-rein/issues"},
+  "publisher": "free-rein",
+  "icon": "images/icon.png",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=22"
+  },
+  "categories": [
+    "AI",
+    "Linters",
+    "Visualization"
+  ],
+  "keywords": [
+    "agent",
+    "harness",
+    "claude code",
+    "codex",
+    "cursor",
+    "copilot",
+    "gemini cli",
+    "opencode",
+    "permissions",
+    "hooks",
+    "guardrails",
+    "CLAUDE.md",
+    "AGENTS.md"
+  ],
+  "preview": true,
+  "galleryBanner": {
+    "color": "#16161a",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "In Restricted Mode Free Rein reads and shows the harness, but won't write changes, apply drafts or run the harness's hooks.",
+      "restrictedConfigurations": [
+        "freeRein.path"
+      ]
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "freeRein.open",
+        "title": "Open your harness",
+        "category": "Free Rein",
+        "icon": "$(layout)"
+      },
+      {
+        "command": "freeRein.pick",
+        "title": "Choose a harness…",
+        "category": "Free Rein",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "freeRein.useFolder",
+        "title": "Read the open folder",
+        "category": "Free Rein"
+      },
+      {
+        "command": "freeRein.review",
+        "title": "Ask your agent to review this harness",
+        "category": "Free Rein"
+      },
+      {
+        "command": "freeRein.refresh",
+        "title": "Read the harness again",
+        "category": "Free Rein",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "freeRein.trust",
+        "title": "Ask me the trust check again",
+        "category": "Free Rein"
+      },
+      {
+        "command": "freeRein.settings",
+        "title": "Settings",
+        "category": "Free Rein",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "freeRein.showSidebar",
+        "title": "Show the Free Rein sidebar",
+        "category": "Free Rein"
+      },
+      {
+        "command": "freeRein.showPiece",
+        "title": "Show a piece in your harness",
+        "category": "Free Rein"
+      },
+      {
+        "command": "freeRein.upgrade",
+        "title": "Upgrade a piece…",
+        "category": "Free Rein",
+        "icon": "$(arrow-circle-up)"
+      },
+      {
+        "command": "freeRein.undoUpgrade",
+        "title": "Undo the last upgrade",
+        "category": "Free Rein"
+      },
+      {
+        "command": "freeRein.applyDraft",
+        "title": "Apply the draft…",
+        "category": "Free Rein",
+        "icon": "$(check)"
+      },
+      {
+        "command": "freeRein.saveDraft",
+        "title": "Save the draft…",
+        "category": "Free Rein",
+        "icon": "$(save)"
+      },
+      {
+        "command": "freeRein.openDraft",
+        "title": "Open a saved draft…",
+        "category": "Free Rein",
+        "icon": "$(folder-library)"
+      },
+      {
+        "command": "freeRein.discardDraft",
+        "title": "Discard the draft",
+        "category": "Free Rein",
+        "icon": "$(discard)"
+      }
+    ],
+    "configuration": {
+      "title": "Free Rein",
+      "properties": {
+        "freeRein.runtime": {
+          "type": "string",
+          "enum": [
+            "claude",
+            "codex",
+            "cursor",
+            "gemini",
+            "opencode",
+            "copilot",
+            "copilot-cli",
+            "copilot-cloud",
+            "open"
+          ],
+          "enumDescriptions": [
+            "Claude Code",
+            "Codex",
+            "Cursor",
+            "Gemini CLI",
+            "OpenCode",
+            "GitHub Copilot in VS Code (Local agent)",
+            "GitHub Copilot CLI (and VS Code's Copilot harness)",
+            "Copilot cloud agent",
+            "Your own loop"
+          ],
+          "default": "claude",
+          "description": "Which runtime the harness runs on. Changes how each piece is done and which have no known way.",
+          "scope": "resource"
+        },
+        "freeRein.cursorRunMode": {
+          "type": "string",
+          "enum": [
+            "",
+            "allowlist",
+            "allowlist-sandbox",
+            "auto-review",
+            "unrestricted"
+          ],
+          "enumDescriptions": [
+            "Not set: Free Rein assumes Cursor's default (Auto-Review)",
+            "Allowlist",
+            "Allowlist (with Sandbox)",
+            "Auto-Review (with Sandbox)",
+            "Run Everything (Unsandboxed)"
+          ],
+          "default": "",
+          "description": "Cursor's run mode (Cursor Settings › Agents › Execution and Approvals). Cursor keeps it in the app, not in a file, so tell Free Rein which one you use.",
+          "scope": "application"
+        },
+        "freeRein.compactBoard": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the board in the sidebar, compact: the circle, with the layers, situations, pieces and combos below it."
+        },
+        "freeRein.countHome": {
+          "type": "boolean",
+          "default": true,
+          "description": "Count what loads from ~/.claude in every session (your own skills and prompt hooks)."
+        },
+        "freeRein.palette": {
+          "type": "string",
+          "enum": [
+            "vivid",
+            "warm",
+            "calm"
+          ],
+          "default": "vivid",
+          "description": "Colours for the sections on the board."
+        },
+        "freeRein.sounds": {
+          "type": "string",
+          "enum": [
+            "off",
+            "quiet",
+            "normal"
+          ],
+          "enumDescriptions": [
+            "No sounds",
+            "Soft",
+            "A little louder"
+          ],
+          "default": "off",
+          "description": "Small sounds when a change lands on the board: a tick on each bounce, a chime as pieces move up or a low note as they move down, a run of notes on a level up, a bell for an achievement, a thud for a new weak spot. Only the window you're using plays them."
+        },
+        "freeRein.agentReview": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "A preview: let your own agent (Claude Code) review the harness for what Free Rein's rules can't check. Only ever started by you, and it asks first: your agent sends the harness's files to its model's provider, as in your normal work. Free Rein itself sends nothing."
+        },
+        "freeRein.character": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show something at the centre of the core (Jack or the Sprout, see Character Kind). Off: the level number."
+        },
+        "freeRein.characterKind": {
+          "type": "string",
+          "enum": [
+            "jack",
+            "sprout"
+          ],
+          "enumDescriptions": [
+            "Jack: your runtime on a dark disc your harness plugs into, with a face that reacts",
+            "A sprout whose plant grows with your level"
+          ],
+          "default": "jack",
+          "description": "What sits at the centre of your harness."
+        },
+        "freeRein.characterName": {
+          "type": "string",
+          "default": "Sprout",
+          "description": "What the Sprout is called."
+        },
+        "freeRein.characterColor": {
+          "type": "string",
+          "enum": [
+            "green",
+            "peach",
+            "blue",
+            "slate"
+          ],
+          "default": "green",
+          "description": "The Sprout's colour."
+        },
+        "freeRein.path": {
+          "type": "string",
+          "default": "",
+          "description": "A Free Rein repo whose data to read (for working on Free Rein). Empty: the repo this extension runs from while you work on it, else the data built into the extension.",
+          "scope": "machine"
+        },
+        "freeRein.showInFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "In harness files (CLAUDE.md, skills, settings), mark each piece above where it is, with a coloured dot in the gutter and a hover that explains it."
+        },
+        "freeRein.build": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "workbench",
+            "companion",
+            "service"
+          ],
+          "enumDescriptions": [
+            "Work it out (a workbench unless the profile says otherwise)",
+            "Your own setup for building with an agent day to day",
+            "A personal assistant on rails",
+            "An agent you build and deploy for others: production, users, sensitive data"
+          ],
+          "default": "auto",
+          "scope": "resource",
+          "description": "What kind of harness this is. Not used yet: Free Rein will set what good looks like per build once builds are defined. Today it only changes the label."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "freeRein",
+          "title": "Free Rein",
+          "icon": "media/free-rein.svg"
+        }
+      ]
+    },
+    "views": {
+      "freeRein": [
+        {
+          "type": "webview",
+          "id": "freeRein.summary",
+          "name": "Harness"
+        },
+        {
+          "id": "freeRein.pieces",
+          "name": "Pieces",
+          "when": "!config.freeRein.compactBoard"
+        },
+        {
+          "id": "freeRein.combos",
+          "name": "Weak spots & achievements",
+          "when": "!config.freeRein.compactBoard"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "freeRein.open",
+          "when": "view == freeRein.summary",
+          "group": "navigation@1"
+        },
+        {
+          "command": "freeRein.pick",
+          "when": "view == freeRein.summary",
+          "group": "navigation@2"
+        },
+        {
+          "command": "freeRein.settings",
+          "when": "view == freeRein.summary",
+          "group": "navigation@3"
+        },
+        {
+          "command": "freeRein.refresh",
+          "when": "view == freeRein.pieces",
+          "group": "navigation"
+        },
+        {
+          "command": "freeRein.upgrade",
+          "when": "view == freeRein.summary",
+          "group": "navigation@0"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "freeRein.showSidebar",
+          "when": "false"
+        },
+        {
+          "command": "freeRein.showPiece",
+          "when": "false"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "freeRein.upgrade",
+          "when": "(view == freeRein.pieces || view == freeRein.combos) && viewItem == piece-up",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "board": "node scripts/build-board.mjs",
+    "compile": "npm run board && tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "npm run compile && node out/test/read.test.js && node out/test/fresh.test.js && node out/test/render.test.js",
+    "package": "npm run compile && npx --yes @vscode/vsce@3.2.2 package --no-dependencies --allow-missing-repository",
+    "e2e": "npm run compile && node out/test/e2e/run.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^3.1.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.4.0"
+  }
+}

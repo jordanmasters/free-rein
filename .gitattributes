@@ -1,0 +1,14 @@
+# Text is stored with LF line endings.
+* text=auto eol=lf
+
+# Sample harnesses are kept byte for byte: some use CRLF on purpose, to test that Free Rein reads them.
+samples/** -text
+
+# Generated files: collapsed in reviews, left out of language stats.
+core/test/golden/** linguist-generated=true
+model/parts/CATALOG.md linguist-generated=true
+vscode/media/lucide.min.js linguist-vendored=true
+
+*.png binary
+*.vsix binary
+*.woff2 binary

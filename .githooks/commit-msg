@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# The first line of a commit message: action(target): message (see CONTRIBUTING.md).
+first="$(grep -v '^#' "$1" | head -1)"
+if ! printf '%s' "$first" | grep -qE '^(feat|fix|refactor|docs|chore)\((core|vscode|data|infra)\): .+'; then
+  printf 'commit-msg: the first line should be action(target): message\n' >&2
+  printf '  actions: feat fix refactor docs chore; targets: core vscode data infra\n' >&2
+  printf '  e.g. fix(core): free-rein check reads the mode from the harness settings\n' >&2
+  printf '  got: %s\n' "$first" >&2
+  exit 1
+fi

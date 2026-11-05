@@ -1,0 +1,13 @@
+{
+  "name": "kitchen",
+  "scripts": {
+    "test": "node t.js",
+    "typecheck": "tsc",
+    "build": "x",
+    "lint:skills": "node scripts/lint.js skills/"
+  },
+  "devDependencies": {
+    "ccusage": "1.0.0",
+    "typesafe-sdk": "1.0.0"
+  }
+}

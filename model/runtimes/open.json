@@ -1,0 +1,263 @@
+{
+  "schema": "free-rein.runtime/1",
+  "id": "open",
+  "name": "Open runtime",
+  "opacity": "mostly yours",
+  "provides": [
+    "hook-runtime",
+    "subagent-runtime",
+    "schedule-runtime"
+  ],
+  "transparency": "open",
+  "sources": {},
+  "answers": {
+    "proj-instructions": {
+      "how": "A system-prompt file your loop prepends",
+      "status": "confirmed"
+    },
+    "personal-instructions": {
+      "how": "A user-level prompt file",
+      "status": "confirmed"
+    },
+    "folder-instructions": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "live-injection": {
+      "how": "Middleware that edits each request",
+      "status": "confirmed"
+    },
+    "contracts": {
+      "how": "Prompt sections your loop swaps in",
+      "status": "confirmed"
+    },
+    "modes": {
+      "how": "A state variable your loop keeps",
+      "status": "confirmed"
+    },
+    "plan-first": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "commands": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "git-workflow": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "review-workflow": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "skills": {
+      "how": "A tool registry your router reads",
+      "status": "confirmed"
+    },
+    "mcp": {
+      "how": "Any MCP client library",
+      "status": "confirmed"
+    },
+    "plugins": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "web": {
+      "how": "A search API you wire in",
+      "status": "confirmed"
+    },
+    "connected-accounts": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "subagents": {
+      "how": "A second model call with its own prompt",
+      "status": "confirmed"
+    },
+    "orchestration": {
+      "how": "A graph framework, or your own scheduler",
+      "status": "confirmed"
+    },
+    "autonomous-runs": {
+      "how": "cron calling your loop, with a retry counter",
+      "status": "confirmed"
+    },
+    "model-routing": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "modalities": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "installer": {
+      "how": "A package or container",
+      "status": "confirmed"
+    },
+    "setup": {
+      "how": "A setup step in your loop",
+      "status": "confirmed"
+    },
+    "pins": {
+      "how": "The same files",
+      "status": "confirmed"
+    },
+    "settings-split": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "env-keys": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "managed-policy": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "permissions": {
+      "how": "An allowlist in your tool router",
+      "status": "confirmed"
+    },
+    "hard-gate": {
+      "how": "A check before each tool call",
+      "status": "confirmed"
+    },
+    "secrets-out": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "sandbox": {
+      "how": "A container per task",
+      "status": "confirmed"
+    },
+    "network-limits": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "spend-limits": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "human-gate": {
+      "how": "A confirm step in your loop",
+      "status": "confirmed"
+    },
+    "notifications": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "completion-check": {
+      "how": "A check before your loop accepts done",
+      "status": "confirmed"
+    },
+    "rewind": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "check-commands": {
+      "how": "Commands your loop runs",
+      "status": "confirmed"
+    },
+    "schema": {
+      "how": "Schema validation in your loop",
+      "status": "confirmed"
+    },
+    "auto-fix": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "independent-checker": {
+      "how": "A second model call that only grades",
+      "status": "confirmed"
+    },
+    "visual-check": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "harness-checker": {
+      "how": "Free Rein's checks (/address-findings), with an adapter",
+      "status": "believed"
+    },
+    "criteria": {
+      "how": "The same field",
+      "status": "confirmed"
+    },
+    "evals": {
+      "how": "An eval harness in your loop",
+      "status": "confirmed"
+    },
+    "feedback": {
+      "how": "Your logs plus a review step",
+      "status": "confirmed"
+    },
+    "event-log": {
+      "how": "Your own logger",
+      "status": "confirmed"
+    },
+    "receipts": {
+      "how": "A summary at the end of your loop",
+      "status": "confirmed"
+    },
+    "transcripts": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "status-line": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "telemetry-export": {
+      "how": "Your own exporter",
+      "status": "none"
+    },
+    "cost-tracking": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "session-state": {
+      "how": "State your loop keeps",
+      "status": "confirmed"
+    },
+    "task-list": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "saved-facts": {
+      "how": "A notes file your loop maintains",
+      "status": "confirmed"
+    },
+    "progress-log": {
+      "how": "A progress file your loop maintains",
+      "status": "confirmed"
+    },
+    "session-recall": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "knowledge-base": {
+      "how": "The same files",
+      "status": "confirmed"
+    },
+    "decisions": {
+      "how": "The same file",
+      "status": "confirmed"
+    },
+    "codebase-map": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "ontology": {
+      "how": "Whatever you build",
+      "status": "confirmed"
+    },
+    "knowledge-graph": {
+      "how": "A graph over your notes",
+      "status": "confirmed"
+    },
+    "retrieval": {
+      "how": "Embeddings over the vault",
+      "status": "confirmed"
+    }
+  }
+}

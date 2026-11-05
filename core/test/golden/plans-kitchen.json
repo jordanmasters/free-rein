@@ -1,0 +1,380 @@
+{
+ "hard-gate": {
+  "piece": "hard-gate",
+  "name": "Blocking hooks",
+  "maturity": 3,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/.claude/hooks/protect-files.sh",
+    "rel": ".claude/hooks/protect-files.sh",
+    "before": null,
+    "after": "#!/usr/bin/env bash\n# Blocking hook (PreToolUse on Edit/Write): refuses edits to protected files.\n# Added by Free Rein. Exit 2 blocks the edit and tells the agent why.\n# Protected paths, one glob per line: .claude/hooks/protected-paths.txt\n# To change a protected file on purpose, edit it yourself, or remove its line.\ninput=$(cat)\n# the edit's path, read with node or python3; if neither can read it, the edit is refused (never let through unread)\nfield() {\n  if command -v node >/dev/null 2>&1; then\n    node -e 'let s=\"\";process.stdin.on(\"data\",c=>s+=c).on(\"end\",()=>{const d=JSON.parse(s);console.log((d.tool_input||{}).file_path||\"\")})'\n  elif command -v python3 >/dev/null 2>&1; then\n    python3 -c 'import json,sys; d=json.load(sys.stdin); print((d.get(\"tool_input\") or {}).get(\"file_path\") or \"\")'\n  else return 1; fi\n}\npath=$(printf '%s' \"$input\" | field) || { echo \"Blocked by .claude/hooks/protect-files.sh: couldn't read which file this edit is for (it needs node or python3).\" >&2; exit 2; }\n[ -z \"$path\" ] && exit 0\nrel=\"${path#\"$CLAUDE_PROJECT_DIR\"/}\"\nlist=\"$CLAUDE_PROJECT_DIR/.claude/hooks/protected-paths.txt\"\n[ -f \"$list\" ] || exit 0\nwhile IFS= read -r glob; do\n  case \"$glob\" in ''|'#'*) continue ;; esac\n  case \"$rel\" in $glob)\n    echo \"Blocked by .claude/hooks/protect-files.sh: $rel is protected ($glob). Ask the person to change it, or to remove the rule.\" >&2\n    exit 2 ;;\n  esac\ndone < \"$list\"\nexit 0\n",
+    "kind": "create",
+    "note": "a hook that refuses edits to protected files",
+    "mode": 493
+   },
+   {
+    "path": "<kitchen>/.claude/hooks/protected-paths.txt",
+    "rel": ".claude/hooks/protected-paths.txt",
+    "before": null,
+    "after": "# Files the agent may not edit on its own (Free Rein's blocking hook).\n.env\n.env.*\n*.pem\n*.key\nsecrets/*\nvault/*\n",
+    "kind": "create",
+    "note": "which files it protects; edit freely",
+    "mode": null
+   },
+   {
+    "path": "<kitchen>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"café 🎉 ünïcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "after": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"caf\\u00e9 \\ud83c\\udf89 \\u00fcn\\u00efcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Edit|Write|MultiEdit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.sh\\\"\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "replace",
+    "note": "registers the hook before every edit",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Blocking hooks** in this repo's agent harness: it's in place already (hardened).\n\nWhat it is: A hook can refuse an action outright, not just ask.\nWhat's there now: 1 found.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Blocking hooks.",
+  "effect": {
+   "piece": {
+    "from": 3,
+    "to": 3
+   },
+   "xp": 0,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 72,
+    "to": 72
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "completion-check": {
+  "piece": "completion-check",
+  "name": "Completion check",
+  "maturity": 3,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/.claude/hooks/check-on-stop.sh",
+    "rel": ".claude/hooks/check-on-stop.sh",
+    "before": null,
+    "after": "#!/usr/bin/env bash\n# Completion check (Stop hook): when the agent says it's done, run the checks.\n# Added by Free Rein. Exit 2 sends it back to work with the failures.\ninput=$(cat)\n# already continuing because of this hook: don't loop\nprintf '%s' \"$input\" | grep -q '\"stop_hook_active\": *true' && exit 0\ncd \"$CLAUDE_PROJECT_DIR\" || exit 0\nout=$(npm run typecheck 2>&1) || { echo \"Not done yet: \\`npm run typecheck\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nout=$(npm test 2>&1) || { echo \"Not done yet: \\`npm test\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nout=$(make lint 2>&1) || { echo \"Not done yet: \\`make lint\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nout=$(make test 2>&1) || { echo \"Not done yet: \\`make test\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nexit 0\n",
+    "kind": "create",
+    "note": "runs npm run typecheck, npm test, make lint, make test when the agent stops",
+    "mode": 493
+   },
+   {
+    "path": "<kitchen>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"café 🎉 ünïcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "after": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"caf\\u00e9 \\ud83c\\udf89 \\u00fcn\\u00efcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      },\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/check-on-stop.sh\\\"\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "replace",
+    "note": "registers it on Stop",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Completion check** in this repo's agent harness: it's in place already (hardened).\n\nWhat it is: When the agent says it's done, a check runs and can send it back to work.\nWhat's there now: 1 found.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Completion check.",
+  "effect": {
+   "piece": {
+    "from": 3,
+    "to": 3
+   },
+   "xp": 0,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 72,
+    "to": 72
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "permissions": {
+  "piece": "permissions",
+  "name": "Permission rules",
+  "maturity": 3,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"café 🎉 ünïcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "after": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"caf\\u00e9 \\ud83c\\udf89 \\u00fcn\\u00efcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\",\n      \"Bash(npm run typecheck)\",\n      \"Bash(make lint)\",\n      \"Bash(make test)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\",\n      \"Read(./.env.*)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\",\n      \"Bash(git push:*)\",\n      \"Bash(rm -rf:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "replace",
+    "note": "allow the checks, ask before pushing or deleting, never read .env",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Permission rules** in this repo's agent harness: it's in place already (hardened).\n\nWhat it is: Allow or deny decided before the model even sees the request.\nWhat's there now: 2 found.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Permission rules.",
+  "effect": {
+   "piece": {
+    "from": 3,
+    "to": 3
+   },
+   "xp": 0,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 72,
+    "to": 72
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "event-log": {
+  "piece": "event-log",
+  "name": "Event log",
+  "maturity": 2,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/.claude/hooks/log-event.sh",
+    "rel": ".claude/hooks/log-event.sh",
+    "before": null,
+    "after": "#!/usr/bin/env bash\n# Event log (PostToolUse hook): one line per tool call, appended to\n# .claude/telemetry/events.jsonl. Added by Free Rein.\ninput=$(cat)\ndir=\"$CLAUDE_PROJECT_DIR/.claude/telemetry\"\nmkdir -p \"$dir\"\n# one JSON line, written with node or python3 (whichever is installed)\nif command -v node >/dev/null 2>&1; then\n  printf '%s' \"$input\" | node -e 'let s=\"\";process.stdin.on(\"data\",c=>s+=c).on(\"end\",()=>{const d=JSON.parse(s);console.log(JSON.stringify({ts:Date.now()/1000,session:d.session_id??null,tool:d.tool_name??null,event:d.hook_event_name??null}))})' >> \"$dir/events.jsonl\"\nelif command -v python3 >/dev/null 2>&1; then\n  printf '%s' \"$input\" | python3 -c 'import json,sys,time; d=json.load(sys.stdin); print(json.dumps({\"ts\": time.time(), \"session\": d.get(\"session_id\"), \"tool\": d.get(\"tool_name\"), \"event\": d.get(\"hook_event_name\")}))' >> \"$dir/events.jsonl\"\nfi\nexit 0\n",
+    "kind": "create",
+    "note": "appends each tool call to .claude/telemetry/events.jsonl",
+    "mode": 493
+   },
+   {
+    "path": "<kitchen>/.claude/settings.json",
+    "rel": ".claude/settings.json",
+    "before": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"café 🎉 ünïcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "after": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"caf\\u00e9 \\ud83c\\udf89 \\u00fcn\\u00efcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"*\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/log-event.sh\\\"\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+    "kind": "replace",
+    "note": "registers it after every tool call",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Event log** in this repo's agent harness: it's in place already (equipped).\n\nWhat it is: An append-only record of what happened.\nWhat's there now: 1 found.\nA weak spot to fix: Unread record. Everything is written down and nothing is ever scored, so the record can't make the harness better. Add evals, or a regular review of the feedback it captures.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Event log.",
+  "effect": {
+   "piece": {
+    "from": 2,
+    "to": 2
+   },
+   "xp": 0,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 72,
+    "to": 72
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "independent-checker": {
+  "piece": "independent-checker",
+  "name": "Independent checker",
+  "maturity": 2,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/.claude/agents/reviewer.md",
+    "rel": ".claude/agents/reviewer.md",
+    "before": "---\nname: reviewer\ndescription: Reviews work and gives a verdict with findings\nmodel: sonnet\nmaxTurns: 5\n---\nGive a verdict: pass or fail, with findings.\n",
+    "after": "---\nname: reviewer\ndescription: Reviews finished work in a fresh context against its success criteria, and reports what's missing. Use before calling work done.\ntools: Read, Grep, Glob, Bash\n---\n\nYou review work you didn't do. You start fresh: read the request, the\nsuccess criteria (if there are any), and the changes, then check them.\n\n1. Restate what was asked, and what \"done\" means for it.\n2. Run the project's check commands, if it has any.\n3. Read the changed files. Look for what was asked but not done, what was\n   done but not asked, and anything that breaks the project's rules in\n   CLAUDE.md.\n4. Report: done or not done, and a short list of what's missing, with the\n   file and line for each. Don't fix anything yourself.\n",
+    "kind": "replace",
+    "note": "a reviewer agent that checks finished work in a fresh context",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Independent checker** in this repo's agent harness: it's in place already (equipped).\n\nWhat it is: Work is reviewed by a separate agent with its own context, not by the one that did it.\nWhat's there now: 1 found.\nFree Rein doesn't define a next level for this piece yet, so there's no specific change to ask for.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Independent checker.",
+  "effect": {
+   "piece": {
+    "from": 2,
+    "to": 2
+   },
+   "xp": 0,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 72,
+    "to": 72
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "progress-log": {
+  "piece": "progress-log",
+  "name": "Progress log",
+  "maturity": 2,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/CLAUDE.md",
+    "rel": "CLAUDE.md",
+    "before": "# Kitchen 🍳 harness\n\nA sample harness with one of everything, for Free Rein's tests. Café rules apply.\n\nStart here: docs/map-schema.md and ARCHITECTURE.md.\n@docs/extra.md\n\n## Compact instructions\n\nKeep the plan.\n\n- Never push to main without a review.\n- Always run /review-work before /commit-it.\n- Don't edit vault/decisions.md directly; it is gated.\n- Use `lib/tools.py` for exports.\n- Stop.\n- Never publish a package.\n- Never edit `vault/notes/` without asking first.\n- Always ask before you write to the vault.\n",
+    "after": "# Kitchen 🍳 harness\n\nA sample harness with one of everything, for Free Rein's tests. Café rules apply.\n\nStart here: docs/map-schema.md and ARCHITECTURE.md.\n@docs/extra.md\n\n## Compact instructions\n\nKeep the plan.\n\n- Never push to main without a review.\n- Always run /review-work before /commit-it.\n- Don't edit vault/decisions.md directly; it is gated.\n- Use `lib/tools.py` for exports.\n- Stop.\n- Never publish a package.\n- Never edit `vault/notes/` without asking first.\n- Always ask before you write to the vault.\n\n## Progress\n\nRead `progress.md` at the start of every session. Before you finish, update it: what you did, what's in progress, and what's next.\n",
+    "kind": "replace",
+    "note": "tells the agent to use it",
+    "mode": null
+   }
+  ],
+  "request": "Strengthen **Progress log** in this repo's agent harness: it's in place already (equipped).\n\nWhat it is: What's done, in progress and blocked, kept on disk for the next session.\nWhat's there now: 1 found.\nFree Rein doesn't define a next level for this piece yet, so there's no specific change to ask for.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Progress log.",
+  "effect": {
+   "piece": {
+    "from": 2,
+    "to": 2
+   },
+   "xp": 0,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {},
+   "backed": {
+    "from": 72,
+    "to": 72
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "receipts": {
+  "piece": "receipts",
+  "name": "Session receipts",
+  "maturity": 0,
+  "template": true,
+  "edits": [
+   {
+    "path": "<kitchen>/handoff.md",
+    "rel": "handoff.md",
+    "before": null,
+    "after": "# Handoff\n\nThe last session's receipt. Replace it at the end of each session.\n\n- **Asked:** \n- **Done:** \n- **Changed:** \n- **Left open:** \n",
+    "kind": "create",
+    "note": "a receipt the agent writes at the end of each session",
+    "mode": null
+   },
+   {
+    "path": "<kitchen>/CLAUDE.md",
+    "rel": "CLAUDE.md",
+    "before": "# Kitchen 🍳 harness\n\nA sample harness with one of everything, for Free Rein's tests. Café rules apply.\n\nStart here: docs/map-schema.md and ARCHITECTURE.md.\n@docs/extra.md\n\n## Compact instructions\n\nKeep the plan.\n\n- Never push to main without a review.\n- Always run /review-work before /commit-it.\n- Don't edit vault/decisions.md directly; it is gated.\n- Use `lib/tools.py` for exports.\n- Stop.\n- Never publish a package.\n- Never edit `vault/notes/` without asking first.\n- Always ask before you write to the vault.\n",
+    "after": "# Kitchen 🍳 harness\n\nA sample harness with one of everything, for Free Rein's tests. Café rules apply.\n\nStart here: docs/map-schema.md and ARCHITECTURE.md.\n@docs/extra.md\n\n## Compact instructions\n\nKeep the plan.\n\n- Never push to main without a review.\n- Always run /review-work before /commit-it.\n- Don't edit vault/decisions.md directly; it is gated.\n- Use `lib/tools.py` for exports.\n- Stop.\n- Never publish a package.\n- Never edit `vault/notes/` without asking first.\n- Always ask before you write to the vault.\n\n## Ending a session\n\nBefore you finish, rewrite `handoff.md`: what was asked, what you did, which files changed, and what's left open.\n",
+    "kind": "replace",
+    "note": "tells the agent to write it",
+    "mode": null
+   }
+  ],
+  "request": "Add **Session receipts** to this repo's agent harness.\n\nWhat it is: Each session leaves a short account of itself.\nWhat to do: Writes a short summary of each session when a mode ends.\nLikely files: skills/exit-mode/SKILL.md, lib/receipt.py.\nHow Claude Code does it: A receipt written on mode exit.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Session receipts.",
+  "effect": {
+   "piece": {
+    "from": 0,
+    "to": 2
+   },
+   "xp": 35,
+   "level": {
+    "from": 32,
+    "to": 32
+   },
+   "rank": {
+    "from": "Apprentice",
+    "to": "Apprentice"
+   },
+   "earned": [],
+   "lost": [],
+   "cleared": [],
+   "opened": [],
+   "trust": {
+    "Act unattended": {
+     "from": 67,
+     "to": 83
+    }
+   },
+   "backed": {
+    "from": 72,
+    "to": 75
+   },
+   "others": {}
+  },
+  "verified": true
+ },
+ "proj-instructions": {
+  "piece": "proj-instructions",
+  "name": "Project instructions",
+  "maturity": 2,
+  "template": false,
+  "edits": [],
+  "request": "Strengthen **Project instructions** in this repo's agent harness: it's in place already (equipped).\n\nWhat it is: Standing rules for this repo: commits, vault rules, naming.\nWhat's there now: 4 found.\nFree Rein doesn't define a next level for this piece yet, so there's no specific change to ask for.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Project instructions.",
+  "effect": null,
+  "verified": false
+ },
+ "skills": {
+  "piece": "skills",
+  "name": "Skills",
+  "maturity": 2,
+  "template": false,
+  "edits": [],
+  "request": "Strengthen **Skills** in this repo's agent harness: it's in place already (equipped).\n\nWhat it is: Named capabilities it can route to by intent.\nWhat's there now: 16 found, 12 of them built into the runtime.\nFree Rein doesn't define a next level for this piece yet, so there's no specific change to ask for.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Skills.",
+  "effect": null,
+  "verified": false
+ }
+}

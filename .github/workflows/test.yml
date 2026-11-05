@@ -1,0 +1,31 @@
+# The core's behaviour tests and saved outputs, then the extension's tests, on every push and pull request.
+# The same as `npm test` locally (and the pre-push hook): Node 22, as .nvmrc says.
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            core/package-lock.json
+            vscode/package-lock.json
+      - run: npm run setup
+      - run: npm test

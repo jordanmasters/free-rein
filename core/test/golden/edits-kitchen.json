@@ -1,0 +1,91 @@
+{
+ "edits": [
+  {
+   "path": "<kitchen>/.claude/agents/reviewer.md",
+   "rel": ".claude/agents/reviewer.md",
+   "before": "---\nname: reviewer\ndescription: Reviews work and gives a verdict with findings\nmodel: sonnet\nmaxTurns: 5\n---\nGive a verdict: pass or fail, with findings.\n",
+   "after": "---\nname: reviewer\ndescription: Reviews finished work in a fresh context against its success criteria, and reports what's missing. Use before calling work done.\ntools: Read, Grep, Glob, Bash\nmodel: opus\n---\n\nYou review work you didn't do. You start fresh: read the request, the\nsuccess criteria (if there are any), and the changes, then check them.\n\n1. Restate what was asked, and what \"done\" means for it.\n2. Run the project's check commands, if it has any.\n3. Read the changed files. Look for what was asked but not done, what was\n   done but not asked, and anything that breaks the project's rules in\n   CLAUDE.md.\n4. Report: done or not done, and a short list of what's missing, with the\n   file and line for each. Don't fix anything yourself.\n",
+   "kind": "replace",
+   "note": "a reviewer agent that checks finished work in a fresh context; the reviewer subagent's model: opus",
+   "mode": null
+  },
+  {
+   "path": "<kitchen>/.claude/hooks/check-on-stop.sh",
+   "rel": ".claude/hooks/check-on-stop.sh",
+   "before": null,
+   "after": "#!/usr/bin/env bash\n# Completion check (Stop hook): when the agent says it's done, run the checks.\n# Added by Free Rein. Exit 2 sends it back to work with the failures.\ninput=$(cat)\n# already continuing because of this hook: don't loop\nprintf '%s' \"$input\" | grep -q '\"stop_hook_active\": *true' && exit 0\ncd \"$CLAUDE_PROJECT_DIR\" || exit 0\nout=$(npm run typecheck 2>&1) || { echo \"Not done yet: \\`npm run typecheck\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nout=$(npm test 2>&1) || { echo \"Not done yet: \\`npm test\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nout=$(make lint 2>&1) || { echo \"Not done yet: \\`make lint\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nout=$(make test 2>&1) || { echo \"Not done yet: \\`make test\\` fails:\" >&2; echo \"$out\" | tail -40 >&2; exit 2; }\nexit 0\n",
+   "kind": "create",
+   "note": "runs npm run typecheck, npm test, make lint, make test when the agent stops",
+   "mode": 493
+  },
+  {
+   "path": "<kitchen>/.claude/hooks/log-event.sh",
+   "rel": ".claude/hooks/log-event.sh",
+   "before": null,
+   "after": "#!/usr/bin/env bash\n# Event log (PostToolUse hook): one line per tool call, appended to\n# .claude/telemetry/events.jsonl. Added by Free Rein.\ninput=$(cat)\ndir=\"$CLAUDE_PROJECT_DIR/.claude/telemetry\"\nmkdir -p \"$dir\"\n# one JSON line, written with node or python3 (whichever is installed)\nif command -v node >/dev/null 2>&1; then\n  printf '%s' \"$input\" | node -e 'let s=\"\";process.stdin.on(\"data\",c=>s+=c).on(\"end\",()=>{const d=JSON.parse(s);console.log(JSON.stringify({ts:Date.now()/1000,session:d.session_id??null,tool:d.tool_name??null,event:d.hook_event_name??null}))})' >> \"$dir/events.jsonl\"\nelif command -v python3 >/dev/null 2>&1; then\n  printf '%s' \"$input\" | python3 -c 'import json,sys,time; d=json.load(sys.stdin); print(json.dumps({\"ts\": time.time(), \"session\": d.get(\"session_id\"), \"tool\": d.get(\"tool_name\"), \"event\": d.get(\"hook_event_name\")}))' >> \"$dir/events.jsonl\"\nfi\nexit 0\n",
+   "kind": "create",
+   "note": "appends each tool call to .claude/telemetry/events.jsonl",
+   "mode": 493
+  },
+  {
+   "path": "<kitchen>/.claude/hooks/protect-files.sh",
+   "rel": ".claude/hooks/protect-files.sh",
+   "before": null,
+   "after": "#!/usr/bin/env bash\n# Blocking hook (PreToolUse on Edit/Write): refuses edits to protected files.\n# Added by Free Rein. Exit 2 blocks the edit and tells the agent why.\n# Protected paths, one glob per line: .claude/hooks/protected-paths.txt\n# To change a protected file on purpose, edit it yourself, or remove its line.\ninput=$(cat)\n# the edit's path, read with node or python3; if neither can read it, the edit is refused (never let through unread)\nfield() {\n  if command -v node >/dev/null 2>&1; then\n    node -e 'let s=\"\";process.stdin.on(\"data\",c=>s+=c).on(\"end\",()=>{const d=JSON.parse(s);console.log((d.tool_input||{}).file_path||\"\")})'\n  elif command -v python3 >/dev/null 2>&1; then\n    python3 -c 'import json,sys; d=json.load(sys.stdin); print((d.get(\"tool_input\") or {}).get(\"file_path\") or \"\")'\n  else return 1; fi\n}\npath=$(printf '%s' \"$input\" | field) || { echo \"Blocked by .claude/hooks/protect-files.sh: couldn't read which file this edit is for (it needs node or python3).\" >&2; exit 2; }\n[ -z \"$path\" ] && exit 0\nrel=\"${path#\"$CLAUDE_PROJECT_DIR\"/}\"\nlist=\"$CLAUDE_PROJECT_DIR/.claude/hooks/protected-paths.txt\"\n[ -f \"$list\" ] || exit 0\nwhile IFS= read -r glob; do\n  case \"$glob\" in ''|'#'*) continue ;; esac\n  case \"$rel\" in $glob)\n    echo \"Blocked by .claude/hooks/protect-files.sh: $rel is protected ($glob). Ask the person to change it, or to remove the rule.\" >&2\n    exit 2 ;;\n  esac\ndone < \"$list\"\nexit 0\n",
+   "kind": "create",
+   "note": "a hook that refuses edits to protected files",
+   "mode": 493
+  },
+  {
+   "path": "<kitchen>/.claude/hooks/protected-paths.txt",
+   "rel": ".claude/hooks/protected-paths.txt",
+   "before": null,
+   "after": "# Files the agent may not edit on its own (Free Rein's blocking hook).\n.env\n.env.*\n*.pem\n*.key\nsecrets/*\nvault/*\n",
+   "kind": "create",
+   "note": "which files it protects; edit freely",
+   "mode": null
+  },
+  {
+   "path": "<kitchen>/.claude/settings.json",
+   "rel": ".claude/settings.json",
+   "before": "{\n  \"model\": \"opusplan\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"café 🎉 ünïcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+   "after": "{\n  \"model\": \"haiku\",\n  \"availableModels\": [\n    \"sonnet\",\n    \"llama3.2:1b\"\n  ],\n  \"outputStyle\": \"Explanatory\",\n  \"attribution\": {\n    \"commit\": \"\"\n  },\n  \"skillOverrides\": {\n    \"simplify\": \"off\"\n  },\n  \"deniedMcpServers\": [\n    \"claude.ai Gmail\"\n  ],\n  \"autoMode\": {\n    \"environment\": [\n      \"trusted\"\n    ]\n  },\n  \"statusLine\": {\n    \"type\": \"command\",\n    \"command\": \"echo cost\"\n  },\n  \"enabledPlugins\": {\n    \"ts-lsp@market\": true,\n    \"off@market\": false\n  },\n  \"env\": {\n    \"CLAUDE_CODE_SUBAGENT_MODEL\": \"haiku\",\n    \"GREETING\": \"caf\\u00e9 \\ud83c\\udf89 \\u00fcn\\u00efcode\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"ANTHROPIC_BASE_URL\": \"http://localhost:4000\"\n  },\n  \"sandbox\": {\n    \"enabled\": true,\n    \"network\": {\n      \"allowedDomains\": [\n        \"example.com\"\n      ]\n    },\n    \"filesystem\": {\n      \"denyRead\": [\n        \"~/.ssh\"\n      ]\n    }\n  },\n  \"permissions\": {\n    \"defaultMode\": \"plan\",\n    \"allow\": [\n      \"Bash(npm test)\",\n      \"WebFetch(domain:example.com)\",\n      \"Bash(npm run typecheck)\",\n      \"Bash(make lint)\",\n      \"Bash(make test)\"\n    ],\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Bash(git push --force)\",\n      \"Read(./.env.*)\"\n    ],\n    \"ask\": [\n      \"WebFetch\",\n      \"Bash(git push)\",\n      \"Bash(npm publish:*)\",\n      \"Bash(git push:*)\",\n      \"Bash(rm -rf:*)\"\n    ]\n  },\n  \"hooks\": {\n    \"PreToolUse\": [\n      {\n        \"matcher\": \"Edit|Write\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard.sh\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Skill\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/log-skill.sh\"\n          },\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 scripts/validate_skills.py\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"Edit|Write|MultiEdit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/protect-files.sh\\\"\"\n          }\n        ]\n      }\n    ],\n    \"PostToolUse\": [\n      {\n        \"matcher\": \"Edit\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"npx prettier --write .\"\n          }\n        ]\n      },\n      {\n        \"matcher\": \"*\",\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/log-event.sh\\\"\"\n          }\n        ]\n      }\n    ],\n    \"Stop\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"bash .claude/hooks/done.sh\"\n          }\n        ]\n      },\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"\\\"$CLAUDE_PROJECT_DIR/.claude/hooks/check-on-stop.sh\\\"\"\n          }\n        ]\n      }\n    ],\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"python3 .claude/hooks/start.py\"\n          }\n        ]\n      }\n    ],\n    \"Notification\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"say done\"\n          }\n        ]\n      }\n    ],\n    \"PreCompact\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"git stash\"\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+   "kind": "replace",
+   "note": "registers it after every tool call; your calls: 1 ask rule; the main model: haiku",
+   "mode": null
+  },
+  {
+   "path": "<kitchen>/CLAUDE.md",
+   "rel": "CLAUDE.md",
+   "before": "# Kitchen 🍳 harness\n\nA sample harness with one of everything, for Free Rein's tests. Café rules apply.\n\nStart here: docs/map-schema.md and ARCHITECTURE.md.\n@docs/extra.md\n\n## Compact instructions\n\nKeep the plan.\n\n- Never push to main without a review.\n- Always run /review-work before /commit-it.\n- Don't edit vault/decisions.md directly; it is gated.\n- Use `lib/tools.py` for exports.\n- Stop.\n- Never publish a package.\n- Never edit `vault/notes/` without asking first.\n- Always ask before you write to the vault.\n",
+   "after": "# Kitchen 🍳 harness\n\nA sample harness with one of everything, for Free Rein's tests. Café rules apply.\n\nStart here: docs/map-schema.md and ARCHITECTURE.md.\n@docs/extra.md\n\n## Compact instructions\n\nKeep the plan.\n\n- Never push to main without a review.\n- Always run /review-work before /commit-it.\n- Don't edit vault/decisions.md directly; it is gated.\n- Use `lib/tools.py` for exports.\n- Stop.\n- Never publish a package.\n- Never edit `vault/notes/` without asking first.\n- Always ask before you write to the vault.\n\n## Progress\n\nRead `progress.md` at the start of every session. Before you finish, update it: what you did, what's in progress, and what's next.\n\n## Ending a session\n\nBefore you finish, rewrite `handoff.md`: what was asked, what you did, which files changed, and what's left open.\n",
+   "kind": "replace",
+   "note": "tells the agent to write it",
+   "mode": null
+  },
+  {
+   "path": "<kitchen>/handoff.md",
+   "rel": "handoff.md",
+   "before": null,
+   "after": "# Handoff\n\nThe last session's receipt. Replace it at the end of each session.\n\n- **Asked:** \n- **Done:** \n- **Changed:** \n- **Left open:** \n",
+   "kind": "create",
+   "note": "a receipt the agent writes at the end of each session",
+   "mode": null
+  }
+ ],
+ "applied": [
+  "hard-gate",
+  "completion-check",
+  "permissions",
+  "event-log",
+  "independent-checker",
+  "progress-log",
+  "receipts"
+ ],
+ "requested": [
+  "proj-instructions"
+ ],
+ "requests": {
+  "proj-instructions": "Add **Project instructions** to this repo's agent harness.\n\nWhat it is: Standing rules for this repo: commits, vault rules, naming.\nHow Claude Code does it: CLAUDE.md at the repo root; AGENTS.md only when there is no CLAUDE.md (from 2.1.277), which instructionFiles changes.\n\nBefore writing anything, show me the plan and the diff, and wait for my yes.\nAfterwards Free Rein will read the harness again and check the change to Project instructions."
+ }
+}

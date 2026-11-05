@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "watch",
+      "dependsOn": ["watch: code", "watch: board"],
+      "dependsOrder": "parallel",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "watch: code",
+      "type": "npm",
+      "script": "watch",
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": { "reveal": "never" }
+    },
+    {
+      "label": "watch: board",
+      "type": "shell",
+      "command": "node scripts/watch-board.mjs",
+      "isBackground": true,
+      "problemMatcher": { "pattern": { "regexp": "^x^" }, "background": { "activesBegin": "^watching", "endsPattern": "^board:" } },
+      "presentation": { "reveal": "never" }
+    },
+    {
+      "label": "scratch copy",
+      "type": "shell",
+      "command": "node scripts/scratch.mjs",
+      "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "watch + scratch",
+      "dependsOn": ["scratch copy", "watch"],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    }
+  ]
+}

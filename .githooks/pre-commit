@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Before each commit: what's staged must hold no secrets, no private words, no home-folder paths, no huge files,
+# and CATALOG.md must match its JSON. Fast (a few seconds). Skip once, knowingly: git commit --no-verify.
+# .github/workflows/checks.yml runs the same checks on GitHub, where they can't be skipped.
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel)"
+fail=0
+say() { printf '  %s\n' "$*" >&2; }
+bad() { printf 'pre-commit: %s\n' "$*" >&2; fail=1; }
+
+# what's staged (added, copied, changed, renamed), as git will store it
+staged=()
+while IFS= read -r -d '' f; do staged+=("$f"); done < <(git diff --cached --name-only -z --diff-filter=ACMR)
+[ ${#staged[@]} -eq 0 ] && exit 0
+
+# 1. secrets (gitleaks: brew install gitleaks); CI scans too, so a missing gitleaks only warns
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --redact --no-banner --log-level error -v . || bad "gitleaks found something that looks like a secret (above)"
+else
+  say "note: gitleaks isn't installed, so secrets weren't checked here (brew install gitleaks)"
+fi
+
+# 2. private words: your own list, outside the repo (git config freeRein.privateNames /path/to/list; never committed)
+list="$(git config --get freeRein.privateNames || true)"
+if [ -n "$list" ] && [ -f "$list" ]; then
+  pattern="$(grep -v '^#' "$list" | grep -v '^$' | paste -sd'|' -)"
+  for f in "${staged[@]}"; do
+    hits="$(git show ":$f" 2>/dev/null | grep -IinE "$pattern" | head -3 || true)"
+    [ -n "$hits" ] && { bad "private words in $f:"; printf '%s\n' "$hits" | cut -c1-160 | sed 's/^/    /' >&2; }
+  done
+fi
+
+# 3. a path into someone's home folder (/Users/<name>/, /home/<name>/): machine-specific, and it names a person
+for f in "${staged[@]}"; do
+  hits="$(git show ":$f" 2>/dev/null | grep -InE '(/Users|/home)/[A-Za-z][A-Za-z0-9._-]*/' | head -3 || true)"
+  [ -n "$hits" ] && { bad "a home-folder path in $f:"; printf '%s\n' "$hits" | cut -c1-160 | sed 's/^/    /' >&2; }
+done
+
+# 4. huge files (over 2 MB): build output or data that belongs elsewhere
+for f in "${staged[@]}"; do
+  size=$(git cat-file -s ":$f" 2>/dev/null || echo 0)
+  [ "$size" -gt 2097152 ] && bad "$f is $((size / 1048576)) MB: is it meant to be in git?"
+done
+
+# 5. CATALOG.md is rendered from catalog.json, never edited by hand
+if printf '%s\n' "${staged[@]}" | grep -q '^model/parts/'; then
+  node model/parts/render.mjs --check >/dev/null || bad "model/parts/CATALOG.md doesn't match catalog.json: run node model/parts/render.mjs"
+fi
+
+[ $fail -eq 0 ] || { say "nothing was committed. Fix the above, or commit with --no-verify if you're sure."; exit 1; }

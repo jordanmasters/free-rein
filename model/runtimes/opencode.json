@@ -1,0 +1,551 @@
+{
+  "schema": "free-rein.runtime/1",
+  "id": "opencode",
+  "name": "OpenCode",
+  "opacity": "open source",
+  "transparency": "open",
+  "license": "MIT",
+  "provides": [
+    "subagent-runtime"
+  ],
+  "version_checked": "v1.19.2",
+  "checked_on": "2026-10-15",
+  "sources": {
+    "rules": {
+      "title": "OpenCode rules",
+      "url": "https://opencode.ai/docs/rules/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-03",
+        "note": "checked 2026-10-03"
+      }
+    },
+    "skills": {
+      "title": "OpenCode skills",
+      "url": "https://opencode.ai/docs/skills/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-03",
+        "note": "checked 2026-10-03"
+      }
+    },
+    "commands": {
+      "title": "OpenCode commands",
+      "url": "https://opencode.ai/docs/commands/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-03",
+        "note": "checked 2026-10-03"
+      }
+    },
+    "tools": {
+      "title": "OpenCode tools",
+      "url": "https://opencode.ai/docs/tools/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-03",
+        "note": "checked 2026-10-03"
+      }
+    },
+    "mcp": {
+      "title": "OpenCode MCP servers",
+      "url": "https://opencode.ai/docs/mcp-servers/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-03",
+        "note": "checked 2026-10-03"
+      }
+    },
+    "agents": {
+      "title": "OpenCode agents",
+      "url": "https://opencode.ai/docs/agents/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "permissions": {
+      "title": "OpenCode permissions",
+      "url": "https://opencode.ai/docs/permissions/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "config": {
+      "title": "OpenCode config",
+      "url": "https://opencode.ai/docs/config/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "formatters": {
+      "title": "OpenCode docs: Formatters",
+      "url": "https://opencode.ai/docs/formatters/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "1.18.35",
+        "note": "v1.18.35 (GitHub release, 2026-10-06)"
+      }
+    },
+    "lsp": {
+      "title": "OpenCode docs: LSP Servers",
+      "url": "https://opencode.ai/docs/lsp/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "1.18.35",
+        "note": "v1.18.35 (GitHub release, 2026-10-06)"
+      }
+    },
+    "cli": {
+      "title": "OpenCode docs: CLI",
+      "url": "https://opencode.ai/docs/cli/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "1.18.35",
+        "note": "v1.18.35 (GitHub release, 2026-10-06)"
+      }
+    },
+    "troubleshooting": {
+      "title": "OpenCode docs: Troubleshooting",
+      "url": "https://opencode.ai/docs/troubleshooting/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "tui": {
+      "title": "OpenCode docs: TUI",
+      "url": "https://opencode.ai/docs/tui/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "1.18.35",
+        "note": "v1.18.35 (GitHub release, 2026-10-06)"
+      }
+    },
+    "github": {
+      "title": "OpenCode docs: GitHub",
+      "url": "https://opencode.ai/docs/github/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "1.18.35",
+        "note": "v1.18.35 (GitHub release, 2026-10-06)"
+      }
+    },
+    "plugins": {
+      "title": "OpenCode docs: Plugins",
+      "url": "https://opencode.ai/docs/plugins/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "security": {
+      "title": "Security policy",
+      "url": "https://github.com/anomalyco/opencode/blob/dev/SECURITY.md",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "releases": {
+      "title": "Releases",
+      "url": "https://github.com/anomalyco/opencode/releases",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "source-1192": {
+      "title": "OpenCode source at v1.19.2",
+      "url": "https://github.com/anomalyco/opencode/tree/v1.19.2",
+      "kind": "source",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "v1.19.2",
+        "note": "OpenCode v1.19.2, read 2026-10-15"
+      }
+    },
+    "models": {
+      "title": "OpenCode models",
+      "url": "https://opencode.ai/docs/models/",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; page last updated 2026-11-02"
+      }
+    }
+  },
+  "run_modes": {
+    "modes": [
+      {
+        "id": "build",
+        "name": "Build agent",
+        "level": "all",
+        "note": "almost every tool is allowed until a permission rule says ask or deny"
+      },
+      {
+        "id": "plan",
+        "name": "Plan agent",
+        "level": "read-only",
+        "note": "edits and commands ask"
+      }
+    ],
+    "default": "build",
+    "status": "confirmed",
+    "source": "permissions"
+  },
+  "sandbox": {
+    "default": "none",
+    "how": "none: permissions are a convenience, not a boundary",
+    "status": "confirmed",
+    "source": "security"
+  },
+  "answers": {
+    "proj-instructions": {
+      "how": "AGENTS.md at the repo root; falls back to CLAUDE.md",
+      "status": "confirmed",
+      "source": "rules"
+    },
+    "personal-instructions": {
+      "how": "~/.config/opencode/AGENTS.md",
+      "status": "confirmed",
+      "source": "rules"
+    },
+    "folder-instructions": {
+      "how": "AGENTS.md applies to its directory tree, found by walking up; the instructions key adds files, globs and remote URLs (e.g. packages/*/AGENTS.md); @file refs in AGENTS.md are not auto-loaded",
+      "status": "confirmed",
+      "source": "rules"
+    },
+    "live-injection": {
+      "how": "A plugin hook that changes the system prompt or the message (experimental.chat.system.transform, chat.message)",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "contracts": {
+      "how": "Files listed under instructions in opencode.json",
+      "status": "believed",
+      "source": "rules"
+    },
+    "modes": {
+      "how": "Primary agents (Build, Plan) switched with Tab",
+      "status": "confirmed",
+      "source": "agents"
+    },
+    "plan-first": {
+      "how": "Built-in Plan agent: edits and shell commands default to ask, so it analyses and proposes without changing code",
+      "status": "confirmed",
+      "source": "agents"
+    },
+    "commands": {
+      "how": "Markdown prompt files in .opencode/commands/ or ~/.config/opencode/commands/ (or the command config key), run as /name with $ARGUMENTS",
+      "status": "confirmed",
+      "source": "commands"
+    },
+    "git-workflow": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "review-workflow": {
+      "how": "No built-in review agent locally (docs show custom read-only reviewer agents); the GitHub workflow reviews a PR by default when it runs on pull_request with no prompt",
+      "status": "confirmed",
+      "source": "github"
+    },
+    "skills": {
+      "how": ".opencode/skills, also .claude/skills and .agents/skills",
+      "status": "confirmed",
+      "source": "skills"
+    },
+    "mcp": {
+      "how": "mcp in opencode.json, local or remote",
+      "status": "confirmed",
+      "source": "mcp"
+    },
+    "plugins": {
+      "how": "JS/TS plugins from .opencode/plugins/ or npm packages in the plugin key; they add hooks and tools (bundling skills or MCP is not described)",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "web": {
+      "how": "webfetch built in; websearch with the OpenCode provider or a flag",
+      "status": "confirmed",
+      "source": "tools"
+    },
+    "connected-accounts": {
+      "how": "Only through remote MCP servers, which support OAuth sign-in; no ready-made mail/calendar/drive connectors",
+      "status": "believed",
+      "source": "mcp"
+    },
+    "subagents": {
+      "how": "Built-in General, Explore, Scout; custom in .opencode/agents",
+      "status": "confirmed",
+      "source": "agents"
+    },
+    "orchestration": {
+      "how": "Subagents called with @name, nested 1 deep by default (subagent_depth); background subagents are still experimental",
+      "status": "believed",
+      "source": "config"
+    },
+    "autonomous-runs": {
+      "how": "No scheduling documented",
+      "status": "none"
+    },
+    "model-routing": {
+      "how": "model per agent and per command, plus small_model for light tasks; subagents inherit the caller's model if unset",
+      "status": "confirmed",
+      "source": "agents"
+    },
+    "installer": {
+      "how": "An install script",
+      "status": "believed"
+    },
+    "setup": {
+      "how": "A setup script the agent runs first",
+      "status": "believed"
+    },
+    "pins": {
+      "how": "A lockfile and a runtime version file in the repo",
+      "status": "confirmed"
+    },
+    "settings-split": {
+      "how": "Global ~/.config/opencode config for personal settings and a committable project opencode.json; no per-project personal (local) file documented",
+      "status": "believed",
+      "source": "config"
+    },
+    "env-keys": {
+      "how": "{env:VAR} and {file:path} substitution in config; provider keys stored by opencode auth in ~/.local/share/opencode/auth.json",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "managed-policy": {
+      "how": "Managed config in system directories or macOS MDM preferences overrides user and project config and cannot be overridden; a remote .well-known/opencode gives org defaults",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "permissions": {
+      "how": "permission in opencode.json (allow, ask, deny per tool; the last matching rule wins); almost everything is allowed by default; --auto approves anything set to ask, and headless runs refuse it",
+      "status": "confirmed",
+      "source": "permissions"
+    },
+    "hard-gate": {
+      "how": "A plugin whose permission.ask hook returns deny, or whose tool.execute.before stops the call",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "secrets-out": {
+      "how": "read permission denies *.env and *.env.* by default (allows *.env.example); more deny patterns can be added",
+      "status": "confirmed",
+      "source": "permissions"
+    },
+    "sandbox": {
+      "how": "None: its security policy says permissions are a convenience, not a boundary, and to use Docker or a VM",
+      "status": "none",
+      "source": "security"
+    },
+    "network-limits": {
+      "how": "No domain allowlist or sandbox; webfetch and websearch permissions can match URLs and queries with allow/ask/deny patterns",
+      "status": "believed",
+      "source": "permissions"
+    },
+    "spend-limits": {
+      "how": "Per-agent steps caps agent iterations; no cost or budget cap documented",
+      "status": "believed",
+      "source": "agents"
+    },
+    "human-gate": {
+      "how": "The question tool, and ask permissions",
+      "status": "confirmed",
+      "source": "tools"
+    },
+    "notifications": {
+      "how": "attention setting in tui.json gives desktop notifications and sounds for questions, permissions, errors and finished sessions (off by default); plugins can notify on session.idle",
+      "status": "confirmed",
+      "source": "tui"
+    },
+    "completion-check": {
+      "how": "A plugin on session end",
+      "status": "believed",
+      "source": "config"
+    },
+    "rewind": {
+      "how": "/undo and /redo revert or restore the last message and its file changes using Git; snapshot: false turns this off",
+      "status": "confirmed",
+      "source": "tui"
+    },
+    "check-commands": {
+      "how": "Scripts named in AGENTS.md",
+      "status": "confirmed"
+    },
+    "schema": {
+      "how": "Validators it runs",
+      "status": "confirmed"
+    },
+    "auto-fix": {
+      "how": "Formatters (off until enabled in config) run automatically after the agent writes or edits a file; plugins can also hook file.edited",
+      "status": "confirmed",
+      "source": "formatters"
+    },
+    "independent-checker": {
+      "how": "A reviewer agent in .opencode/agents",
+      "status": "believed",
+      "source": "agents"
+    },
+    "visual-check": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "harness-checker": {
+      "how": "Free Rein's checks (/address-findings), with an OpenCode adapter (not built)",
+      "status": "believed"
+    },
+    "criteria": {
+      "how": "A done_when field on each task, read from files",
+      "status": "confirmed"
+    },
+    "evals": {
+      "how": "An eval suite it runs",
+      "status": "believed"
+    },
+    "feedback": {
+      "how": "Logging plus a review step",
+      "status": "believed"
+    },
+    "event-log": {
+      "how": "Logs in ~/.local/share/opencode/log",
+      "status": "believed",
+      "source": "config"
+    },
+    "receipts": {
+      "how": "A plugin that writes a summary",
+      "status": "believed",
+      "source": "config"
+    },
+    "transcripts": {
+      "how": "Sessions and messages stored under ~/.local/share/opencode/project/<slug>/storage/; no automatic deletion documented",
+      "status": "confirmed",
+      "source": "troubleshooting"
+    },
+    "status-line": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "telemetry-export": {
+      "how": "No telemetry export documented",
+      "status": "none"
+    },
+    "cost-tracking": {
+      "how": "opencode stats shows token use and cost, filterable by days, model or project",
+      "status": "confirmed",
+      "source": "cli"
+    },
+    "session-state": {
+      "how": "Sessions saved and resumable",
+      "status": "confirmed",
+      "source": "config"
+    },
+    "task-list": {
+      "how": "Built-in todowrite tool tracks a task list during work; persistence not documented",
+      "status": "confirmed",
+      "source": "tools"
+    },
+    "saved-facts": {
+      "how": "No built-in memory documented",
+      "status": "none"
+    },
+    "progress-log": {
+      "how": "A progress file named in rules",
+      "status": "confirmed"
+    },
+    "session-recall": {
+      "how": "/sessions to list and switch, --continue / --session (with --fork) to resume, session list and export/import in the CLI; no search documented",
+      "status": "confirmed",
+      "source": "cli"
+    },
+    "knowledge-base": {
+      "how": "Markdown files in the repo",
+      "status": "confirmed"
+    },
+    "decisions": {
+      "how": "A decisions file in the repo",
+      "status": "confirmed"
+    },
+    "codebase-map": {
+      "how": "/init creates or updates AGENTS.md from the codebase; no separate architecture index",
+      "status": "believed",
+      "source": "tui"
+    },
+    "ontology": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "knowledge-graph": {
+      "how": "The same files and extractor",
+      "status": "believed"
+    },
+    "retrieval": {
+      "how": "An MCP search server",
+      "status": "confirmed",
+      "source": "mcp"
+    }
+  },
+  "models": {
+    "providers": "any",
+    "vendors": [
+      "OpenCode",
+      "OpenAI",
+      "Anthropic",
+      "and 75+ providers"
+    ],
+    "choices": [
+      {
+        "value": "anthropic/claude-sonnet-5-5",
+        "name": "Claude Sonnet 5.5",
+        "example": true
+      },
+      {
+        "value": "opencode/gpt-6.1-sol",
+        "name": "GPT 6.1 Sol (OpenCode)",
+        "example": true
+      },
+      {
+        "value": "lmstudio/google/gemma-3n-e4b",
+        "name": "Gemma 3n (LM Studio)",
+        "example": true
+      }
+    ],
+    "default": "the --model flag, else model in config, else the last one used",
+    "set_by": {
+      "file": "opencode.json",
+      "key": "model (provider_id/model_id)"
+    },
+    "how": "Runs models from any of 75+ connected providers, or local models; pick one with /models, --model or model in opencode.json.",
+    "status": "confirmed",
+    "source": "models",
+    "repo": {
+      "file": "opencode.json",
+      "format": "json",
+      "key": "model",
+      "source": "config"
+    }
+  }
+}

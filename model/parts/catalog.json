@@ -1,0 +1,501 @@
+{
+  "version": 1,
+  "note": "The parts bin. Each part is a ROLE, named independently of any runtime; `runtimes` records how a given runtime realizes it. `node_type` ties the part to model/graph-schema.md, which makes parts of the same type candidates for substitution. `provides` and `requires` are what make a swap checkable: a part may only be placed where its requirements are provided.",
+  "capabilities": {
+    "hook-runtime": "the runtime can execute a script on a tool-call event and act on its exit status",
+    "structured-prompt": "the runtime can render a fixed set of options for the human to select",
+    "subagent-runtime": "the runtime can delegate work to a separate context",
+    "schedule-runtime": "the runtime can fire work on a schedule",
+    "context-injection": "something places standing text into the model's context",
+    "routable-unit": "a named unit the runtime can route to or invoke",
+    "coordination-contract": "a protocol governing behavior across subsequent turns",
+    "effect-gate": "an interposition point on an effect path",
+    "substrate": "a stateful store the harness reads or writes",
+    "delegation": "work handed to a separate context or process",
+    "external-capability": "capability reached outside the runtime's built-ins",
+    "temporal-activation": "work triggered by time rather than by intent",
+    "sandbox": "an isolated place to act without touching the real workspace",
+    "binding": "configuration resolved at runtime into paths and values",
+    "trace": "an append-only record of what happened"
+  },
+  "parts": [
+    {
+      "id": "project-constitution",
+      "node_type": "surface",
+      "role": "standing instructions injected at session start",
+      "provides": [
+        "context-injection"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "CLAUDE.md",
+          "verified": true
+        },
+        "codex": {
+          "realization": "AGENTS.md",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "user-constitution",
+      "node_type": "surface",
+      "role": "cross-project standing instructions",
+      "provides": [
+        "context-injection"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "~/.claude/CLAUDE.md",
+          "verified": true
+        },
+        "codex": {
+          "realization": "~/.codex/AGENTS.md",
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "injected-banner",
+      "node_type": "surface",
+      "role": "per-prompt context injected by infrastructure",
+      "provides": [
+        "context-injection"
+      ],
+      "requires": [
+        "hook-runtime"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": "UserPromptSubmit hook stdout",
+          "verified": true
+        },
+        "codex": {
+          "realization": "UserPromptSubmit or SessionStart hook adding context",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "persistent-memory",
+      "node_type": "surface",
+      "role": "facts that survive across sessions",
+      "provides": [
+        "context-injection"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "memory directory",
+          "verified": true
+        },
+        "codex": {
+          "realization": "memories, off by default (features.memories)",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "skill",
+      "node_type": "unit",
+      "role": "routable unit: routing signal plus body, loaded on match",
+      "provides": [
+        "routable-unit"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": ".claude/skills/<name>/SKILL.md",
+          "verified": true
+        },
+        "codex": {
+          "realization": "skills, configured under skills.* in config.toml",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "slash-command",
+      "node_type": "unit",
+      "role": "manually invoked unit",
+      "provides": [
+        "routable-unit"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "/<skill-name>",
+          "verified": true
+        },
+        "codex": {
+          "realization": "/<prompt-name>",
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "engine-protocol",
+      "node_type": "contract",
+      "role": "behavioral contract loaded once, governing subsequent turns",
+      "provides": [
+        "coordination-contract"
+      ],
+      "requires": [
+        "context-injection"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": "engines/<name>/PROTOCOL.md",
+          "verified": true
+        },
+        "codex": {
+          "realization": null,
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "event-hook-gate",
+      "node_type": "gate",
+      "role": "deterministic interception of a tool call before it runs",
+      "imparts": {
+        "verifier": "deterministic",
+        "binding": "blocking",
+        "locus": "infrastructure"
+      },
+      "provides": [
+        "effect-gate"
+      ],
+      "requires": [
+        "hook-runtime"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": "PreToolUse hook with non-zero exit",
+          "verified": true
+        },
+        "codex": {
+          "realization": "PreToolUse hook in config.toml or hooks.json (refusal not confirmed)",
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "permission-policy",
+      "node_type": "gate",
+      "role": "declarative allow / deny / ask on tool use",
+      "imparts": {
+        "verifier": "structural",
+        "binding": "blocking",
+        "locus": "infrastructure"
+      },
+      "provides": [
+        "effect-gate"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "settings.json permissions",
+          "verified": true
+        },
+        "codex": {
+          "realization": "approval modes",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "human-checkpoint",
+      "node_type": "gate",
+      "role": "explicit human sign-off, requested in prose",
+      "imparts": {
+        "verifier": "human",
+        "binding": "blocking",
+        "locus": "model"
+      },
+      "provides": [
+        "effect-gate"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "approval language in a skill or protocol",
+          "verified": true
+        },
+        "codex": {
+          "realization": "approval language in a prompt",
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "structured-checkpoint",
+      "node_type": "gate",
+      "role": "human sign-off rendered as selectable options",
+      "imparts": {
+        "verifier": "human",
+        "binding": "blocking",
+        "locus": "model"
+      },
+      "provides": [
+        "effect-gate"
+      ],
+      "requires": [
+        "structured-prompt"
+      ],
+      "falls_back_to": "human-checkpoint",
+      "runtimes": {
+        "claude-code": {
+          "realization": "AskUserQuestion",
+          "verified": true
+        },
+        "codex": {
+          "realization": null,
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "authoritative-store",
+      "node_type": "substrate",
+      "role": "human-curated store of record; writes are gated",
+      "provides": [
+        "substrate"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "plain markdown vault",
+          "verified": true
+        },
+        "codex": {
+          "realization": "plain markdown vault",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "session-state",
+      "node_type": "substrate",
+      "role": "foreground state carried across turns",
+      "provides": [
+        "substrate"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": ".claude/state/",
+          "verified": true
+        },
+        "codex": {
+          "realization": "SessionStart / SessionEnd hooks keeping a state file",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "subagent",
+      "node_type": "executor",
+      "role": "delegated work in a separate context with its own tools",
+      "provides": [
+        "delegation"
+      ],
+      "requires": [
+        "subagent-runtime"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": ".claude/agents/<name>.md",
+          "verified": true
+        },
+        "codex": {
+          "realization": "custom agents under agents.* in config.toml",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "tool-extension",
+      "node_type": "executor",
+      "role": "capabilities beyond the runtime's built-ins",
+      "provides": [
+        "external-capability"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "MCP server",
+          "verified": true
+        },
+        "codex": {
+          "realization": "MCP server",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "scheduled-run",
+      "node_type": "executor",
+      "role": "work fired on a schedule",
+      "provides": [
+        "temporal-activation"
+      ],
+      "requires": [
+        "schedule-runtime"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": "scheduled cloud agents",
+          "verified": true
+        },
+        "codex": {
+          "realization": null,
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "self-paced-loop",
+      "node_type": "executor",
+      "role": "recurrence the model paces itself",
+      "provides": [
+        "temporal-activation"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "/loop",
+          "verified": true
+        },
+        "codex": {
+          "realization": null,
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "orchestration",
+      "node_type": "executor",
+      "role": "deterministic multi-agent script",
+      "provides": [
+        "delegation"
+      ],
+      "requires": [
+        "subagent-runtime"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": "Workflow scripts",
+          "verified": true
+        },
+        "codex": {
+          "realization": "parallel subagent workflows; no scripted orchestration documented",
+          "verified": false
+        }
+      }
+    },
+    {
+      "id": "isolation",
+      "node_type": "executor",
+      "role": "a separate working copy for an agent to act in",
+      "provides": [
+        "sandbox"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "git worktree",
+          "verified": true
+        },
+        "codex": {
+          "realization": "sandbox modes",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "runtime-binding",
+      "node_type": "config",
+      "role": "binds the harness to paths and settings at runtime",
+      "provides": [
+        "binding"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "settings.json, a framework's config",
+          "verified": true
+        },
+        "codex": {
+          "realization": "config.toml",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "telemetry-sink",
+      "node_type": "sink",
+      "role": "append-only record of what happened",
+      "provides": [
+        "trace"
+      ],
+      "requires": [
+        "hook-runtime"
+      ],
+      "runtimes": {
+        "claude-code": {
+          "realization": "JSONL written from hooks",
+          "verified": true
+        },
+        "codex": {
+          "realization": "hooks appending to a log",
+          "verified": true
+        }
+      }
+    },
+    {
+      "id": "proprietary-runtime",
+      "node_type": "black-box",
+      "role": "the runtime itself: system prompt, context management, built-in tool behavior",
+      "opacity": "proprietary",
+      "provides": [
+        "hook-runtime",
+        "structured-prompt",
+        "subagent-runtime",
+        "schedule-runtime"
+      ],
+      "requires": [],
+      "runtimes": {
+        "claude-code": {
+          "realization": "Claude Code",
+          "verified": true
+        },
+        "codex": {
+          "realization": "Codex",
+          "verified": true
+        }
+      }
+    }
+  ],
+  "runtime_checks": {
+    "claude-code": {
+      "version": "2.1.150",
+      "checked_on": "2026-10-01",
+      "transparency": "closed",
+      "basis": "observed in a running session"
+    },
+    "codex": {
+      "version": "rust-v0.160.0",
+      "checked_on": "2026-10-01",
+      "transparency": "open (Apache-2.0)",
+      "basis": "official configuration reference, hooks and subagents docs",
+      "sources": [
+        "https://learn.chatgpt.com/docs/config-file/config-reference",
+        "https://developers.openai.com/codex/hooks",
+        "https://developers.openai.com/codex/subagents"
+      ]
+    }
+  }
+}

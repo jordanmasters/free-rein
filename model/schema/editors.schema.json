@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "free-rein.editors/1",
+  "title": "Editors' customization views: their sections, scopes and agents, mapped to Free Rein's kinds and runtimes",
+  "type": "object",
+  "required": ["editors"],
+  "properties": {
+    "editors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "view", "version_checked", "checked_on", "source", "harnesses", "sections", "scopes"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+          "checked_on": {"type": "string", "format": "date"},
+          "source": {
+            "type": "object",
+            "required": ["kind", "title"],
+            "properties": {"kind": {"enum": ["official", "observed", "forum"]}, "url": {"type": "string", "format": "uri"}},
+            "if": {"properties": {"kind": {"enum": ["official", "forum"]}}},
+            "then": {"required": ["url"]}
+          },
+          "harnesses": {
+            "type": "array", "minItems": 1,
+            "items": {"type": "object", "required": ["id", "name", "runtime"]}
+          },
+          "sections": {
+            "type": "array", "minItems": 1,
+            "items": {
+              "type": "object", "required": ["kind", "name", "pieces"],
+              "properties": {
+                "kind": {"enum": ["instructions", "skills", "commands", "agents", "hooks", "mcp", "plugins"]},
+                "pieces": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"}}
+              }
+            }
+          },
+          "scopes": {
+            "type": "object",
+            "required": ["project", "local", "user", "org", "plugin"],
+            "additionalProperties": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

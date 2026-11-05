@@ -1,0 +1,808 @@
+{
+  "schema": "free-rein.runtime/1",
+  "id": "cursor",
+  "name": "Cursor",
+  "opacity": "black box",
+  "transparency": "closed",
+  "license": "proprietary",
+  "provides": [
+    "hook-runtime",
+    "subagent-runtime",
+    "schedule-runtime"
+  ],
+  "version_checked": "3.24.12",
+  "checked_on": "2026-10-15",
+  "sources": {
+    "third-party-hooks": {
+      "title": "Third Party Hooks",
+      "url": "https://cursor.com/docs/reference/third-party-hooks",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "version": "3.24.12",
+        "note": "Claude Code hooks from .claude/settings.local.json, .claude/settings.json and ~/.claude/settings.json run when Third-Party Imports is on (the default); Notification and PermissionRequest are not supported"
+      }
+    },
+    "claude-md": {
+      "title": "Cursor forum: .claude project level rules not loaded with the include third-party toggle enabled",
+      "url": "https://forum.cursor.com/t/claude-project-level-rules-not-loaded-with-the-include-third-party-toggle-enabled/157087",
+      "kind": "forum",
+      "checked": {
+        "on": "2026-10-13",
+        "version": "3.24.12",
+        "note": "Cursor staff reply: the third-party toggle picks up CLAUDE.md and .claude/skills, not .claude/rules. Matches Customize → Rules in 3.24.12, which lists every CLAUDE.md in the repo and ~/.claude/CLAUDE.md"
+      }
+    },
+    "rules": {
+      "title": "Cursor rules",
+      "url": "https://cursor.com/docs/context/rules",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "note": "Cursor 3.24, read 2026-10-15"
+      }
+    },
+    "skills": {
+      "title": "Cursor skills",
+      "url": "https://cursor.com/docs/context/skills",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "tools": {
+      "title": "Cursor agent tools",
+      "url": "https://cursor.com/docs/agent/tools",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "mcp": {
+      "title": "Cursor MCP",
+      "url": "https://cursor.com/docs/context/mcp",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "hooks": {
+      "title": "Cursor hooks",
+      "url": "https://cursor.com/docs/hooks",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "version": "3.24.12",
+        "note": "sessionStart output takes additional_context; beforeSubmitPrompt output is only continue and user_message"
+      }
+    },
+    "subagents": {
+      "title": "Cursor subagents",
+      "url": "https://cursor.com/docs/subagents",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "note": "Cursor 3.24, read 2026-10-15"
+      }
+    },
+    "automations": {
+      "title": "Cursor cloud agent automations",
+      "url": "https://cursor.com/docs/cloud-agent/automations",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "runmodes": {
+      "title": "Cursor run modes",
+      "url": "https://cursor.com/docs/agent/security/run-modes",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "note": "Cursor 3.24, read 2026-10-15"
+      }
+    },
+    "bugbot": {
+      "title": "Cursor Bugbot",
+      "url": "https://cursor.com/docs/bugbot",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "changelog": {
+      "title": "Cursor changelog",
+      "url": "https://cursor.com/changelog",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "cli-github-actions": {
+      "title": "CLI in GitHub Actions",
+      "url": "https://cursor.com/docs/cli/github-actions",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "cli-changelog": {
+      "title": "CLI changelog",
+      "url": "https://cursor.com/docs/cli/changelog",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "ignore-files": {
+      "title": "Ignore files (help)",
+      "url": "https://cursor.com/help/customization/ignore-files",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "js-ts": {
+      "title": "JavaScript & TypeScript",
+      "url": "https://cursor.com/docs/configuration/languages/javascript-typescript",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "mcp-2026-10": {
+      "title": "Model Context Protocol (MCP)",
+      "url": "https://cursor.com/docs/mcp",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "changelog-1-6": {
+      "title": "Changelog 1.6: slash commands, summarization",
+      "url": "https://cursor.com/changelog/1-6",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "shared-transcripts": {
+      "title": "Shared transcripts (help)",
+      "url": "https://cursor.com/help/ai-features/shared-transcripts",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "skills-2026-10": {
+      "title": "Skills",
+      "url": "https://cursor.com/docs/skills",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "plan-mode": {
+      "title": "Plan Mode",
+      "url": "https://cursor.com/docs/agent/plan-mode",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "agent-review": {
+      "title": "Agent Review",
+      "url": "https://cursor.com/docs/agent/agent-review",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "browser": {
+      "title": "Browser tool",
+      "url": "https://cursor.com/docs/agent/tools/browser",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "agent-overview": {
+      "title": "Agent overview",
+      "url": "https://cursor.com/docs/agent/overview",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "cli-config": {
+      "title": "CLI configuration",
+      "url": "https://cursor.com/docs/cli/reference/configuration",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "spend-limits": {
+      "title": "Spend limits (help)",
+      "url": "https://cursor.com/help/account-and-billing/spend-limits",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "cli-slash": {
+      "title": "CLI slash commands",
+      "url": "https://cursor.com/docs/cli/reference/slash-commands",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "release-notes": {
+      "title": "Release notes",
+      "url": "https://cursor.com/docs/release-notes",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "url": "https://cursor.com/docs/plugins",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-06",
+        "version": "3.23",
+        "note": "Cursor 3.23 (release notes); CLI v2026.09.28; changelog entry 2026-10-06"
+      }
+    },
+    "prompting": {
+      "title": "Prompting and modes",
+      "url": "https://cursor.com/docs/agent/prompting",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "note": "Cursor 3.24, read 2026-10-15"
+      }
+    },
+    "models": {
+      "title": "Cursor models",
+      "url": "https://cursor.com/docs/models",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; the page states no version"
+      }
+    }
+  },
+  "run_modes": {
+    "modes": [
+      {
+        "id": "agent",
+        "name": "Agent",
+        "level": "follows",
+        "picker": "chat mode"
+      },
+      {
+        "id": "plan",
+        "name": "Plan",
+        "level": "read-only",
+        "picker": "chat mode",
+        "note": "writes only the plan, until you click Build"
+      },
+      {
+        "id": "debug",
+        "name": "Debug",
+        "level": "follows",
+        "picker": "chat mode",
+        "note": "Agent with a debugging routine"
+      },
+      {
+        "id": "multitask",
+        "name": "Multitask",
+        "level": "follows",
+        "picker": "chat mode",
+        "note": "Agent running subagents in parallel"
+      },
+      {
+        "id": "ask",
+        "name": "Ask",
+        "level": "read-only",
+        "picker": "chat mode"
+      },
+      {
+        "id": "allowlist",
+        "name": "Allowlist",
+        "level": "asks",
+        "picker": "run mode",
+        "note": "only allowlisted actions run; edits in the workspace never ask"
+      },
+      {
+        "id": "allowlist-sandbox",
+        "name": "Allowlist (with Sandbox)",
+        "level": "asks",
+        "picker": "run mode",
+        "note": "many commands run on their own inside the sandbox; allowlisted actions run"
+      },
+      {
+        "id": "auto-review",
+        "name": "Auto-Review (with Sandbox)",
+        "level": "checker",
+        "picker": "run mode"
+      },
+      {
+        "id": "unrestricted",
+        "name": "Run Everything (Unsandboxed)",
+        "level": "all",
+        "picker": "run mode"
+      }
+    ],
+    "default": [
+      "agent",
+      "auto-review"
+    ],
+    "default_note": "Agent; Auto-review is the run mode's default from 3.6",
+    "set_by": [
+      {
+        "file": ".cursor/cli.json",
+        "format": "json",
+        "key": "approvalMode"
+      },
+      {
+        "file": "~/.cursor/cli-config.json",
+        "format": "json",
+        "key": "approvalMode"
+      }
+    ],
+    "status": "confirmed",
+    "source": "runmodes"
+  },
+  "sandbox": {
+    "default": "on",
+    "how": "used where possible in Auto-review; off in Run Everything; sandbox.json",
+    "network": "denied, plus package registries",
+    "status": "confirmed",
+    "source": "runmodes"
+  },
+  "layers": {
+    "scopes": [
+      {
+        "id": "org",
+        "name": "Your organization",
+        "files": [
+          "team rules",
+          "MDM and team hooks"
+        ],
+        "status": "confirmed",
+        "source": "hooks"
+      },
+      {
+        "id": "project",
+        "name": "This repo, shared",
+        "files": [
+          ".cursor/rules/*.mdc",
+          "AGENTS.md",
+          "CLAUDE.md"
+        ],
+        "status": "confirmed",
+        "source": "rules"
+      },
+      {
+        "id": "user",
+        "name": "You, every repo",
+        "files": [
+          "user rules, kept in Cursor's settings"
+        ],
+        "readable": false,
+        "status": "confirmed",
+        "source": "rules"
+      }
+    ],
+    "folders": {
+      "how": "Nested AGENTS.md files apply to their subfolders; .mdc rules can be scoped by file glob",
+      "status": "confirmed",
+      "source": "rules"
+    }
+  },
+  "models": {
+    "providers": "several",
+    "vendors": [
+      "Cursor",
+      "Anthropic",
+      "OpenAI",
+      "Google",
+      "xAI",
+      "DeepSeek",
+      "Z.ai",
+      "Moonshot",
+      "Meta"
+    ],
+    "choices": [
+      {
+        "value": "auto",
+        "name": "Auto"
+      },
+      {
+        "value": "Composer 2.5",
+        "name": "Composer 2.5"
+      },
+      {
+        "value": "Claude Opus 5.5",
+        "name": "Claude Opus 5.5"
+      },
+      {
+        "value": "Claude Sonnet 5.5",
+        "name": "Claude Sonnet 5.5"
+      },
+      {
+        "value": "Claude Fable 5.1",
+        "name": "Claude Fable 5.1"
+      },
+      {
+        "value": "GPT-5.6 Sol",
+        "name": "GPT-5.6 Sol"
+      },
+      {
+        "value": "GPT-5.5",
+        "name": "GPT-5.5"
+      },
+      {
+        "value": "Gemini 4 Argon",
+        "name": "Gemini 4 Argon"
+      },
+      {
+        "value": "Gemini 3.8 Flash",
+        "name": "Gemini 3.8 Flash"
+      },
+      {
+        "value": "Grok 4.7",
+        "name": "Grok 4.7"
+      },
+      {
+        "value": "Kimi K3",
+        "name": "Kimi K3"
+      },
+      {
+        "value": "GLM 5.3",
+        "name": "GLM 5.3"
+      }
+    ],
+    "default": "not stated; Auto is the recommended everyday choice",
+    "set_by": {
+      "file": "the model picker in the chat (Cmd+/); CLI: --model"
+    },
+    "how": "Pick Auto, Cursor's own models, or Anthropic, OpenAI, Google, xAI and other vendors' models in the chat's picker (about 60 in all); you can also add your own OpenAI, Anthropic, Google, Azure OpenAI or Bedrock key for chat.",
+    "status": "confirmed",
+    "source": "models"
+  },
+  "answers": {
+    "proj-instructions": {
+      "how": ".cursor/rules/*.mdc, AGENTS.md at the repo root, and CLAUDE.md at the root (always applied)",
+      "status": "confirmed",
+      "source": "rules"
+    },
+    "personal-instructions": {
+      "how": "User rules in Cursor settings (Agent chat only)",
+      "status": "confirmed",
+      "source": "rules"
+    },
+    "folder-instructions": {
+      "how": "Nested AGENTS.md files apply to their subfolders; .mdc rules can be scoped by file glob",
+      "status": "confirmed",
+      "source": "rules"
+    },
+    "live-injection": {
+      "how": "A sessionStart hook (in hooks.json or Claude Code's settings) returns additional_context; beforeSubmitPrompt can only block a prompt",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "contracts": {
+      "how": "Rules applied by description or file globs",
+      "status": "believed",
+      "source": "rules"
+    },
+    "modes": {
+      "how": "Agent, Ask, Plan and Debug built in; the old custom modes are replaced by skills used as a mode",
+      "status": "confirmed",
+      "source": "prompting"
+    },
+    "plan-first": {
+      "how": "Plan Mode researches, asks questions and writes an editable plan before any code; Shift+Tab to switch",
+      "status": "confirmed",
+      "source": "plan-mode"
+    },
+    "commands": {
+      "how": "Markdown prompt files in .cursor/commands, run by typing / in Agent; skills can also be made explicit-only",
+      "status": "confirmed",
+      "source": "changelog-1-6"
+    },
+    "git-workflow": {
+      "how": "CLI config switches the 'Made with Cursor' commit trailer and PR footer on or off",
+      "status": "confirmed",
+      "source": "cli-config"
+    },
+    "review-workflow": {
+      "how": "Agent Review checks local changes (quick or deep, on demand or after commits); Bugbot reviews PRs",
+      "status": "confirmed",
+      "source": "agent-review"
+    },
+    "skills": {
+      "how": ".cursor/skills, .agents/skills or ~/.cursor/skills (SKILL.md); also Claude Code's and Codex's skill folders, in the repo and home",
+      "status": "confirmed",
+      "source": "skills-2026-10"
+    },
+    "mcp": {
+      "how": ".cursor/mcp.json or ~/.cursor/mcp.json",
+      "status": "confirmed",
+      "source": "mcp"
+    },
+    "plugins": {
+      "how": "Plugins bundle rules, skills, agents, commands, MCP servers and hooks; official and team marketplaces",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "web": {
+      "how": "Built-in web search and fetch",
+      "status": "confirmed",
+      "source": "tools"
+    },
+    "connected-accounts": {
+      "how": "Remote MCP servers and marketplace plugins sign in with OAuth; no named personal mail/calendar/drive connectors",
+      "status": "believed",
+      "source": "mcp-2026-10"
+    },
+    "subagents": {
+      "how": "Built-in Explore, Bash, Browser; custom in .cursor/agents",
+      "status": "confirmed",
+      "source": "subagents"
+    },
+    "orchestration": {
+      "how": "Subagents can start subagents two levels deep (from 2.5); /multitask runs them in parallel, each in its own worktree or cloud VM",
+      "status": "confirmed",
+      "source": "subagents"
+    },
+    "autonomous-runs": {
+      "how": "Cloud agent automations, scheduled or triggered",
+      "status": "confirmed",
+      "source": "automations"
+    },
+    "model-routing": {
+      "how": "Each custom subagent can name its own model in frontmatter (default inherits the parent's)",
+      "status": "confirmed",
+      "source": "subagents"
+    },
+    "installer": {
+      "how": "An install script",
+      "status": "believed"
+    },
+    "setup": {
+      "how": "A setup script, or .cursor/environment.json for cloud agents",
+      "status": "confirmed",
+      "source": "automations"
+    },
+    "pins": {
+      "how": "A lockfile and a runtime version file in the repo",
+      "status": "confirmed"
+    },
+    "settings-split": {
+      "how": "Checked-in project files under .cursor/ versus personal ones under ~/.cursor; no personal per-project file documented",
+      "status": "believed",
+      "source": "cli-config"
+    },
+    "env-keys": {
+      "how": "MCP config takes env, envFile and ${env:NAME} interpolation; cloud agents get secrets as env vars",
+      "status": "confirmed",
+      "source": "mcp-2026-10"
+    },
+    "managed-policy": {
+      "how": "Enterprise MDM hooks.json and team hooks take top priority; admins can enforce team rules and run-mode settings",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "permissions": {
+      "how": "Run modes: Auto-review (the default from 3.6: allowlisted calls run, a checker model judges the rest), Allowlist, or Run Everything; permissions.json holds terminal and MCP allowlists and instructions for the checker; Ask every time was deprecated in 3.5",
+      "status": "confirmed",
+      "source": "runmodes"
+    },
+    "hard-gate": {
+      "how": "A preToolUse or beforeShellExecution hook that exits 2, in hooks.json or Claude Code's settings.json",
+      "status": "confirmed",
+      "source": "third-party-hooks"
+    },
+    "secrets-out": {
+      "how": ".cursorignore blocks files from Agent (.env ignored by default); terminal and MCP can still read them; CLI Read() deny rules",
+      "status": "confirmed",
+      "source": "ignore-files"
+    },
+    "sandbox": {
+      "how": "Commands run in the sandbox where possible in Auto-review; optional in Allowlist, off in Run Everything; sandbox.json (network denied by default)",
+      "status": "confirmed",
+      "source": "runmodes"
+    },
+    "network-limits": {
+      "how": "Sandbox network: listed domains only, list plus defaults, or allow all; admins can set it team-wide",
+      "status": "confirmed",
+      "source": "runmodes"
+    },
+    "spend-limits": {
+      "how": "Monthly on-demand spend limits per user, team or group; AI stops for that user at the limit",
+      "status": "confirmed",
+      "source": "spend-limits"
+    },
+    "human-gate": {
+      "how": "Approval steps written into rules or skills; protections that ask even in automatic modes (file deletion, browser, files outside the workspace)",
+      "status": "confirmed",
+      "source": "runmodes"
+    },
+    "notifications": {
+      "how": "CLI 'notifications' setting alerts when the agent finishes or needs input",
+      "status": "confirmed",
+      "source": "cli-config"
+    },
+    "completion-check": {
+      "how": "A stop hook (in hooks.json or Claude Code's settings) whose followup_message, or a Claude-style block decision, sends it back",
+      "status": "confirmed",
+      "source": "third-party-hooks"
+    },
+    "rewind": {
+      "how": "Automatic local checkpoints before big changes; restore files from the chat timeline; CLI /rewind",
+      "status": "confirmed",
+      "source": "agent-overview"
+    },
+    "check-commands": {
+      "how": "Scripts in package.json or a Makefile, named in rules",
+      "status": "confirmed"
+    },
+    "schema": {
+      "how": "Validators it runs",
+      "status": "confirmed"
+    },
+    "auto-fix": {
+      "how": "afterFileEdit hook fires after Agent edits a file; docs use it to run a formatter",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "independent-checker": {
+      "how": "Bugbot PR review (off by default), or a reviewer subagent",
+      "status": "confirmed",
+      "source": "bugbot"
+    },
+    "visual-check": {
+      "how": "Browser tool is documented for testing apps and verifying visual changes with screenshots",
+      "status": "confirmed",
+      "source": "tools"
+    },
+    "harness-checker": {
+      "how": "Free Rein's checks (/address-findings), with a Cursor adapter (not built)",
+      "status": "believed"
+    },
+    "criteria": {
+      "how": "A done_when field on each task, read from files",
+      "status": "confirmed"
+    },
+    "evals": {
+      "how": "An eval suite it runs",
+      "status": "believed"
+    },
+    "feedback": {
+      "how": "Logging plus a review step",
+      "status": "believed"
+    },
+    "event-log": {
+      "how": "An afterFileEdit or postToolUse hook that appends to a log",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "receipts": {
+      "how": "A sessionEnd hook that writes a summary",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "transcripts": {
+      "how": "Shared transcripts live in the dashboard and can be deleted; local storage location and retention not documented",
+      "status": "believed",
+      "source": "shared-transcripts"
+    },
+    "status-line": {
+      "how": "CLI supports a custom statusLine command shown in the prompt footer",
+      "status": "confirmed",
+      "source": "cli-changelog"
+    },
+    "telemetry-export": {
+      "how": "No OpenTelemetry export documented for local use",
+      "status": "none"
+    },
+    "cost-tracking": {
+      "how": "CLI /usage shows plan usage and on-demand spend; team dashboard has usage pages",
+      "status": "confirmed",
+      "source": "cli-changelog"
+    },
+    "session-state": {
+      "how": "A state file kept by hooks",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "task-list": {
+      "how": "Agent keeps a to-do list it can read (mentioned in release notes); persistence not documented",
+      "status": "believed",
+      "source": "release-notes"
+    },
+    "saved-facts": {
+      "how": "Automation memories for cloud automations; none for local agents",
+      "status": "believed",
+      "source": "automations"
+    },
+    "progress-log": {
+      "how": "A progress file named in rules",
+      "status": "confirmed"
+    },
+    "session-recall": {
+      "how": "CLI /resume picks a past chat; Agents Window searches past transcripts",
+      "status": "confirmed",
+      "source": "cli-slash"
+    },
+    "knowledge-base": {
+      "how": "Markdown files in the repo",
+      "status": "confirmed"
+    },
+    "decisions": {
+      "how": "A decisions file in the repo",
+      "status": "confirmed"
+    },
+    "codebase-map": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "ontology": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "knowledge-graph": {
+      "how": "The same files and extractor",
+      "status": "believed"
+    },
+    "retrieval": {
+      "how": "An MCP search server",
+      "status": "confirmed",
+      "source": "mcp"
+    }
+  }
+}

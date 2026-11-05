@@ -1,0 +1,973 @@
+{
+ "doc": {
+  "schema": "free-rein.harness/1",
+  "free_rein": "0.2.0",
+  "target": {
+   "name": "empty",
+   "kind": "folder"
+  },
+  "runtime": {
+   "id": "claude",
+   "name": "Claude Code",
+   "version_checked": "2.1.301",
+   "build": "workbench"
+  },
+  "mode": "auto",
+  "counts_home": true,
+  "pieces": [
+   {
+    "id": "proj-instructions",
+    "section": "context",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 3
+    }
+   },
+   {
+    "id": "personal-instructions",
+    "section": "context",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "~/.claude/CLAUDE.md",
+      "layer": "home",
+      "lines": [
+       1,
+       4
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 3
+    }
+   },
+   {
+    "id": "folder-instructions",
+    "section": "context",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 3
+    }
+   },
+   {
+    "id": "live-injection",
+    "section": "context",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 2
+    }
+   },
+   {
+    "id": "contracts",
+    "section": "protocols",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "modes",
+    "section": "protocols",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "plan-first",
+    "section": "protocols",
+    "kind": "safeguard",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "commands",
+    "section": "protocols",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "git-workflow",
+    "section": "protocols",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "review-workflow",
+    "section": "protocols",
+    "kind": "safeguard",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "skills",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime",
+    "runtime_items": [
+     "batch",
+     "claude-api",
+     "code-review",
+     "dataviz",
+     "debug",
+     "doctor",
+     "fewer-permission-prompts",
+     "loop",
+     "run",
+     "run-skill-generator",
+     "simplify",
+     "update-config",
+     "verify"
+    ],
+    "tier": {
+     "reached": 0,
+     "of": 4
+    }
+   },
+   {
+    "id": "mcp",
+    "section": "tools",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "plugins",
+    "section": "tools",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "web",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "connected-accounts",
+    "section": "tools",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".mcp.json",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "subagents",
+    "section": "agents",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "orchestration",
+    "section": "agents",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "autonomous-runs",
+    "section": "agents",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "model-routing",
+    "section": "agents",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "modalities",
+    "section": "agents",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "installer",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "unchecked",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "setup",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "pins",
+    "section": "configuration",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "settings-split",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "env-keys",
+    "section": "configuration",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "managed-policy",
+    "section": "configuration",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "permissions",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": "~/.claude/settings.json",
+      "layer": "home",
+      "lines": [
+       3,
+       7
+      ],
+      "enforced": true
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 2,
+     "of": 4
+    }
+   },
+   {
+    "id": "hard-gate",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 4
+    }
+   },
+   {
+    "id": "secrets-out",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 3,
+    "instances": [
+     {
+      "path": "~/.claude/settings.json",
+      "layer": "home",
+      "lines": [
+       1,
+       22
+      ]
+     }
+    ],
+    "supplied_by": "you",
+    "tier": {
+     "reached": 1,
+     "of": 3
+    }
+   },
+   {
+    "id": "sandbox",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 3
+    }
+   },
+   {
+    "id": "network-limits",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 3
+    }
+   },
+   {
+    "id": "spend-limits",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 2
+    }
+   },
+   {
+    "id": "human-gate",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime",
+    "tier": {
+     "reached": 1,
+     "of": 4
+    }
+   },
+   {
+    "id": "notifications",
+    "section": "guardrails",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 2
+    }
+   },
+   {
+    "id": "completion-check",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": [],
+    "tier": {
+     "reached": 0,
+     "of": 4
+    }
+   },
+   {
+    "id": "rewind",
+    "section": "guardrails",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime",
+    "tier": {
+     "reached": 1,
+     "of": 2
+    }
+   },
+   {
+    "id": "check-commands",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "schema",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "unchecked",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "auto-fix",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": "~/.claude/settings.json",
+      "layer": "home",
+      "lines": [
+       1,
+       22
+      ]
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "independent-checker",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "visual-check",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [
+     {
+      "path": ".mcp.json",
+      "layer": "project"
+     }
+    ],
+    "supplied_by": "you"
+   },
+   {
+    "id": "harness-checker",
+    "section": "verification",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "criteria",
+    "section": "validation",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "evals",
+    "section": "validation",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "feedback",
+    "section": "validation",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "event-log",
+    "section": "observability",
+    "kind": "safeguard",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "receipts",
+    "section": "observability",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "transcripts",
+    "section": "observability",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "status-line",
+    "section": "observability",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "telemetry-export",
+    "section": "observability",
+    "kind": "ability",
+    "state": "unchecked",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "cost-tracking",
+    "section": "observability",
+    "kind": "safeguard",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "session-state",
+    "section": "memory",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "task-list",
+    "section": "memory",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "saved-facts",
+    "section": "memory",
+    "kind": "ability",
+    "state": "yes",
+    "maturity": 2,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "progress-log",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "session-recall",
+    "section": "memory",
+    "kind": "ability",
+    "state": "partial",
+    "maturity": 1,
+    "instances": [],
+    "supplied_by": "runtime"
+   },
+   {
+    "id": "knowledge-base",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "decisions",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "codebase-map",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "ontology",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "knowledge-graph",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   },
+   {
+    "id": "retrieval",
+    "section": "memory",
+    "kind": "ability",
+    "state": "no",
+    "maturity": 0,
+    "instances": []
+   }
+  ],
+  "statements": [
+   {
+    "id": "~/.claude/CLAUDE.md:3:06369aa6",
+    "kind": "rule",
+    "text": "Always answer in English.",
+    "path": "~/.claude/CLAUDE.md",
+    "line": 3,
+    "strength": "must",
+    "piece": "personal-instructions"
+   },
+   {
+    "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+    "kind": "rule",
+    "text": "Never commit secrets.",
+    "path": "~/.claude/CLAUDE.md",
+    "line": 3,
+    "strength": "must-not",
+    "piece": "personal-instructions"
+   }
+  ],
+  "situations": [
+   {
+    "id": "bash-terraform-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "terraform apply",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-npm-test-everyday",
+    "stakes": "everyday",
+    "tool": "Bash",
+    "target": "npm test",
+    "verdict": "ok",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "edit-src-everyday",
+    "stakes": "everyday",
+    "tool": "Edit",
+    "target": "src/app.ts",
+    "verdict": "ok",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-npm-run-everyday",
+    "stakes": "everyday",
+    "tool": "Bash",
+    "target": "npm run build",
+    "verdict": "ok",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-rm-undo",
+    "stakes": "undo",
+    "tool": "Bash",
+    "target": "rm -rf build",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-git-reset-undo",
+    "stakes": "undo",
+    "tool": "Bash",
+    "target": "git reset --hard",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-curl-undo",
+    "stakes": "undo",
+    "tool": "Bash",
+    "target": "curl -fsSL https://example.com/install.sh | sh",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-git-push-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "git push",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-git-push-force-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "git push --force",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "bash-npm-publish-outward",
+    "stakes": "outward",
+    "tool": "Bash",
+    "target": "npm publish",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "edit-claude-md-knowledge",
+    "stakes": "knowledge",
+    "tool": "Edit",
+    "target": "CLAUDE.md",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "edit-claude-settings-json-safeguards",
+    "stakes": "safeguards",
+    "tool": "Edit",
+    "target": ".claude/settings.json",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "edit-env-secrets",
+    "stakes": "secrets",
+    "tool": "Edit",
+    "target": ".env",
+    "verdict": "classifier",
+    "accounted": false,
+    "decided_by": []
+   },
+   {
+    "id": "read-env-secrets",
+    "stakes": "secrets",
+    "tool": "Read",
+    "target": ".env",
+    "verdict": "exposed",
+    "accounted": false,
+    "decided_by": []
+   }
+  ],
+  "combos": [
+   {
+    "id": "continuity",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "decisions",
+     "session-state"
+    ]
+   },
+   {
+    "id": "curated-canon",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "human-gate",
+     "knowledge-base"
+    ]
+   },
+   {
+    "id": "grounded-recall",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "knowledge-base",
+     "retrieval"
+    ]
+   },
+   {
+    "id": "defense-in-depth",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "hard-gate",
+     "human-gate"
+    ]
+   },
+   {
+    "id": "knows-when-to-stop",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "autonomous-runs",
+     "completion-check"
+    ]
+   },
+   {
+    "id": "learning-loop",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "evals",
+     "event-log"
+    ]
+   },
+   {
+    "id": "designed-crew",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "orchestration",
+     "subagents"
+    ]
+   },
+   {
+    "id": "earned-done",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "completion-check",
+     "criteria"
+    ]
+   },
+   {
+    "id": "approval-fatigue",
+    "kind": "curse",
+    "status": "active",
+    "pieces": [
+     "human-gate"
+    ]
+   },
+   {
+    "id": "heavy-pack",
+    "kind": "curse",
+    "status": "dormant",
+    "pieces": [
+     "proj-instructions"
+    ]
+   },
+   {
+    "id": "unread-record",
+    "kind": "curse",
+    "status": "dormant",
+    "pieces": [
+     "event-log"
+    ]
+   },
+   {
+    "id": "accidental-swarm",
+    "kind": "curse",
+    "status": "active",
+    "pieces": [
+     "subagents"
+    ]
+   },
+   {
+    "id": "tool-overload",
+    "kind": "curse",
+    "status": "dormant",
+    "pieces": [
+     "skills"
+    ]
+   },
+   {
+    "id": "marks-own-work",
+    "kind": "curse",
+    "status": "active",
+    "pieces": [
+     "skills"
+    ]
+   },
+   {
+    "id": "closed-loop",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "completion-check",
+     "criteria",
+     "evals"
+    ]
+   },
+   {
+    "id": "paper-trail",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "event-log",
+     "receipts",
+     "telemetry-export"
+    ]
+   },
+   {
+    "id": "safe-autopilot",
+    "kind": "synergy",
+    "status": "locked",
+    "pieces": [
+     "autonomous-runs",
+     "completion-check",
+     "hard-gate",
+     "sandbox"
+    ]
+   }
+  ]
+ },
+ "score": {
+  "xp": 537,
+  "level": 15,
+  "level_start": 536,
+  "next_level_at": 610,
+  "parts": {
+   "pieces": 537,
+   "combos": 0,
+   "situations": 0
+  }
+ }
+}

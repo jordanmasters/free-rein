@@ -1,0 +1,868 @@
+{
+  "schema": "free-rein.runtime/1",
+  "id": "copilot",
+  "name": "GitHub Copilot",
+  "opacity": "black box",
+  "transparency": "closed",
+  "license": "proprietary",
+  "provides": [
+    "hook-runtime",
+    "subagent-runtime"
+  ],
+  "version_checked": "VS Code 1.142; docs 2026-10-14",
+  "checked_on": "2026-10-15",
+  "note": "Agent mode in VS Code, the Copilot cloud agent, and the Copilot CLI share these formats; differences are noted per piece.",
+  "sources": {
+    "instructions": {
+      "title": "VS Code custom instructions",
+      "url": "https://code.visualstudio.com/docs/copilot/customization/custom-instructions",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "version": "1.141",
+        "note": "the Local agent reads CLAUDE.md, .claude/CLAUDE.md, ~/.claude/CLAUDE.md and CLAUDE.local.md while chat.useClaudeMdFile is on (the default); Agent Host harnesses follow their own rules"
+      }
+    },
+    "support": {
+      "title": "Copilot custom instructions support",
+      "url": "https://docs.github.com/en/copilot/reference/custom-instructions-support",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "Copilot CLI reads AGENTS.md, CLAUDE.md or GEMINI.md as agent instructions"
+      }
+    },
+    "skills": {
+      "title": "VS Code agent skills",
+      "url": "https://code.visualstudio.com/docs/copilot/customization/agent-skills",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "agents": {
+      "title": "VS Code custom agents",
+      "url": "https://code.visualstudio.com/docs/agent-customization/custom-agents",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "VS Code 1.142; docs 2026-10-14",
+        "note": "VS Code 1.142, read 2026-10-15"
+      }
+    },
+    "tools": {
+      "title": "VS Code agent tools",
+      "url": "https://code.visualstudio.com/docs/agents/agent-tools",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "hooks": {
+      "title": "VS Code agent hooks",
+      "url": "https://code.visualstudio.com/docs/agent-customization/hooks",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "VS Code 1.142; docs 2026-10-14",
+        "note": "VS Code 1.142, read 2026-10-15"
+      }
+    },
+    "cli-hooks": {
+      "title": "GitHub Copilot hooks reference",
+      "url": "https://docs.github.com/en/copilot/reference/hooks-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "Copilot CLI loads .github/hooks/*.json, ~/.copilot/hooks/*.json, hooks in .github/copilot/settings(.local).json and ~/.copilot/settings.json, plugins' hooks, and the repo's .claude/settings.json and .claude/settings.local.json (not ~/.claude/settings.json); PascalCase events (PreToolUse, PostToolUse, Stop, SubagentStop, SessionStart, SessionEnd, PreCompact) keep Claude's matcher rules; UserPromptSubmit can't change the prompt outside the SDK"
+      }
+    },
+    "mcp": {
+      "title": "VS Code MCP servers",
+      "url": "https://code.visualstudio.com/docs/agent-customization/mcp-servers",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "approvals": {
+      "title": "VS Code agent approvals",
+      "url": "https://code.visualstudio.com/docs/agents/approvals",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "VS Code 1.142; docs 2026-10-14",
+        "note": "VS Code 1.142, read 2026-10-15"
+      }
+    },
+    "sandbox": {
+      "title": "VS Code agent sandboxing",
+      "url": "https://code.visualstudio.com/docs/agents/run/agent-sandboxing",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "memory": {
+      "title": "VS Code agent memory",
+      "url": "https://code.visualstudio.com/docs/agents/run/memory",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "checkpoints": {
+      "title": "VS Code chat checkpoints",
+      "url": "https://code.visualstudio.com/docs/copilot/chat/chat-checkpoints",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "cloud": {
+      "title": "About Copilot cloud agent",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "risks": {
+      "title": "Copilot cloud agent risks and mitigations",
+      "url": "https://docs.github.com/en/copilot/concepts/security-governance-and-network-settings/risks-and-mitigations",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "review": {
+      "title": "Copilot code review",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/code-review",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "copilot-memory": {
+      "title": "Copilot Memory",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/copilot-memory",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "monitor": {
+      "title": "Monitor agentic activity",
+      "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/monitor-agentic-activity",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "env": {
+      "title": "Customize the cloud agent environment",
+      "url": "https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "checked 2026-10-13"
+      }
+    },
+    "policies": {
+      "title": "VS Code: enterprise policies",
+      "url": "https://code.visualstudio.com/docs/enterprise/policies",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "cli": {
+      "title": "About GitHub Copilot CLI",
+      "url": "https://docs.github.com/en/copilot/concepts/agents/copilot-cli/about-copilot-cli",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "prompts": {
+      "title": "VS Code: prompt files",
+      "url": "https://code.visualstudio.com/docs/agent-customization/prompt-files",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "exclusion": {
+      "title": "Copilot content exclusion",
+      "url": "https://docs.github.com/en/copilot/concepts/context/content-exclusion",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "aisettings": {
+      "title": "VS Code: AI settings reference",
+      "url": "https://code.visualstudio.com/docs/agents/reference/ai-settings",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "VS Code 1.142; docs 2026-10-14",
+        "note": "VS Code 1.142, read 2026-10-15"
+      }
+    },
+    "planning": {
+      "title": "VS Code: plan work",
+      "url": "https://code.visualstudio.com/docs/agents/run/planning",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "clicmd": {
+      "title": "Copilot CLI command reference",
+      "url": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-13",
+        "note": "Copilot CLI (no version number shown) reads instructions from AGENTS.md, CLAUDE.md and GEMINI.md at the git root and the working folder, .github/copilot-instructions.md, .github/instructions, .claude/rules and ~/.copilot; skills from .github/skills, .agents/skills, .claude/skills, ~/.copilot/skills and ~/.agents/skills; commands from .claude/commands; agents from .github/agents, .claude/agents and ~/.copilot/agents; MCP servers from .mcp.json, .github/mcp.json and ~/.copilot/mcp-config.json (not .vscode/mcp.json); @path imports in AGENTS.md, CLAUDE.md and copilot-instructions.md"
+      }
+    },
+    "browser": {
+      "title": "VS Code: browser tools",
+      "url": "https://code.visualstudio.com/docs/agents/run/browser-tools",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "sessions": {
+      "title": "VS Code: session history",
+      "url": "https://code.visualstudio.com/docs/agents/run/sessions/session-history",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "toolsref": {
+      "title": "VS Code: tools reference",
+      "url": "https://code.visualstudio.com/docs/agents/reference/tools-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "plugins": {
+      "title": "VS Code: agent plugins",
+      "url": "https://code.visualstudio.com/docs/agent-customization/agent-plugins",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-07",
+        "version": "1.141",
+        "note": "VS Code 1.141 (2026-10-07); GitHub Copilot docs as of 2026-10-07 (Copilot CLI reference shows no version number)"
+      }
+    },
+    "harnesses": {
+      "title": "Agent harnesses",
+      "url": "https://code.visualstudio.com/docs/agents/run/agent-harnesses",
+      "kind": "official",
+      "checked": {
+        "on": "2026-10-15",
+        "version": "VS Code 1.142; docs 2026-10-14",
+        "note": "VS Code 1.142, read 2026-10-15"
+      }
+    },
+    "models": {
+      "title": "VS Code: language models",
+      "url": "https://code.visualstudio.com/docs/copilot/customization/language-models",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; page dated 2026-11-04"
+      }
+    },
+    "models-cli": {
+      "title": "Copilot CLI programmatic reference",
+      "url": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-programmatic-reference",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; the page states no version"
+      }
+    },
+    "models-cloud": {
+      "title": "Changing the AI model for Copilot cloud agent",
+      "url": "https://docs.github.com/en/copilot/how-tos/use-copilot-agents/cloud-agent/changing-the-ai-model",
+      "kind": "official",
+      "checked": {
+        "on": "2026-11-04",
+        "note": "read 2026-11-04; the page states no version"
+      }
+    }
+  },
+  "run_modes": {
+    "modes": [
+      {
+        "id": "agent",
+        "name": "Agent",
+        "level": "follows",
+        "picker": "agent"
+      },
+      {
+        "id": "plan",
+        "name": "Plan",
+        "level": "read-only",
+        "picker": "agent"
+      },
+      {
+        "id": "ask",
+        "name": "Ask",
+        "level": "read-only",
+        "picker": "agent"
+      },
+      {
+        "id": "default",
+        "name": "Manual permissions",
+        "level": "asks",
+        "picker": "permissions",
+        "note": "read-only commands run by built-in rules"
+      },
+      {
+        "id": "assisted",
+        "name": "Assisted permissions",
+        "level": "checker",
+        "picker": "permissions",
+        "note": "experimental"
+      },
+      {
+        "id": "autoApprove",
+        "name": "Allow all",
+        "level": "all",
+        "picker": "permissions"
+      },
+      {
+        "id": "autopilot",
+        "name": "Autopilot",
+        "level": "all",
+        "picker": "permissions",
+        "note": "also retries and answers its own questions"
+      }
+    ],
+    "default": [
+      "agent",
+      "default"
+    ],
+    "set_by": [
+      {
+        "file": ".vscode/settings.json",
+        "format": "json-flat",
+        "key": "chat.permissions.default"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "format": "json-flat",
+        "key": "chat.tools.global.autoApprove",
+        "values": {
+          "true": "autoApprove"
+        },
+        "ignore": [
+          "false"
+        ]
+      }
+    ],
+    "status": "confirmed",
+    "source": "approvals"
+  },
+  "sandbox": {
+    "default": "off",
+    "how": "a terminal sandbox, in preview",
+    "network": "allowed by default",
+    "status": "confirmed",
+    "source": "sandbox"
+  },
+  "layers": {
+    "scopes": [
+      {
+        "id": "org",
+        "name": "Your organization",
+        "files": [
+          "enterprise policies (Group Policy, MDM, policy.json)"
+        ],
+        "status": "confirmed",
+        "source": "policies"
+      },
+      {
+        "id": "local",
+        "name": "This repo, just you",
+        "files": [
+          ".github/copilot/settings.local.json (CLI)"
+        ],
+        "status": "confirmed",
+        "source": "clicmd"
+      },
+      {
+        "id": "project",
+        "name": "This repo, shared",
+        "files": [
+          ".github/copilot-instructions.md",
+          "AGENTS.md or CLAUDE.md",
+          ".github/copilot/settings.json (CLI)"
+        ],
+        "status": "confirmed",
+        "source": "instructions"
+      },
+      {
+        "id": "user",
+        "name": "You, every repo",
+        "files": [
+          "~/.copilot/ (CLI)",
+          "user instructions in VS Code"
+        ],
+        "status": "confirmed",
+        "source": "support"
+      }
+    ],
+    "folders": {
+      "how": "*.instructions.md files apply where their applyTo globs match",
+      "status": "confirmed",
+      "source": "instructions"
+    }
+  },
+  "models": {
+    "providers": "any",
+    "vendors": [
+      "OpenAI",
+      "Anthropic",
+      "Google",
+      "xAI",
+      "Microsoft",
+      "Moonshot AI"
+    ],
+    "choices": [
+      {
+        "value": "auto",
+        "name": "Auto"
+      }
+    ],
+    "default": "Auto, or the organization's default model",
+    "set_by": {
+      "file": "the model picker in the chat; VS Code settings",
+      "key": "chat.defaultModel"
+    },
+    "how": "Pick Auto or one of Copilot's models in the chat's picker, or add your own key for Azure, Anthropic, Gemini, OpenAI or a custom endpoint (admins must allow own keys). Free and Student plans get Auto only.",
+    "status": "confirmed",
+    "source": "models",
+    "variants": {
+      "copilot-cli": {
+        "providers": "any",
+        "vendors": [
+          "OpenAI",
+          "Anthropic",
+          "Google",
+          "xAI",
+          "Microsoft",
+          "Moonshot AI"
+        ],
+        "choices": [
+          {
+            "value": "auto",
+            "name": "Auto"
+          },
+          {
+            "value": "gpt-6-astra",
+            "name": "GPT-6 Astra"
+          },
+          {
+            "value": "claude-haiku-4.5",
+            "name": "Claude Haiku 4.5"
+          }
+        ],
+        "default": "the CLI's default model (not named)",
+        "set_by": {
+          "file": "~/.copilot/settings.json",
+          "key": "model"
+        },
+        "how": "Pick a Copilot model with /model, --model or COPILOT_MODEL, or add your own provider (OpenAI-compatible such as Ollama or vLLM, Azure OpenAI, Anthropic) in ~/.copilot/providers.json; copilot help lists the full menu.",
+        "status": "confirmed",
+        "source": "models-cli"
+      },
+      "copilot-cloud": {
+        "providers": "several",
+        "vendors": [
+          "Anthropic",
+          "Google",
+          "OpenAI",
+          "xAI",
+          "Microsoft"
+        ],
+        "choices": [
+          {
+            "value": "auto",
+            "name": "Auto"
+          },
+          {
+            "value": "Claude Opus 5.5",
+            "name": "Claude Opus 5.5"
+          },
+          {
+            "value": "Claude Sonnet 5.5",
+            "name": "Claude Sonnet 5.5"
+          },
+          {
+            "value": "Claude Haiku 5.5",
+            "name": "Claude Haiku 5.5"
+          },
+          {
+            "value": "Gemini 4 Argon",
+            "name": "Gemini 4 Argon"
+          },
+          {
+            "value": "Gemini 3.8 Flash",
+            "name": "Gemini 3.8 Flash"
+          },
+          {
+            "value": "GPT-6.1 Sol",
+            "name": "GPT-6.1 Sol"
+          },
+          {
+            "value": "GPT-6 Astra",
+            "name": "GPT-6 Astra"
+          },
+          {
+            "value": "Grok 4.7",
+            "name": "Grok 4.7"
+          },
+          {
+            "value": "MAI Code 1.1 Flash",
+            "name": "MAI Code 1.1 Flash"
+          }
+        ],
+        "default": "Auto, wherever there's no picker",
+        "set_by": {
+          "file": "the picker when you hand Copilot a task (GitHub.com, a PR comment, the agents panel)"
+        },
+        "how": "Pick Auto or one of about twenty Anthropic, Google, OpenAI, xAI and Microsoft models when you hand Copilot a task; anywhere without a picker it uses Auto. Own keys aren't stated.",
+        "status": "confirmed",
+        "source": "models-cloud"
+      }
+    }
+  },
+  "answers": {
+    "proj-instructions": {
+      "how": ".github/copilot-instructions.md, AGENTS.md, or CLAUDE.md (read by VS Code's Local agent unless chat.useClaudeMdFile is off, and by the CLI)",
+      "status": "confirmed",
+      "source": "instructions"
+    },
+    "personal-instructions": {
+      "how": "~/.copilot/copilot-instructions.md (CLI); user instructions or ~/.claude/CLAUDE.md in VS Code",
+      "status": "confirmed",
+      "source": "support"
+    },
+    "folder-instructions": {
+      "how": "*.instructions.md with applyTo globs; nested AGENTS.md in subfolders is experimental and off by default",
+      "status": "confirmed",
+      "source": "instructions"
+    },
+    "live-injection": {
+      "how": "A SessionStart or UserPromptSubmit hook",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "contracts": {
+      "how": ".github/instructions/*.instructions.md applied by applyTo globs",
+      "status": "confirmed",
+      "source": "instructions"
+    },
+    "modes": {
+      "how": "Agent, Plan and Ask built in, plus custom agents; each session picks a harness (Copilot, Local, Claude or Codex), Copilot by default from 1.142; Edit mode is deprecated",
+      "status": "confirmed",
+      "source": "harnesses"
+    },
+    "plan-first": {
+      "how": "Plan agent (/plan or the mode picker) researches and proposes a plan before editing; Local Plan agent doesn't edit project files by default",
+      "status": "confirmed",
+      "source": "planning"
+    },
+    "commands": {
+      "how": "VS Code: .prompt.md files in .github/prompts or the user profile run as /name; plugins can add slash commands too",
+      "status": "confirmed",
+      "source": "prompts"
+    },
+    "git-workflow": {
+      "how": "VS Code settings hold instructions for commit messages and PR descriptions (text or file)",
+      "status": "confirmed",
+      "source": "instructions"
+    },
+    "review-workflow": {
+      "how": "Copilot code review on PRs, requested by hand or automatically via settings or rulesets; reads repo instructions and skills",
+      "status": "confirmed",
+      "source": "review"
+    },
+    "skills": {
+      "how": ".github/skills, .claude/skills or .agents/skills (SKILL.md)",
+      "status": "confirmed",
+      "source": "skills"
+    },
+    "mcp": {
+      "how": ".vscode/mcp.json or .mcp.json; repo settings for the cloud agent",
+      "status": "confirmed",
+      "source": "mcp"
+    },
+    "plugins": {
+      "how": "Agent plugins bundle skills, agents, hooks, MCP servers and slash commands; installed from Git-repo marketplaces or /plugin",
+      "status": "confirmed",
+      "source": "plugins"
+    },
+    "web": {
+      "how": "#web tool set (fetch), each URL approved",
+      "status": "confirmed",
+      "source": "tools"
+    },
+    "connected-accounts": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "subagents": {
+      "how": "#runSubagent and custom agents in .github/agents",
+      "status": "confirmed",
+      "source": "agents"
+    },
+    "orchestration": {
+      "how": "Custom agents with handoffs and subagents",
+      "status": "believed",
+      "source": "agents"
+    },
+    "autonomous-runs": {
+      "how": "The cloud agent works an assigned issue on its own (up to 59 minutes)",
+      "status": "confirmed",
+      "source": "cloud"
+    },
+    "model-routing": {
+      "how": "model field per custom agent, prompt file and handoff; separate settings for plan agent and utility models",
+      "status": "confirmed",
+      "source": "agents"
+    },
+    "installer": {
+      "how": "An install script",
+      "status": "believed"
+    },
+    "setup": {
+      "how": ".github/workflows/copilot-setup-steps.yml for the cloud agent",
+      "status": "confirmed",
+      "source": "env"
+    },
+    "pins": {
+      "how": "A lockfile and a runtime version file in the repo",
+      "status": "confirmed"
+    },
+    "settings-split": {
+      "how": "CLI: .github/copilot/settings.json (shared) vs settings.local.json, plus ~/.copilot/settings.json",
+      "status": "confirmed",
+      "source": "clicmd"
+    },
+    "env-keys": {
+      "how": "Only indirect: MCP configs use input variables or env files for keys; no general env block documented",
+      "status": "believed",
+      "source": "mcp"
+    },
+    "managed-policy": {
+      "how": "VS Code enterprise policies via Group Policy, MDM profile or /etc/vscode/policy.json override user and workspace settings",
+      "status": "confirmed",
+      "source": "policies"
+    },
+    "permissions": {
+      "how": "A permission picker: Manual (default), Assisted (experimental: a model judges each call) or Allow all; Autopilot; terminal and URL auto-approve rules; org policies can forbid Allow all",
+      "status": "confirmed",
+      "source": "approvals"
+    },
+    "hard-gate": {
+      "how": "A PreToolUse hook in .github/hooks (Local harness); the Copilot harness uses GitHub's hook format; Claude-format hooks run only with chat.useClaudeHooks on",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "secrets-out": {
+      "how": "Admin content exclusion is honored by Copilot CLI but not VS Code agent mode; VS Code sandbox deniedPaths covers terminal only",
+      "status": "believed",
+      "source": "exclusion"
+    },
+    "sandbox": {
+      "how": "Terminal sandbox (preview, off); the cloud agent's firewall and own branch",
+      "status": "confirmed",
+      "source": "sandbox"
+    },
+    "network-limits": {
+      "how": "VS Code sandbox allowed/denied domains (sandbox off by default; network allowed by default)",
+      "status": "confirmed",
+      "source": "sandbox"
+    },
+    "spend-limits": {
+      "how": "chat.agent.maxRequests caps requests in VS Code's Local harness (default 25); the CLI has a soft per-response AI-credit limit (--max-ai-credits, /limits)",
+      "status": "confirmed",
+      "source": "aisettings"
+    },
+    "human-gate": {
+      "how": "Manual permission level: tools ask before running",
+      "status": "confirmed",
+      "source": "approvals"
+    },
+    "notifications": {
+      "how": "OS notification and sound when chat needs input (notifyWindowOnConfirmation, accessibility signals)",
+      "status": "confirmed",
+      "source": "aisettings"
+    },
+    "completion-check": {
+      "how": "A Stop hook (preview); the cloud agent runs tests and checks before finishing",
+      "status": "believed",
+      "source": "hooks"
+    },
+    "rewind": {
+      "how": "Checkpoints snapshot files before each request; restore, redo, or edit an earlier request (doesn't undo terminal or external effects)",
+      "status": "confirmed",
+      "source": "checkpoints"
+    },
+    "check-commands": {
+      "how": "Scripts named in copilot-instructions.md",
+      "status": "confirmed"
+    },
+    "schema": {
+      "how": "Validators it runs",
+      "status": "confirmed"
+    },
+    "auto-fix": {
+      "how": "PostToolUse hook can run a formatter after edits (example given)",
+      "status": "confirmed",
+      "source": "hooks"
+    },
+    "independent-checker": {
+      "how": "Copilot code review on pull requests; /rubber-duck (experimental)",
+      "status": "confirmed",
+      "source": "review"
+    },
+    "visual-check": {
+      "how": "Docs describe screenshot checks of layout, including desktop and mobile sizes, with browser tools",
+      "status": "confirmed",
+      "source": "browser"
+    },
+    "harness-checker": {
+      "how": "Free Rein's checks (/address-findings), with a Copilot adapter (not built)",
+      "status": "believed"
+    },
+    "criteria": {
+      "how": "A done_when field on each task, read from files",
+      "status": "confirmed"
+    },
+    "evals": {
+      "how": "An eval suite it runs",
+      "status": "believed"
+    },
+    "feedback": {
+      "how": "Logging plus a review step",
+      "status": "believed"
+    },
+    "event-log": {
+      "how": "A PostToolUse hook that appends to a log; cloud agent session logs",
+      "status": "confirmed",
+      "source": "monitor"
+    },
+    "receipts": {
+      "how": "Cloud agent: commits co-authored with a link to the session log",
+      "status": "confirmed",
+      "source": "monitor"
+    },
+    "transcripts": {
+      "how": "VS Code keeps sessions in a local SQLite store, synced to your GitHub account by default until deleted",
+      "status": "confirmed",
+      "source": "sessions"
+    },
+    "status-line": {
+      "how": "CLI /statusline (or /footer) picks status line items",
+      "status": "confirmed",
+      "source": "clicmd"
+    },
+    "telemetry-export": {
+      "how": "No telemetry export documented",
+      "status": "none"
+    },
+    "cost-tracking": {
+      "how": "CLI /usage shows per-model tokens and AI credits for the session",
+      "status": "confirmed",
+      "source": "clicmd"
+    },
+    "session-state": {
+      "how": "Checkpoints; session memory; resumable CLI sessions",
+      "status": "confirmed",
+      "source": "checkpoints"
+    },
+    "task-list": {
+      "how": "#todos tool tracks task progress in a todo list (VS Code); persistence not described",
+      "status": "confirmed",
+      "source": "toolsref"
+    },
+    "saved-facts": {
+      "how": "Local user and repository memory in VS Code; Copilot Memory (GitHub-hosted, preview)",
+      "status": "confirmed",
+      "source": "memory"
+    },
+    "progress-log": {
+      "how": "A progress file named in the instructions",
+      "status": "confirmed"
+    },
+    "session-recall": {
+      "how": "CLI /resume and --continue open a session picker with search; VS Code Chronicle commands search past sessions",
+      "status": "confirmed",
+      "source": "clicmd"
+    },
+    "knowledge-base": {
+      "how": "Markdown files in the repo",
+      "status": "confirmed"
+    },
+    "decisions": {
+      "how": "A decisions file in the repo",
+      "status": "confirmed"
+    },
+    "codebase-map": {
+      "how": "Only /init to generate project-wide instructions; no architecture/index file convention",
+      "status": "believed",
+      "source": "instructions"
+    },
+    "ontology": {
+      "how": "No documented way",
+      "status": "none"
+    },
+    "knowledge-graph": {
+      "how": "The same files and extractor",
+      "status": "believed"
+    },
+    "retrieval": {
+      "how": "An MCP search server",
+      "status": "confirmed",
+      "source": "mcp"
+    }
+  }
+}

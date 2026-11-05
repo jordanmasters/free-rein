@@ -1,0 +1,2 @@
+- Prefer plain words.
+- You must cite sources.

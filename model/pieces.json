@@ -1,0 +1,2234 @@
+{
+  "version": 2,
+  "note": "Free Rein's pieces: the idealized harness as sections of pieces, how each piece is done on each core, and combos between pieces. Detection and combos are rules over the extracted graph, evaluated by core/src/judge/evaluate.ts, so nothing here can claim what the harness does not do. Per-core answers carry a confirmed flag: true = known, false = believed but not confirmed, null = no known way. Each answer is [how, status, source]: status true = confirmed, false = believed, null = no known way; source names an entry in that runtime's sources (model/runtimes/<id>.json), so every claim says how it is known. Type audit applied 2026-10-02.",
+  "columns": {
+    "left": [
+      "context",
+      "protocols",
+      "tools",
+      "agents",
+      "configuration"
+    ],
+    "right": [
+      "guardrails",
+      "verification",
+      "validation",
+      "observability",
+      "memory"
+    ]
+  },
+  "slots": [
+    {
+      "id": "context",
+      "name": "Context",
+      "job": "what it reads before it acts",
+      "family": "surface",
+      "icon": "book",
+      "items": [
+        {
+          "id": "proj-instructions",
+          "name": "Project instructions",
+          "what": "Standing rules for this repo: commits, vault rules, naming.",
+          "example": "CLAUDE.md with the commit convention and vault rules",
+          "detect": [
+            {
+              "nodes": {
+                "part": "project-constitution"
+              },
+              "state": "yes",
+              "badge": "CLAUDE.md"
+            }
+          ],
+          "kind": "capability",
+          "row": "always",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A CLAUDE.md (or AGENTS.md) at the root"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Under 200 lines, and every @import resolves within four hops",
+              "source": "https://code.claude.com/docs/en/memory"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "Every rule in it about an action is backed by something the agent can't get around: a permission rule, a hook or an approval"
+            }
+          ]
+        },
+        {
+          "id": "personal-instructions",
+          "name": "Personal instructions",
+          "what": "Your own rules, carried into every project.",
+          "example": "~/.claude/CLAUDE.md: concise responses, no emojis",
+          "detect": [
+            {
+              "nodes": {
+                "part": "user-constitution"
+              },
+              "state": "yes",
+              "badge": "user-level"
+            }
+          ],
+          "kind": "capability",
+          "row": "always",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A CLAUDE.md in your home folder (~/.claude)"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Under 200 lines, every @import resolves, and none of its rules says the opposite of the project's",
+              "source": "https://code.claude.com/docs/en/memory"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "Every rule in it about an action is backed by something the agent can't get around"
+            }
+          ]
+        },
+        {
+          "id": "folder-instructions",
+          "name": "Folder instructions",
+          "what": "Rules for one part of the repo, loaded when it works there.",
+          "example": "web/CLAUDE.md with the frontend's conventions",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-folder-instructions"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "when",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A CLAUDE.md below the root, or rules in .claude/rules"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Each says where it applies (a rules file with paths:), stays under 200 lines, its imports resolve, and none contradicts the root CLAUDE.md",
+              "source": "https://code.claude.com/docs/en/memory"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "Every rule in them about an action is backed by something the agent can't get around"
+            }
+          ]
+        },
+        {
+          "id": "live-injection",
+          "name": "Injected context",
+          "what": "Fresh context pushed in by a hook: on every prompt, when a session starts, or when a long session is summarised.",
+          "example": "a SessionStart hook that prints the open tasks, and a banner on every prompt",
+          "detect": [
+            {
+              "nodes": {
+                "type": "executor",
+                "activation": "event",
+                "_label_re": "user-prompt"
+              },
+              "state": "yes",
+              "badge": "per-prompt hook"
+            },
+            {
+              "nodes": {
+                "kind": "sig-session-start"
+              },
+              "state": "yes",
+              "badge": "at session start"
+            },
+            {
+              "nodes": {
+                "kind": "sig-compaction"
+              },
+              "state": "yes",
+              "badge": "when compacting"
+            }
+          ],
+          "kind": "capability",
+          "row": "when",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A hook pushes context in: on each prompt, at session start, or around a summary"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Every hook's script is there"
+            }
+          ]
+        }
+      ],
+      "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
+      "rows": [
+        {
+          "id": "always",
+          "name": "Always read",
+          "about": "Loaded at the start of every session, wherever it works."
+        },
+        {
+          "id": "when",
+          "name": "Read when it applies",
+          "about": "Loaded only in one folder, or pushed in by a hook at a moment: each prompt, a new session, a summary."
+        }
+      ]
+    },
+    {
+      "id": "protocols",
+      "name": "Protocols",
+      "job": "how it works while working",
+      "family": "contract",
+      "icon": "scroll",
+      "items": [
+        {
+          "id": "contracts",
+          "name": "Working protocols",
+          "what": "Rules of engagement beyond the instructions file.",
+          "example": "Steward: nothing writes without passing review",
+          "detect": [
+            {
+              "nodes": {
+                "type": "contract"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "workflow": "procedure",
+          "row": "how"
+        },
+        {
+          "id": "modes",
+          "name": "Working modes",
+          "what": "Named postures the session can enter and stay in.",
+          "example": "/review-mode for code review, /docs-mode for writing docs",
+          "detect": [
+            {
+              "nodes": {
+                "type": "unit",
+                "_label_suffix": "-mode"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "workflow": "mode",
+          "row": "how"
+        },
+        {
+          "id": "plan-first",
+          "name": "Plan first",
+          "what": "It proposes what it will do and waits for your go before editing.",
+          "example": "starts every session in plan mode",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-plan-first"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "workflow": "procedure",
+          "row": "how"
+        },
+        {
+          "id": "commands",
+          "name": "Commands",
+          "what": "Procedures you start by name, the same way every time.",
+          "example": "/release that bumps, tags and writes the notes",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-commands"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "workflow": "procedure",
+          "row": "routines"
+        },
+        {
+          "id": "git-workflow",
+          "name": "Git workflow",
+          "what": "Branch and commit conventions it follows, and something that checks them.",
+          "example": "a commit skill plus a commit-msg hook for action(target): message",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-git-workflow"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "workflow": "procedure",
+          "row": "routines"
+        },
+        {
+          "id": "review-workflow",
+          "name": "Review workflow",
+          "what": "A set way to get work reviewed before it counts.",
+          "example": "/code-review on every change before it merges",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-review-workflow"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "workflow": "procedure",
+          "row": "routines"
+        }
+      ],
+      "about": "How work goes once it starts: the steps it follows, the modes it can be in, commands you start by name, planning before editing, and how commits and reviews are done.",
+      "rows": [
+        {
+          "id": "how",
+          "name": "How it works",
+          "about": "The way it works while working: the steps it follows, the modes it can be in, and planning before it edits."
+        },
+        {
+          "id": "routines",
+          "name": "Set routines",
+          "about": "Procedures done the same way every time: ones you start by name, and how commits and reviews are done."
+        }
+      ]
+    },
+    {
+      "id": "tools",
+      "name": "Abilities",
+      "job": "what it can do beyond the model",
+      "family": "unit",
+      "icon": "wrench",
+      "items": [
+        {
+          "id": "skills",
+          "name": "Skills",
+          "what": "Named capabilities it can route to by intent.",
+          "example": "/commit, /release, /changelog",
+          "detect": [
+            {
+              "nodes": {
+                "type": "unit"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "row": "added",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "You have at least one skill of your own"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Every skill of yours is built right: it says what it does and when, its name is consistent, it has a procedure, everything it mentions exists, it doesn't contradict itself, and no other skill claims the same requests"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "Every skill of yours can't do more than its job needs: its writes are guarded, its commands are limited, and if the model can start it, a check covers it or it's on request only"
+            },
+            {
+              "id": "proven",
+              "name": "Proven",
+              "means": "Every skill of yours has a track record: it ran in your recent sessions, or an eval covers it where it hasn't been used yet"
+            }
+          ]
+        },
+        {
+          "id": "mcp",
+          "name": "MCP tools",
+          "what": "Capabilities beyond the runtime's built-ins.",
+          "example": "a browser MCP so it can check the UI it builds",
+          "detect": [
+            {
+              "nodes": {
+                "part": "tool-extension"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "change": {
+            "files": [
+              ".mcp.json"
+            ],
+            "does": "Registers an MCP server, for example a browser or database server."
+          },
+          "row": "added"
+        },
+        {
+          "id": "plugins",
+          "name": "Plugins",
+          "what": "Skills, hooks, agents and servers installed as one bundle you can share.",
+          "example": "a team plugin with the commit skill and the format hook",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-plugins"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "added"
+        },
+        {
+          "id": "web",
+          "name": "Web access",
+          "what": "Search and read the live web.",
+          "example": "WebSearch and WebFetch",
+          "detect": [],
+          "default": "unchecked",
+          "kind": "capability",
+          "row": "reach"
+        },
+        {
+          "id": "connected-accounts",
+          "name": "Connected accounts",
+          "what": "Your own accounts it can use: mail, calendar, documents.",
+          "example": "your Gmail and calendar, through claude.ai connectors",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-connected-accounts"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            },
+            {
+              "nodes": {
+                "kind": "sig-connected-accounts-offered"
+              },
+              "state": "partial",
+              "badge": "not signed in"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "reach"
+        }
+      ],
+      "about": "What it can do beyond the model itself: skills, tool servers, the web, plugins that bundle them, and your own accounts it can use.",
+      "rows": [
+        {
+          "id": "added",
+          "name": "What you add",
+          "about": "Abilities you install: skills, tool servers, and plugins that bundle them."
+        },
+        {
+          "id": "reach",
+          "name": "What it reaches",
+          "about": "Places outside the repo it can read from or act in: the web, and your own accounts."
+        }
+      ]
+    },
+    {
+      "id": "agents",
+      "name": "Agents",
+      "job": "work it hands off",
+      "family": "executor",
+      "icon": "bot",
+      "items": [
+        {
+          "id": "subagents",
+          "name": "Subagents",
+          "what": "Delegated work in a separate context, with its own tools.",
+          "example": "a researcher agent with read-only tools",
+          "detect": [
+            {
+              "nodes": {
+                "part": "subagent"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "change": {
+            "files": [
+              ".claude/agents/<name>.md"
+            ],
+            "does": "Adds an agent definition with its own instructions and tools."
+          },
+          "row": "who"
+        },
+        {
+          "id": "orchestration",
+          "name": "Orchestration",
+          "what": "Many agents run under a deterministic script, in a shape that was designed, not accidental.",
+          "example": "fan out reviewers, then verify each finding",
+          "detect": [
+            {
+              "nodes": {
+                "part": "orchestration"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "change": {
+            "files": [
+              ".claude/workflows/<name>.js",
+              "docs/architecture.md"
+            ],
+            "does": "Adds a workflow script that runs several agents in a set order, and writes down how they hand work to each other."
+          },
+          "merged_from": [
+            "orchestration",
+            "topology"
+          ],
+          "workflow": "graph",
+          "row": "who"
+        },
+        {
+          "id": "autonomous-runs",
+          "name": "Autonomous runs",
+          "what": "Work that runs without a request each time: a loop, a schedule, a watch. A cap and a budget, with a point where it stops and asks, is what makes it safe, or an event such as a pull request in CI.",
+          "example": "a nightly check that retries up to 3 times, then asks",
+          "detect": [
+            {
+              "nodes": {
+                "part": "scheduled-run"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            },
+            {
+              "nodes": {
+                "part": "self-paced-loop"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            },
+            {
+              "nodes": {
+                "kind": "sig-ci-agent"
+              },
+              "state": "yes",
+              "badge": "in CI"
+            }
+          ],
+          "kind": "capability",
+          "change": {
+            "files": [
+              "a scheduled routine",
+              "skills/*/SKILL.md",
+              "workflows/*.js"
+            ],
+            "does": "Sets up a recurring run, and gives anything that repeats a retry cap and a stop-and-ask step."
+          },
+          "merged_from": [
+            "scheduled",
+            "loops"
+          ],
+          "preview": {
+            "friction": -3
+          },
+          "workflow": "trigger",
+          "row": "who"
+        },
+        {
+          "id": "model-routing",
+          "name": "Model routing",
+          "what": "The right model for each job: a fast one to search, a strong one to review.",
+          "example": "a reviewer agent on the strongest model, a searcher on the fastest",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-model-routing"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "model"
+        },
+        {
+          "id": "modalities",
+          "name": "Modalities",
+          "row": "model",
+          "what": "The kinds of input and output its models are trained for: text, images, audio and video in; text, images, audio, video, decisions and vectors for search out. What you add beyond the core model shows here.",
+          "example": "a text-only local model for the work, a vision model for screenshots, Whisper for audio",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-modalities"
+              },
+              "state": "yes",
+              "badge": "{n} in and out"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2"
+        }
+      ],
+      "about": "Work it hands off: helpers with their own context, scripts that run many of them, runs that start without you, the right model for each job, and a decision model for the which-one calls.",
+      "rows": [
+        {
+          "id": "who",
+          "name": "Who does the work",
+          "about": "Helpers it hands work to, scripts that run many of them, and runs that start without you."
+        },
+        {
+          "id": "model",
+          "name": "Which model",
+          "about": "The model behind each job, and a fast model for the which-one calls."
+        }
+      ]
+    },
+    {
+      "id": "configuration",
+      "name": "Environment",
+      "job": "where it runs, set up the same way every time, by anyone",
+      "family": "config",
+      "icon": "cable",
+      "items": [
+        {
+          "id": "installer",
+          "name": "Installer",
+          "what": "This harness can be stood up on another machine.",
+          "example": "install.sh links skills into ~/.claude/skills",
+          "detect": [],
+          "default": "unchecked",
+          "kind": "capability",
+          "row": "stands"
+        },
+        {
+          "id": "setup",
+          "name": "Reproducible setup",
+          "kind": "capability",
+          "what": "One command or container that gets the project to a working state.",
+          "example": "init.sh that installs, checks, then prints how to start",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "env-setup"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "change": {
+            "files": [
+              "init.sh"
+            ],
+            "does": "Adds a script that installs dependencies, runs the checks, and says how to start."
+          },
+          "row": "stands"
+        },
+        {
+          "id": "pins",
+          "name": "Pinned versions",
+          "kind": "control",
+          "strength": "checks",
+          "what": "Dependencies and runtime versions are locked, so every run gets the same tools.",
+          "example": "a lockfile plus .nvmrc or .python-version",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "env-lock"
+              },
+              "state": "yes",
+              "badge": "×{n} locked"
+            },
+            {
+              "nodes": {
+                "kind": "env-pin"
+              },
+              "state": "yes",
+              "badge": "×{n} pinned"
+            }
+          ],
+          "change": {
+            "files": [
+              "a lockfile",
+              ".nvmrc or .python-version"
+            ],
+            "does": "Commits the lockfile and pins the runtime version."
+          },
+          "row": "stands"
+        },
+        {
+          "id": "settings-split",
+          "name": "Shared and personal settings",
+          "what": "Team settings live in the repo; your own stay on your machine.",
+          "example": "settings.json checked in, settings.local.json ignored",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-settings-split"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "configured"
+        },
+        {
+          "id": "env-keys",
+          "name": "Env and keys",
+          "what": "Environment and credentials supplied without pasting them anywhere.",
+          "example": "an apiKeyHelper that reads the key from the keychain",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-env-keys"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "configured"
+        },
+        {
+          "id": "managed-policy",
+          "name": "Managed policy",
+          "what": "Rules from your organisation that no project can override.",
+          "example": "the company's managed settings deny pushing to main",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-managed-policy"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "row": "configured"
+        }
+      ],
+      "about": "Where it runs, set up the same way every time, by anyone: an installer, one-command setup, pinned versions, settings shared and personal, keys supplied safely, and your organisation's policy.",
+      "rows": [
+        {
+          "id": "stands",
+          "name": "Stands up",
+          "about": "Getting it running on another machine the same way: install, set up, same versions."
+        },
+        {
+          "id": "configured",
+          "name": "Configured",
+          "about": "Settings shared with the team and kept personal, keys supplied safely, and your organisation's policy on top."
+        }
+      ]
+    },
+    {
+      "id": "guardrails",
+      "name": "Guardrails",
+      "job": "what can stop it",
+      "family": "gate",
+      "icon": "shield",
+      "items": [
+        {
+          "id": "permissions",
+          "name": "Permission rules",
+          "what": "Allow or deny decided before the model even sees the request.",
+          "example": "allow npm test, ask before git push",
+          "detect": [
+            {
+              "nodes": {
+                "part": "permission-policy"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "preview": {
+            "enforcement": 40,
+            "friction": -6
+          },
+          "kind": "control",
+          "strength": "blocks",
+          "change": {
+            "files": [
+              ".claude/settings.json"
+            ],
+            "does": "Adds allow and ask rules, for example allow tests to run, ask before git push."
+          },
+          "row": "refuses",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "You have permission rules"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Every rule is specific: none allows a whole tool"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "No high-stakes situation is left with nothing stopping it"
+            },
+            {
+              "id": "proven",
+              "name": "Proven",
+              "means": "Your rules have decided real actions in your recent sessions"
+            }
+          ]
+        },
+        {
+          "id": "hard-gate",
+          "name": "Blocking hooks",
+          "what": "A hook can refuse an action outright, not just ask.",
+          "example": "a hook refuses an unreviewed write to decisions.md",
+          "detect": [
+            {
+              "edges": {
+                "locus": "infrastructure"
+              },
+              "state": "yes",
+              "badge": "×{n} paths"
+            },
+            {
+              "nodes": {
+                "part": "event-hook-gate",
+                "guards_writes": true
+              },
+              "state": "yes",
+              "badge": "×{n} before writes"
+            },
+            {
+              "nodes": {
+                "part": "event-hook-gate"
+              },
+              "state": "partial",
+              "badge": "×{n} idle"
+            }
+          ],
+          "preview": {
+            "enforcement": 100,
+            "friction": -18,
+            "coverage": 23
+          },
+          "kind": "control",
+          "strength": "blocks",
+          "change": {
+            "files": [
+              ".claude/hooks/protect-files.sh",
+              ".claude/hooks/protected-paths.txt",
+              ".claude/settings.json"
+            ],
+            "does": "A PreToolUse hook that refuses edits to the files you list as protected (exit 2), registered before every edit. Edit the list to change what it protects."
+          },
+          "row": "refuses",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A hook that can refuse an action"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Each one's script is there, and its matcher names what it's for rather than every tool"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "A hook that can refuse sits in front of file writes and of commands"
+            },
+            {
+              "id": "proven",
+              "name": "Proven",
+              "means": "It would have refused real actions from your recent sessions"
+            }
+          ]
+        },
+        {
+          "id": "secrets-out",
+          "name": "Sensitive data guard",
+          "what": "Keys, private files and personal information can't be read or sent out.",
+          "example": "deny Read(./.env), Read(~/.ssh/**) and Read(./private/**)",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-secrets-out"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "strength": "blocks",
+          "added": "model-v2",
+          "row": "refuses",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "Something keeps secret files out"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "It covers the usual places: .env files, keys, ~/.ssh and cloud credentials"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "It covers commands too: a Read rule doesn't stop `cat .env`, so the sandbox or a hook has to",
+              "source": "https://code.claude.com/docs/en/sandboxing"
+            }
+          ]
+        },
+        {
+          "id": "sandbox",
+          "name": "Sandboxed action",
+          "what": "It can act somewhere that isn't your real workspace.",
+          "example": "work in a git worktree, merge after review",
+          "detect": [
+            {
+              "nodes": {
+                "part": "isolation"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "strength": "blocks",
+          "change": {
+            "files": [
+              "skills that write code"
+            ],
+            "does": "Has code changes happen in a separate git worktree and merge after review."
+          },
+          "row": "contains",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "The sandbox is on"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Few exceptions: a handful of commands at most run outside it, and unsandboxed commands aren't allowed"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "It fails closed: if it can't start, commands don't run without it",
+              "source": "https://code.claude.com/docs/en/sandboxing"
+            }
+          ]
+        },
+        {
+          "id": "network-limits",
+          "name": "Network limits",
+          "what": "It can only reach the places you named.",
+          "example": "commands reach github.com and the package registry, nothing else",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-network-limits"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "strength": "blocks",
+          "added": "model-v2",
+          "row": "contains",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "Something limits where it can reach"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Both paths are limited: commands (the sandbox's domains) and fetching (WebFetch rules)",
+              "source": "https://code.claude.com/docs/en/sandboxing"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "Anything not named is refused"
+            }
+          ]
+        },
+        {
+          "id": "spend-limits",
+          "name": "Spend or turn limits",
+          "what": "Runs on their own stop at a limit.",
+          "example": "unattended runs stop after 30 turns or $5",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-spend-limits"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "row": "contains",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A turn or budget limit on some unattended runs"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "A limit on every unattended run"
+            }
+          ]
+        },
+        {
+          "id": "human-gate",
+          "name": "Human approvals",
+          "what": "A person approves before consequential writes.",
+          "example": "“Approve, modify, reject, or park?” before a vault write",
+          "detect": [
+            {
+              "nodes": {
+                "type": "gate",
+                "imparts.verifier": "human"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "strength": "asks",
+          "row": "asks",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "An approval step: a person says yes before something consequential"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Every high-stakes write asks you first"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "The ask can't be skipped: a hook or an ask rule makes it happen, not only a skill's words"
+            },
+            {
+              "id": "proven",
+              "name": "Proven",
+              "means": "Approvals were really asked in your recent sessions"
+            }
+          ]
+        },
+        {
+          "id": "notifications",
+          "name": "Notifications",
+          "what": "It tells you when it's waiting on you.",
+          "example": "a desktop alert when it needs an answer",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-notifications"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "asks",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "It tells you when it's waiting on you"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Somewhere you'll see it: a hook to your desktop or phone, not only the terminal bell"
+            }
+          ]
+        },
+        {
+          "id": "completion-check",
+          "name": "Completion check",
+          "kind": "control",
+          "strength": "blocks",
+          "what": "When the agent says it's done, a check runs and can send it back to work.",
+          "example": "a Stop hook that runs the tests and refuses if they fail",
+          "detect": [
+            {
+              "nodes": {
+                "part": "event-hook-gate",
+                "on_completion": true
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "change": {
+            "files": [
+              ".claude/settings.json",
+              "a stop-check script"
+            ],
+            "does": "Runs the check commands when the agent stops, and sends it back if they fail."
+          },
+          "row": "after",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "A check runs when the agent says it's done"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "It runs your real checks: tests, lint, typecheck"
+            },
+            {
+              "id": "enforced",
+              "name": "Enforced",
+              "means": "It can send the agent back: it refuses to stop when the checks fail"
+            },
+            {
+              "id": "proven",
+              "name": "Proven",
+              "means": "It ran cleanly in your recent sessions"
+            }
+          ]
+        },
+        {
+          "id": "rewind",
+          "name": "Rewind",
+          "what": "What it changed can be taken back.",
+          "example": "/rewind to before the refactor",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-rewind"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "row": "after",
+          "tiers": [
+            {
+              "id": "equipped",
+              "name": "Equipped",
+              "means": "Changes can be taken back (built into Claude Code)"
+            },
+            {
+              "id": "tuned",
+              "name": "Tuned",
+              "means": "Commands are covered too: a hook snapshots what the file tools don't track",
+              "source": "https://code.claude.com/docs/en/checkpointing"
+            }
+          ]
+        }
+      ],
+      "about": "What can stop it, slow it or undo it: approvals that ask you, hooks and rules that refuse, a sandbox, limits on sensitive data and the network, a check before it says it's done, a way back, and a limit on long runs.",
+      "rows": [
+        {
+          "id": "refuses",
+          "name": "Refuses",
+          "about": "Stops an action outright, before it happens."
+        },
+        {
+          "id": "contains",
+          "name": "Contains",
+          "about": "Lets it act, but only inside limits: where, what it can reach, how long."
+        },
+        {
+          "id": "asks",
+          "name": "Asks you",
+          "about": "Brings you in before it goes ahead."
+        },
+        {
+          "id": "after",
+          "name": "Catches and undoes",
+          "about": "Checks the work when it says it's done, and lets you take changes back."
+        }
+      ]
+    },
+    {
+      "id": "verification",
+      "name": "Verification",
+      "job": "did we build it right",
+      "family": "neutral",
+      "icon": "check",
+      "items": [
+        {
+          "id": "check-commands",
+          "name": "Check commands",
+          "kind": "control",
+          "strength": "checks",
+          "what": "Named commands that check the work: tests, lint, typecheck.",
+          "example": "npm test, make check",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "env-check"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            },
+            {
+              "nodes": {
+                "kind": "sig-code-intel"
+              },
+              "state": "yes",
+              "badge": "language server"
+            }
+          ],
+          "change": {
+            "files": [
+              "package.json or Makefile",
+              "CLAUDE.md"
+            ],
+            "does": "Adds test, lint and check commands and tells the agent to run them."
+          },
+          "merged_from": [
+            "tests",
+            "checks"
+          ],
+          "row": "auto"
+        },
+        {
+          "id": "schema",
+          "name": "Shape checks",
+          "what": "Structures are checked by shape: types, frontmatter, config.",
+          "example": "required frontmatter fields on every feature file",
+          "detect": [],
+          "default": "unchecked",
+          "kind": "control",
+          "strength": "checks",
+          "weak": true,
+          "row": "auto"
+        },
+        {
+          "id": "auto-fix",
+          "name": "Auto-fix on write",
+          "what": "Formatting and simple fixes run after every edit.",
+          "example": "prettier runs on each file it writes",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-auto-fix"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "row": "auto"
+        },
+        {
+          "id": "independent-checker",
+          "name": "Independent checker",
+          "kind": "control",
+          "strength": "checks",
+          "what": "Work is reviewed by a separate agent with its own context, not by the one that did it.",
+          "example": "a reviewer subagent that only sees the diff and the success criteria",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "subagent",
+                "_any_re": "review|check|verif|evaluat|audit|critic"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "change": {
+            "files": [
+              ".claude/agents/reviewer.md"
+            ],
+            "does": "Adds a reviewer agent that checks finished work against its success criteria, in a fresh context."
+          },
+          "row": "second"
+        },
+        {
+          "id": "visual-check",
+          "name": "Visual check",
+          "what": "It looks at what it built: a browser it drives, or screenshots, prove the screen works.",
+          "example": "it opens the new page in Chrome and clicks through it, or playwright tests with screenshots",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-visual-check"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            },
+            {
+              "nodes": {
+                "kind": "sig-sees-app"
+              },
+              "state": "yes",
+              "badge": "browser it drives"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "row": "second"
+        },
+        {
+          "id": "harness-checker",
+          "name": "Harness checker",
+          "what": "Something the agent can run that checks the harness itself for gaps, and fixes what it finds.",
+          "example": "naked writes, broken links, docs that overclaim",
+          "detect": [
+            {
+              "nodes": {
+                "type": "unit",
+                "_label_re": "^address-findings$"
+              },
+              "state": "yes",
+              "badge": "{findings} found"
+            }
+          ],
+          "kind": "control",
+          "strength": "checks",
+          "note": "Present when the harness has a checker the agent can run (today Free Rein's /address-findings skill, from wherever it loads). What Free Rein's checks find is what it works on, not what makes it present. Changed 2026-10-03: before, any finding counted, so every harness Free Rein read got the piece.",
+          "row": "second"
+        }
+      ],
+      "about": "Did we build it right: tests and checks, checks of the harness itself, shape checks, a reviewer that isn't the one who did the work, fixes on every edit, and a look at the screen.",
+      "rows": [
+        {
+          "id": "auto",
+          "name": "Runs on its own",
+          "about": "Checks that run by themselves: tests and lint, shape checks, and fixes after every edit."
+        },
+        {
+          "id": "second",
+          "name": "A second look",
+          "about": "Something other than the agent that did the work looks at it: a reviewer, the screen itself, the harness."
+        }
+      ]
+    },
+    {
+      "id": "validation",
+      "name": "Validation",
+      "job": "did we build the right thing",
+      "family": "neutral",
+      "icon": "target",
+      "items": [
+        {
+          "id": "criteria",
+          "name": "Success criteria",
+          "what": "“Done” is defined before the work starts, and it's clear who decides it's met: a check, or a person who signs off.",
+          "example": "done when: lint reports zero naked writes",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "success-criteria"
+              },
+              "state": "yes",
+              "badge": "{files} with a gate"
+            },
+            {
+              "nodes": {
+                "kind": "feature-list"
+              },
+              "state": "yes",
+              "badge": "feature list"
+            },
+            {
+              "nodes": {
+                "kind": "sig-sign-off"
+              },
+              "state": "yes",
+              "badge": "a person signs off"
+            }
+          ],
+          "kind": "control",
+          "strength": "asks",
+          "change": {
+            "files": [
+              "TODO.md",
+              "docs/features/*.md"
+            ],
+            "does": "Adds a done_when line to each task and feature, checked before it is closed."
+          }
+        },
+        {
+          "id": "evals",
+          "name": "Evals",
+          "what": "Output quality is measured against what was intended.",
+          "example": "scored outputs on a set of known tasks",
+          "detect": [],
+          "kind": "control",
+          "strength": "checks",
+          "change": {
+            "files": [
+              "evals/",
+              "a /run-evals skill"
+            ],
+            "does": "Adds a small set of known tasks with a scoring rubric, and a skill to run them."
+          }
+        },
+        {
+          "id": "feedback",
+          "name": "Feedback loop",
+          "what": "Approvals and rejections are captured and looked at.",
+          "example": "approve and reject rates reviewed each week",
+          "detect": [
+            {
+              "nodes": {
+                "part": "telemetry-sink"
+              },
+              "state": "partial",
+              "badge": "captured only"
+            }
+          ],
+          "kind": "control",
+          "strength": "asks",
+          "change": {
+            "files": [
+              "a /review-feedback skill"
+            ],
+            "does": "Adds a regular review of approve and reject rates from the event log."
+          },
+          "weak": true
+        }
+      ],
+      "about": "Did we build the right thing: what done means and who decides it's met, evals that measure quality, and a look back at what you approved and rejected."
+    },
+    {
+      "id": "observability",
+      "name": "Observability",
+      "job": "what you can see afterwards",
+      "family": "neutral",
+      "icon": "eye",
+      "items": [
+        {
+          "id": "event-log",
+          "name": "Event log",
+          "what": "An append-only record of what happened.",
+          "example": "events.jsonl: approvals, mode changes, choices",
+          "detect": [
+            {
+              "nodes": {
+                "part": "telemetry-sink"
+              },
+              "state": "yes",
+              "badge": "events.jsonl"
+            }
+          ],
+          "kind": "control",
+          "strength": "checks",
+          "row": "records"
+        },
+        {
+          "id": "receipts",
+          "name": "Session receipts",
+          "what": "Each session leaves a short account of itself.",
+          "example": "4 approved, 2 parked, 1 rejected, 3 files touched",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "handoff"
+              },
+              "state": "yes",
+              "badge": "handoff file"
+            }
+          ],
+          "kind": "control",
+          "strength": "checks",
+          "change": {
+            "files": [
+              "skills/exit-mode/SKILL.md",
+              "lib/receipt.py"
+            ],
+            "does": "Writes a short summary of each session when a mode ends."
+          },
+          "row": "records"
+        },
+        {
+          "id": "transcripts",
+          "name": "Kept transcripts",
+          "what": "Sessions are kept, so you can look back at what it did.",
+          "example": "sessions kept for 90 days",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-transcripts"
+              },
+              "state": "yes",
+              "badge": "{n} sessions"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "records"
+        },
+        {
+          "id": "status-line",
+          "name": "Status line",
+          "what": "Live state always on screen: mode, branch, cost.",
+          "example": "a status line with the mode and today's spend",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-status-line"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "live"
+        },
+        {
+          "id": "telemetry-export",
+          "name": "Telemetry export",
+          "kind": "capability",
+          "what": "The runtime sends traces, metrics and logs to a monitoring system you run.",
+          "example": "OpenTelemetry export to your collector",
+          "detect": [],
+          "default": "unchecked",
+          "row": "live"
+        },
+        {
+          "id": "cost-tracking",
+          "name": "Cost tracking",
+          "what": "What its work costs, over time.",
+          "example": "daily spend from the usage metrics",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-cost-tracking"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "control",
+          "added": "model-v2",
+          "row": "live"
+        }
+      ],
+      "about": "What you can see afterwards: a record of what happened, a receipt for each session, the sessions themselves, live state on screen, an export to your monitoring, and what it costs.",
+      "rows": [
+        {
+          "id": "records",
+          "name": "Records",
+          "about": "What's kept to look back on: events, a receipt per session, the sessions themselves."
+        },
+        {
+          "id": "live",
+          "name": "Live and exported",
+          "about": "What you see while it works, and what goes out to your own monitoring: state, metrics, cost."
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "name": "Memory",
+      "job": "what it knows over time",
+      "family": "substrate",
+      "icon": "brain",
+      "items": [
+        {
+          "id": "session-state",
+          "name": "Session state",
+          "what": "Which mode it's in, carried between turns.",
+          "example": ".claude/state/mode.json",
+          "detect": [
+            {
+              "nodes": {
+                "part": "session-state"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "row": "session"
+        },
+        {
+          "id": "task-list",
+          "name": "Task list",
+          "what": "A backlog it reads and updates across sessions.",
+          "example": "TASKS.md, or issues through an MCP server",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-task-list"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "session"
+        },
+        {
+          "id": "saved-facts",
+          "name": "Its own notes",
+          "what": "What it learned and wrote down itself, kept between sessions: not what you curated.",
+          "example": "memory/: the API moved to v2 in March",
+          "detect": [
+            {
+              "nodes": {
+                "part": "persistent-memory"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "change": {
+            "files": [
+              "memory/"
+            ],
+            "does": "Turns on a memory directory for facts learned across sessions."
+          },
+          "row": "sessions"
+        },
+        {
+          "id": "progress-log",
+          "name": "Progress log",
+          "kind": "capability",
+          "what": "What's done, in progress and blocked, kept on disk for the next session.",
+          "example": "PROGRESS.md updated at the end of every session",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "progress"
+              },
+              "state": "yes",
+              "badge": "on disk"
+            },
+            {
+              "nodes": {
+                "kind": "feature-list"
+              },
+              "state": "yes",
+              "badge": "feature list"
+            }
+          ],
+          "change": {
+            "files": [
+              "PROGRESS.md",
+              "CLAUDE.md"
+            ],
+            "does": "Adds a progress file and tells the agent to read it at start and update it at the end."
+          },
+          "row": "sessions"
+        },
+        {
+          "id": "session-recall",
+          "name": "Past-session recall",
+          "what": "It can find what happened in earlier sessions.",
+          "example": "search last week's sessions for why a test was skipped",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-session-recall"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "sessions"
+        },
+        {
+          "id": "knowledge-base",
+          "name": "Knowledge base",
+          "what": "A curated second brain the work trusts and cites.",
+          "example": "docs/ of Markdown: decisions, features, reference",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "vault"
+              },
+              "state": "yes",
+              "badge": "{files} notes"
+            },
+            {
+              "nodes": {
+                "authoritative": true
+              },
+              "state": "yes",
+              "badge": "×{n} files"
+            }
+          ],
+          "kind": "capability",
+          "row": "curated"
+        },
+        {
+          "id": "decisions",
+          "name": "Decision log",
+          "what": "Decisions are recorded where the next session will find them.",
+          "example": "ADR-0007: queue jobs in Postgres",
+          "detect": [
+            {
+              "nodes": {
+                "authoritative": true,
+                "_label_re": "decision"
+              },
+              "state": "yes",
+              "badge": "decisions.md"
+            }
+          ],
+          "kind": "capability",
+          "row": "curated"
+        },
+        {
+          "id": "codebase-map",
+          "name": "Codebase map",
+          "what": "A map of the code it reads first.",
+          "example": "ARCHITECTURE.md, linked from CLAUDE.md",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-codebase-map"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "curated"
+        },
+        {
+          "id": "ontology",
+          "name": "Ontology",
+          "what": "The kinds of things in this work and how they relate, defined once.",
+          "example": "a schema of features, decisions and tasks and their links",
+          "detect": [
+            {
+              "nodes": {
+                "kind": "sig-ontology"
+              },
+              "state": "yes",
+              "badge": "×{n}"
+            }
+          ],
+          "kind": "capability",
+          "added": "model-v2",
+          "row": "structure"
+        },
+        {
+          "id": "knowledge-graph",
+          "name": "Knowledge graph",
+          "what": "Notes are linked to each other, not just filed.",
+          "example": "wikilinks between notes, extracted as a graph",
+          "detect": [],
+          "kind": "capability",
+          "change": {
+            "files": [
+              "vault/**/*.md",
+              "tools/extract/"
+            ],
+            "does": "Adds links between notes and an extractor that turns them into a graph."
+          },
+          "weak": true,
+          "row": "structure"
+        },
+        {
+          "id": "retrieval",
+          "name": "Retrieval",
+          "what": "It can find what it knows instead of loading everything.",
+          "example": "search over the vault, or embeddings",
+          "detect": [],
+          "preview": {
+            "weight": -400
+          },
+          "kind": "capability",
+          "change": {
+            "files": [
+              ".mcp.json",
+              "skills/search-notes/SKILL.md"
+            ],
+            "does": "Adds a search tool over the vault, and has skills search before reading whole files."
+          },
+          "row": "structure"
+        }
+      ],
+      "rows": [
+        {
+          "id": "session",
+          "name": "This session",
+          "about": "Gone when the session ends."
+        },
+        {
+          "id": "sessions",
+          "name": "Across sessions",
+          "about": "Kept by the agent, so the next session picks up where this one stopped."
+        },
+        {
+          "id": "curated",
+          "name": "Curated",
+          "about": "Kept by you: what the work trusts and cites."
+        },
+        {
+          "id": "structure",
+          "name": "Structure",
+          "about": "How what it knows is organised and found."
+        }
+      ],
+      "about": "What it knows over time, by how long it lasts: this session, across sessions, what you curate, and how it's all organised and found."
+    }
+  ],
+  "combos": [
+    {
+      "id": "continuity",
+      "kind": "synergy",
+      "name": "Continuity",
+      "all": [
+        "session-state",
+        "decisions"
+      ],
+      "effect": "The next session picks up the work itself, not a retelling of it."
+    },
+    {
+      "id": "curated-canon",
+      "kind": "synergy",
+      "name": "Curated knowledge base",
+      "all": [
+        "knowledge-base",
+        "human-gate"
+      ],
+      "effect": "Nothing enters the knowledge base without your sign-off."
+    },
+    {
+      "id": "grounded-recall",
+      "kind": "synergy",
+      "name": "Grounded recall",
+      "all": [
+        "knowledge-base",
+        "retrieval"
+      ],
+      "effect": "It finds and cites what it knows, instead of loading everything up front."
+    },
+    {
+      "id": "defense-in-depth",
+      "kind": "synergy",
+      "name": "Defense in depth",
+      "all": [
+        "human-gate",
+        "hard-gate"
+      ],
+      "effect": "Routine checks happen automatically, and you only see what needs judgment."
+    },
+    {
+      "id": "knows-when-to-stop",
+      "kind": "synergy",
+      "name": "Knows when to stop",
+      "all": [
+        "completion-check",
+        "autonomous-runs"
+      ],
+      "effect": "Work has a finish line a check enforces and a retry budget, so it neither quits early nor loops forever."
+    },
+    {
+      "id": "learning-loop",
+      "kind": "synergy",
+      "name": "Learning loop",
+      "all": [
+        "event-log",
+        "evals"
+      ],
+      "effect": "What happened gets scored, and the scores feed back into the harness."
+    },
+    {
+      "id": "designed-crew",
+      "kind": "synergy",
+      "name": "Designed crew",
+      "all": [
+        "subagents",
+        "orchestration"
+      ],
+      "effect": "Agents hand off in a planned shape, so their work can be followed and checked."
+    },
+    {
+      "id": "earned-done",
+      "kind": "synergy",
+      "name": "Earned completion",
+      "all": [
+        "criteria",
+        "completion-check"
+      ],
+      "effect": "Work only counts as done when the check against the written criteria passes."
+    },
+    {
+      "id": "approval-fatigue",
+      "kind": "curse",
+      "name": "Approval fatigue",
+      "all": [
+        "human-gate"
+      ],
+      "none": [
+        "hard-gate"
+      ],
+      "effect": "Every guard asks you, and nothing can refuse on its own. The model behaving well is doing all the work.",
+      "lifts": "Wire the blocking hooks onto real write paths."
+    },
+    {
+      "id": "heavy-pack",
+      "kind": "curse",
+      "name": "Heavy pack",
+      "all": [
+        "proj-instructions"
+      ],
+      "none": [
+        "retrieval"
+      ],
+      "stat": {
+        "weight": {
+          "gt": 600
+        }
+      },
+      "effect": "{weight} lines of context are paid up front, every session, before any work starts.",
+      "lifts": "Add retrieval, or trim the instructions so each mode loads only its part."
+    },
+    {
+      "id": "unread-record",
+      "kind": "curse",
+      "name": "Unread record",
+      "all": [
+        "event-log"
+      ],
+      "none": [
+        "evals"
+      ],
+      "effect": "Everything is written down and nothing is ever scored, so the record can't make the harness better.",
+      "lifts": "Add evals, or a regular review of the feedback it captures."
+    },
+    {
+      "id": "accidental-swarm",
+      "kind": "curse",
+      "name": "Accidental swarm",
+      "all": [
+        "subagents"
+      ],
+      "none": [
+        "orchestration"
+      ],
+      "effect": "Agents spawn agents with no planned shape, so nobody can follow who did what.",
+      "lifts": "Declare how the agents connect and hand off."
+    },
+    {
+      "id": "tool-overload",
+      "kind": "curse",
+      "name": "Too many tools to choose from",
+      "count": {
+        "skills": {
+          "gt": 30
+        }
+      },
+      "none": [],
+      "effect": "With {skills} skills, the model picking one by reading every description gets unreliable.",
+      "lifts": "Narrow the choice before the main model picks: a decision model (see Modalities), or fewer, sharper skills.",
+      "all": [
+        "skills"
+      ]
+    },
+    {
+      "id": "marks-own-work",
+      "kind": "curse",
+      "name": "Marks its own work",
+      "all": [
+        "skills"
+      ],
+      "none": [
+        "independent-checker",
+        "completion-check"
+      ],
+      "effect": "The agent that did the work is the only one judging whether it's done.",
+      "lifts": "Add an independent checker, or a completion check that runs the tests."
+    },
+    {
+      "id": "closed-loop",
+      "kind": "synergy",
+      "name": "Closed loop",
+      "all": [
+        "criteria",
+        "completion-check",
+        "evals"
+      ],
+      "effect": "Done is written down before work starts, checked when it ends, and measured over time."
+    },
+    {
+      "id": "paper-trail",
+      "kind": "synergy",
+      "name": "Paper trail",
+      "all": [
+        "event-log",
+        "receipts",
+        "telemetry-export"
+      ],
+      "effect": "Every session leaves a record and a receipt, and both reach your own monitoring."
+    },
+    {
+      "id": "safe-autopilot",
+      "kind": "synergy",
+      "name": "Safe autopilot",
+      "all": [
+        "autonomous-runs",
+        "hard-gate",
+        "sandbox",
+        "completion-check"
+      ],
+      "effect": "It can run unattended: something refuses, something contains, and something checks the result."
+    }
+  ],
+  "tiers": [
+    {
+      "id": "dotfile",
+      "name": "Dotfile",
+      "blurb": "Instructions and a few skills.",
+      "needs": [
+        "proj-instructions"
+      ],
+      "rank": "Apprentice",
+      "rank_icon": "Sprout"
+    },
+    {
+      "id": "guided",
+      "name": "Guided",
+      "blurb": "Protocols, a knowledge base, and a person who approves.",
+      "needs": [
+        "contracts",
+        "knowledge-base",
+        "human-gate"
+      ],
+      "rank": "Journeyman",
+      "rank_icon": "Compass"
+    },
+    {
+      "id": "gated",
+      "name": "Gated",
+      "blurb": "Checks that can refuse on their own, and a record of what happened.",
+      "needs": [
+        "hard-gate",
+        "permissions",
+        "event-log"
+      ],
+      "rank": "Trusted",
+      "rank_icon": "ShieldCheck"
+    },
+    {
+      "id": "governed",
+      "name": "Governed",
+      "blurb": "Done is defined, quality is measured, every session leaves a receipt.",
+      "needs": [
+        "criteria",
+        "evals",
+        "receipts"
+      ],
+      "rank": "Master",
+      "rank_icon": "Crown"
+    }
+  ],
+  "progression": {
+    "note": "XP for each step a piece matures (empty, started, equipped, hardened: cumulative), for each achievement earned and each weak spot cleared, and for each situation the harness covers (its own pieces decide it, rightly for the stakes; high stakes count more). Level n starts at level_curve × n² XP (rounded up), to max_level. Ranks are tiers by their game names (names and rules still open). A collection (skills) earns up to gap_xp more: a share for each item with no gaps, up to gap_items of them, so adding a weak item never lowers XP: hardening is a profile per item, not a level. A piece with tiers (Equipped, Tuned, Enforced, Proven) earns tier_xp in all, split evenly across its tiers.",
+    "piece_xp": [
+      0,
+      10,
+      35,
+      85
+    ],
+    "achievement_xp": 50,
+    "cleared_xp": 30,
+    "level_curve": 2.38,
+    "max_level": 50,
+    "situation_xp": {
+      "high": 15,
+      "everyday": 5
+    },
+    "gap_xp": 50,
+    "gap_items": 5,
+    "tier_xp": 85
+  },
+  "trust": {
+    "note": "What people let an agent do, and the controls that would justify it. Evidence is each category's controls weighted by strength (asks 1, checks 2, blocks 3).",
+    "scale": [
+      "Not at all",
+      "Only with my review",
+      "Usually",
+      "Mostly",
+      "Completely"
+    ],
+    "judgement_note": "A judgement call is work where asking you is worth it: what it knows, whether it's done, acting with no one there. Editing files and running commands are routine: a rule or a check can decide them, and asking you each time is babysitting.",
+    "stages": [
+      {
+        "id": "before",
+        "name": "Stops it before it acts",
+        "who": "harness",
+        "pieces": [
+          "permissions",
+          "sandbox",
+          "hard-gate"
+        ]
+      },
+      {
+        "id": "you",
+        "name": "Asks you",
+        "who": "you",
+        "pieces": [
+          "human-gate",
+          "feedback"
+        ]
+      },
+      {
+        "id": "after",
+        "name": "Checks the result",
+        "who": "harness",
+        "pieces": [
+          "completion-check",
+          "independent-checker",
+          "check-commands",
+          "evals",
+          "criteria",
+          "harness-checker",
+          "schema"
+        ]
+      },
+      {
+        "id": "record",
+        "name": "Keeps a record",
+        "who": "harness",
+        "pieces": [
+          "event-log",
+          "receipts",
+          "decisions"
+        ]
+      }
+    ],
+    "categories": [
+      {
+        "id": "edit",
+        "name": "Edit files",
+        "question": "Change your code and files without you reviewing each change",
+        "judgement": false,
+        "evidence": [
+          "hard-gate",
+          "permissions",
+          "sandbox",
+          "check-commands",
+          "independent-checker",
+          "completion-check"
+        ]
+      },
+      {
+        "id": "knowledge",
+        "name": "Change what it knows",
+        "question": "Update the knowledge base and record decisions",
+        "judgement": true,
+        "evidence": [
+          "human-gate",
+          "hard-gate",
+          "decisions",
+          "harness-checker"
+        ]
+      },
+      {
+        "id": "commands",
+        "name": "Run commands",
+        "question": "Run shell commands and use tools on its own",
+        "judgement": false,
+        "evidence": [
+          "permissions",
+          "sandbox",
+          "event-log"
+        ]
+      },
+      {
+        "id": "done",
+        "name": "Decide it's done",
+        "question": "Decide by itself that the work is finished and correct",
+        "judgement": true,
+        "evidence": [
+          "criteria",
+          "completion-check",
+          "independent-checker",
+          "check-commands",
+          "evals"
+        ]
+      },
+      {
+        "id": "unattended",
+        "name": "Act unattended",
+        "question": "Work for long stretches, or ship and push, without you there",
+        "judgement": true,
+        "evidence": [
+          "autonomous-runs",
+          "receipts",
+          "event-log",
+          "evals",
+          "hard-gate",
+          "independent-checker"
+        ]
+      }
+    ]
+  },
+  "schema": "free-rein.pieces/1",
+  "runtimes": ["claude", "codex", "open", "cursor", "gemini", "opencode", "copilot"]
+}

@@ -1,0 +1,13 @@
+src/**
+scripts/**
+out/test/**
+**/*.map
+tsconfig.json
+node_modules/**
+.vscode/**
+.gitignore
+board/**
+images/*.svg
+DEVELOPING.md
+images/board.png
+images/free-rein.png
