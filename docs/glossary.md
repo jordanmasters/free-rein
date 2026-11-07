@@ -76,10 +76,11 @@ happens: they agree; said but nothing enforces it; enforced but no rule says so;
 nothing says it and nothing stops it; or only the runtime's own check stands in
 the way.
 
-**Move.** One thing worth doing next. Every problem the board finds (a risky
+**What to do next.** The bell's list: every problem the board finds (a risky
 situation, rules nothing enforces, a piece the harness would gain most from)
-becomes a move, with why, what it earns and how much work it is. Moves that fix
-the same thing are merged; several can be fixed together in one draft.
+becomes one thing to do, with why, what it earns and how much work it is, most
+important first. Things that fix the same problem are merged; several can be
+fixed together in one draft.
 
 **Trust.** How much you'd let the agent do alone (edit files, run commands,
 decide it's done…), set beside what the harness actually backs.

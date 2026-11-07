@@ -42,7 +42,7 @@ function head(){
       ${COMPACT?`<span class="g59 cz81 tb81" role="group" aria-label="Size">${[['full','Circle','The full circle'],['mini','PanelTop','The small circle']].map(([k,ic,t])=>`<button data-csize="${k}" aria-pressed="${CSIZE===k}" title="${t}" aria-label="${t}">${icon(ic,13)}</button>`).join('')}<button data-openfull="board" title="Open your harness full size, with every section around the circle" aria-label="Expand">${icon('Maximize2',13)}</button></span>`:''}
       <span class="fl59"></span>
       ${READING?'':PENDING?`<span class="nt48 pend fp81" role="status">${icon('LoaderCircle',13)} ${esc(PENDING.what)}</span>`:''}
-      ${(n=>`<span class="g59 bl75"><button class="ib48" data-moves="1" aria-pressed="${MOVESOPEN}" title="${n?`${n} thing${n===1?'':'s'} to do next`:'Nothing to do next'}" aria-label="Moves: ${n}">${icon('Bell',15)}${n?`<i class="ct75">${n}</i>`:''}</button></span>`)(movesAll().length)}
+      ${(n=>`<span class="g59 bl75"><button class="ib48" data-moves="1" aria-pressed="${MOVESOPEN}" title="${n?`${n} thing${n===1?'':'s'} to do next`:'Nothing to do next'}" aria-label="Notifications: ${n} thing${n===1?'':'s'} to do next">${icon('Bell',15)}${n?`<i class="ct75">${n}</i>`:''}</button></span>`)(movesAll().length)}
       ${moreBtn()}
 </div>`};
   $('v44head').innerHTML=`<div class="bar48 hv49">${idLine()}

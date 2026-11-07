@@ -20,10 +20,10 @@ function briefKit(){
     return `<p class="hl49">${a}${m}${r}</p>${ahead.length?`<p class="gp49w">${icon('TriangleAlert',13)} You trust it more than its safeguards back when it ${join(ahead.map(l=>esc(PRES[l.id]||l.name)))}.</p>`:!ans&&hosted&&!BASE.profile?`<p class="gp49w mute">Answer the trust check in the sidebar to see where your trust runs ahead of the evidence.</p>`:''}`};
   const nextId=Object.keys(H.next||{})[0], nT=nextId&&find(nextId);
   const dUps=(BASE.lens&&BASE.lens.ups)||(BASE.draft&&BASE.draft.ups)||[];
-  const nextCard=()=>nT?`<div class="nx49"><em>${icon('Sparkles',12)} Best next move</em>
+  const nextCard=()=>nT?`<div class="nx49"><em>${icon('Sparkles',12)} Best next step</em>
       <b>${esc(nT.name)}</b><span>${esc(reward(nextId))}${nT.upgrade_xp?` · +${nT.upgrade_xp} XP`:''}</span>
       <span class="ac"><button data-nextsee="${nextId}">See it</button>${hosted&&canDraft()?`<button class="pri" data-nextdraft="${nextId}">${dUps.includes(nextId)?'✓ In the draft':'Add to draft'}</button>`:''}</span></div>`
-    :`<div class="nx49"><em>Best next move</em><b>Nothing suggested</b><span>Every piece the next level needs is in place.</span></div>`;
+    :`<div class="nx49"><em>Best next step</em><b>Nothing suggested</b><span>Every piece the next level needs is in place.</span></div>`;
   const facts=()=>`<p class="fc49"><button data-topic="tier">Level ${lvlOf(xpOf())} · ${esc(rk?rk[0]:'Unranked')}</button><i>·</i><button data-topic="trust">${H.backed}% backed overall</button><i>·</i><button data-topic="problems" class="${probs.length?'bad':''}">${probs.length} weak spot${probs.length===1?'':'s'}</button><i>·</i><button data-topic="sets" class="gold">${act.length} of ${syn.length} achievements</button></p>`;
   const reins=(compact)=>`<div class="rn49${compact?' c':''}">${compact?'':`<div class="sc49"><span></span><span class="pt">${SCALE.map((x,i)=>`<i style="left:${i*25}%">${esc(x)}</i>`).join('')}</span><span></span></div>`}
       ${lanes.map(l=>{const tone=l.m!=null&&l.m>l.e+25?'far':l.m!=null&&l.m>l.e?'near':'';
