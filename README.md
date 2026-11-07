@@ -30,8 +30,6 @@ anywhere. The one exception is a preview you have to turn on and start
 yourself: the agent review, which hands the harness to your own agent (see
 NOTICE.md).
 
-![The Free rein view: one square per action, by what happens when the agent tries it](vscode/images/free-rein.png)
-
 ## What's in it
 
 - **The model** (`model/graph-schema.md`, `model/pieces.json`): 62 kinds of
@@ -48,8 +46,6 @@ NOTICE.md).
   pieces around the agent it wraps.
 
 ## Try it
-
-Free Rein isn't on the VS Code Marketplace, Open VSX or npm yet.
 
 - **In VS Code or Cursor:** download the `.vsix` from the
   [latest release](https://github.com/jordanmasters/free-rein/releases), run
@@ -79,10 +75,8 @@ don't work yet. The board, the command line and the harness document
 (`free-rein.harness/1`) may all change before 1.0, without notice. Its claims about each runtime are dated and sourced, and runtimes change
 too; `model/runtimes/<id>.json` says when each was last checked.
 
-**Maintained by one person, in spare time.** Issues are read, usually within a
-week or two; a fix may take longer. Reports of a harness Free Rein reads
-wrongly, or of a runtime claim that's out of date, are the most useful; see
-CONTRIBUTING.md.
+Reports of a harness Free Rein reads wrongly, or of a runtime claim that's out
+of date, are the most useful; see CONTRIBUTING.md.
 
 ## Licence
 

@@ -39,8 +39,6 @@ rules you wrote hold:
 - every rule written in your instructions and skills: enforced, asking instead
   of refusing, only asked, or not something a rule could enforce.
 
-![The Free rein view: one square per action, by what happens when the agent tries it](images/free-rein.png)
-
 **The side panel.**
 
 - **Pieces:** each section and piece, where it was found (file and line), and

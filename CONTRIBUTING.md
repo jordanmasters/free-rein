@@ -7,10 +7,8 @@ contributing you agree that your contribution is licensed under the MIT licence.
 
 ## Pace and scope
 
-Free Rein has one maintainer, working on it in spare time. Issues are read,
-usually within a week or two; a pull request may wait longer. For anything
-bigger than a fix, open an issue first, so we can agree on it before you spend
-the time.
+For anything bigger than a fix, open an issue first, so we can agree on it
+before you spend the time.
 
 Most welcome:
 
