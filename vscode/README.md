@@ -2,12 +2,12 @@
 
 **See how much free rein your agent has.**
 
-*Your rules say one thing. What does your agent actually do?*
-
-Your `CLAUDE.md` says "never push to main". Does anything stop your agent if it
-tries? Free Rein reads your AI coding agent's **harness** (its instructions,
-skills, tools, hooks, permission rules, sandbox and memory) and shows what it
-has, what holds, and how much the agent does on its own.
+Free Rein reads your AI coding agent's **harness** (its instructions, skills,
+tools, agents, hooks, permission rules, sandbox and memory) and draws it: every
+piece around the agent, where it comes from, how the pieces work together, and
+how much free rein the agent has (what it does on its own, and how that
+changes with the runtime, the mode, a layer or a plugin). It's for understanding
+the harness you have, and designing the one you want.
 
 It reads files on your machine. It uses no AI model and sends nothing anywhere.
 

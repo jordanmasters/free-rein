@@ -2,28 +2,42 @@
 
 **See how much free rein your agent has.**
 
-*Your rules say one thing. What does your agent actually do?*
-
 > **Experimental.** Free Rein is under active development: some parts are
 > unfinished, some don't work yet, and much will change. Treat what it shows
 > as a second opinion, not a guarantee.
 
-Your `CLAUDE.md` says "never push to main". Does anything stop the agent if it
-tries? An AI coding agent is only as good as its **harness**: the instructions,
-skills, tools, hooks, permission rules, sandboxes and memory around it. Free Rein
-reads a harness and shows what it has, what it lacks, how the pieces affect each
-other, and how far the agent can be trusted to act on its own.
+An AI coding agent is only as good as its **harness**: the instructions,
+skills, tools, agents, hooks, permission rules, sandboxes and memory around it.
+A harness grows a file at a time: an instruction here, a skill there, a hook
+someone added, settings in three places, some from your home folder, some from
+a plugin. Few people could say what's in theirs, or what it adds up to.
+
+Free Rein reads a harness and draws it: every piece around the agent, where it
+comes from, how the pieces work together, and where they leave gaps. It's for
+understanding the harness you have, and designing the one you want.
+
+Once you can see it, you can answer a simple question: how much free rein are
+you giving your agent? And how does that change from one project to the next:
+Claude Code vs Codex vs Gemini CLI, manual vs auto mode, with a given plugin or
+without?
 
 ![The Harness view of the kitchen sample: 62 kinds of piece around the agent](vscode/images/board.png)
 
-What it answers:
+What it helps with:
 
-- **One harness, across runtimes.** Claude Code, Codex, Cursor, GitHub Copilot,
-  Gemini CLI and OpenCode, read with one model. More to come.
-- **Written versus enforced.** Which rules in your instructions are actually
-  backed by a hook, a permission rule or a sandbox, and which only ask.
-- **How far it can act alone.** What happens in each risky situation, and what
-  decides it.
+- **See it whole.** 62 kinds of piece in ten sections, drawn as one picture,
+  with the layers they come from: built in, yours in every repo, this repo
+  shared, this repo just for you.
+- **Understand how it fits.** Which pieces back each other, what they earn
+  together, where they leave a weak spot, and what each runtime actually loads:
+  Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI and OpenCode, read
+  with one model.
+- **See how much free rein it has.** For each risky action, what would happen
+  and what decides it, and how that shifts when you switch the runtime, the
+  mode, a layer or a plugin. Where what your instructions say and what happens
+  part ways shows too.
+- **Design it.** Try a change on a copy and see its effect before anything is
+  written, with what would make it stronger next.
 
 Free Rein reads files on your machine. It uses no AI model and sends nothing
 anywhere. The one exception is a preview you have to turn on and start
@@ -72,8 +86,9 @@ on Free Rein: `CONTRIBUTING.md` and `AGENTS.md`.
 
 **Experimental, and under development.** Some parts are unfinished and some
 don't work yet. The board, the command line and the harness document
-(`free-rein.harness/1`) may all change before 1.0, without notice. Its claims about each runtime are dated and sourced, and runtimes change
-too; `model/runtimes/<id>.json` says when each was last checked.
+(`free-rein.harness/1`) may all change before 1.0, without notice. Its claims
+about each runtime are dated and sourced, and runtimes change too;
+`model/runtimes/<id>.json` says when each was last checked.
 
 Reports of a harness Free Rein reads wrongly, or of a runtime claim that's out
 of date, are the most useful; see CONTRIBUTING.md.
