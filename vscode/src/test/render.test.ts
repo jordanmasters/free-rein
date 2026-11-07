@@ -50,7 +50,9 @@ async function main() {
     if (name === "kitchen") { const at = Date.now(), b = { level: 3, xp: 400, equipped: 20, exposed: 2, files: 80, ms: 900 }, sync = ["~/.claude/skills/synced/abc/manifest.json"];
       ((data as any).harnesses || [data])[0].scans = [{ ...b, at: at - 9e5, why: "You opened the folder", changed: [] },
         ...[1, 2, 3, 4].map(k => ({ ...b, at: at - 9e5 + k * 6e4, why: "A file changed", changed: sync })),
-        { ...b, xp: 420, equipped: 21, at: at - 1e5, why: "A file changed", changed: ["CLAUDE.md"] }]; }
+        { ...b, xp: 420, equipped: 21, at: at - 1e5, why: "A file changed", changed: ["CLAUDE.md"] }];
+      // a trust check already taken: its result opens the Situations tab
+      ((data as any).harnesses || [data])[0].answers = { stakes: { everyday: 4 }, cards: {}, style: "pilot", at: "2026-11-07T10:00:00Z" }; }
     for (const compact of [false, true]) {
       // the full kitchen board tests Loops and Flows, behind their flag; the others show what everyone sees
       const flagged = name === "kitchen" && !compact;
@@ -107,7 +109,13 @@ async function main() {
           // in the full situations table the panel starts shut, and the divider's switch opens and shuts it there too
           const click = (q: string) => doc.querySelector(q).dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
           const shut = () => doc.getElementById("v44shell").classList.contains("noinsp50");
-          click('[data-list="sits"]'); click('[data-view="trust"]');
+          click('[data-list="sits"]');
+          assert.match(doc.querySelector("#v44drawer .rv71")?.textContent ?? "", /You're The Pilot/, "the trust check's result is at the top of the Situations tab");
+          assert.ok(doc.querySelector("#v44drawer [data-showreveal]"), "and a row opens every answer");
+          click("#v44drawer [data-showreveal]");
+          assert.match(doc.getElementById("v44view").textContent, /Your trust check[\s\S]*You're The Pilot[\s\S]*agree[\s\S]*partly[\s\S]*don't/, "the answers page: your style, and how many agree");
+          click('#v44view [data-view="board"]'); click('[data-list="sits"]');
+          click('[data-view="trust"]');
           assert.ok(shut(), "the full table opens with the panel shut");
           assert.equal(doc.querySelector("#v44rz [data-toginsp]").getAttribute("aria-pressed"), "false", "and the switch says so");
           click("#v44rz [data-toginsp]"); assert.ok(!shut(), "the switch opens the panel beside the table");

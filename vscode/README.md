@@ -11,7 +11,8 @@ has, what holds, and how much the agent does on its own.
 
 It reads files on your machine. It uses no AI model and sends nothing anywhere.
 
-> **A preview.** Free Rein is early and changes often. It reads harnesses for
+> **Experimental.** Free Rein is under active development: some parts are
+> unfinished, some don't work yet, and it changes often. It reads harnesses for
 > Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI and OpenCode.
 
 ![The Harness view: 62 kinds of piece around the agent, each lit by how far it has come](images/board.png)

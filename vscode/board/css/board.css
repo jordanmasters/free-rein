@@ -2096,6 +2096,8 @@
   #p34 .rv71{margin:0 0 10px;padding:12px;border-radius:10px;background:linear-gradient(135deg,rgba(242,195,91,.10),rgba(242,195,91,.02));border:1px solid rgba(242,195,91,.35);display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:#C9CBD3}
   #p34 .rv71 .h{display:flex;align-items:baseline;gap:8px}#p34 .rv71 .h b{font-size:15px;color:#F2C35B}#p34 .rv71 .h span{flex:1;font-size:12px;color:#A7AAB6}
   #p34 .rv71 .x{display:grid;place-items:center;width:20px;height:20px;border:0;border-radius:5px;background:none;color:#7D8190;cursor:pointer}#p34 .rv71 p{margin:0;line-height:1.45}#p34 .rv71 b.ex{color:#FF8A80}#p34 .rv71 b.bb{color:var(--v-babysitting)}
+  #p34 .rv71 .rl71{margin:0;padding:0;list-style:none;display:grid;gap:2px}#p34 .rv71 .rl71 button{font:inherit;font-size:12px;background:none;border:0;padding:2px 0;color:#ECEAE4;cursor:pointer;text-align:left}#p34 .rv71 .rl71 button::before{content:'• ';color:#FF8A80}#p34 .rv71 .rl71 button:hover{text-decoration:underline}#p34 .rv71 .mo71{font-size:11px;color:#7D8190}
+  #p34 .rv71.hi71{animation:hi71 1.2s ease-out}@keyframes hi71{0%{box-shadow:0 0 0 3px rgba(242,195,91,.6)}100%{box-shadow:0 0 0 0 rgba(242,195,91,0)}}
   #p34 .rv71 .ac{display:flex;align-items:center;gap:8px;margin-top:4px}#p34 .rv71 .ac small{font-size:11px;color:#7D8190}
   #p34 .sv72{max-width:760px;margin:32px auto;display:flex;flex-direction:column;gap:22px}
   #p34 .sv72 header .k{margin:0;font:600 11px/1 'Geist Mono',monospace;letter-spacing:.16em;color:#F2C35B}#p34 .sv72 header h2{margin:8px 0 6px;font-size:34px;font-weight:600;letter-spacing:-.02em;color:#ECEAE4}
@@ -2951,3 +2953,14 @@ body{margin:0;padding:12px 16px;background:var(--ground,#121318);overflow-x:hidd
   #p34 .hero97 .nt{margin:0;font-size:11.5px;color:#7D8190}
   #p34 .hero97 .lgd92{border-top:1px solid #20232A;padding-top:12px}
   @container bv92 (max-width:760px){#p34 .hero97 .cols{grid-template-columns:1fr}#p34 .hero97 .top{flex-direction:column;align-items:flex-start;gap:14px}#p34 .hero97 h2{font-size:20px}}
+  /* your trust check, answered: one row a moment, what you said beside what the harness does */
+  #p34 .ts90 .sty{margin:0 0 10px;font-size:13px;color:#C9CBD3}#p34 .ts90 .sty b{color:#F2C35B;font-size:15px;margin-right:6px}
+  #p34 .ts90 .nums{display:flex;gap:18px;margin:0 0 8px;font-size:12.5px;color:#A7AAB6}#p34 .ts90 .nums b{font-size:20px;margin-right:4px}
+  #p34 .ts90 .nums .ok b{color:#7FBF95}#p34 .ts90 .nums .mid b{color:#F2C35B}#p34 .ts90 .nums .bad b{color:#FF8A80}
+  #p34 .tc90 h3{display:flex;align-items:center;gap:6px}
+  #p34 .tr90{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(70px,.7fr) minmax(90px,.9fr) minmax(0,2fr);gap:12px;align-items:start;width:100%;text-align:left;font:inherit;font-size:12.5px;color:#ECEAE4;background:none;border:0;border-top:1px solid #1D1F26;padding:9px 4px;cursor:pointer}
+  #p34 .tr90:hover{background:rgba(255,255,255,.03)}
+  #p34 .tr90 span{display:grid;gap:2px;min-width:0}#p34 .tr90 small{font-size:10.5px;color:#6E7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #p34 .tr90 .m small{white-space:normal;color:#8D919D}#p34 .tr90 .m i{font-style:normal;font-weight:600}
+  #p34 .tr90.ok .m i{color:#7FBF95}#p34 .tr90.mid .m i{color:#F2C35B}#p34 .tr90.bad .m i{color:#FF8A80}
+  @media (max-width:700px){#p34 .tr90{grid-template-columns:1fr 1fr}#p34 .tr90 .w,#p34 .tr90 .m{grid-column:1/-1}}

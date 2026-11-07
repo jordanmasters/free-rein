@@ -13,15 +13,18 @@ function trustHome(A){const {d}=ovData(), S=d.summary, hosted=typeof HOST!=='und
       <header class="hd80"><div class="hl">${ex.length?`<b class="ex">${ex.length} risky thing${ex.length===1?'':'s'} go${ex.length===1?'es':''} ahead unchecked</b>`:`<b>Every risky thing stops or asks you</b>`}</div>
         <span class="ac">${hosted&&ex.length?`<button class="bt61 pri" data-fixex="1">${icon('Wand2',12)} Fix</button>`:''}</span></header>
 </div>
-    <div class="ls80b">
+    <div class="ls80b">${revealCard()}
       <p class="lb80">What's at stake</p>${order.map(stakeRow).join('')}
       <p class="lb80">What you wrote</p>${R?fold80('rules',{mark:slight(nrules?'exposed':'ok'),name:'Rules',val:nrules?`${nrules} not enforced`:`${R.backed} enforced`,tip:'What your instructions say, and whether anything makes it so'},
         ()=>{const G=ruleGroups().filter(g=>g.state==='false'||g.state==='partly');return `${G.slice(0,5).map(g=>row80({mark:`<i class="mk80 ${BK[g.state][1]}">${icon(BK[g.state][2],10)}</i>`,name:esc(g.text.length>90?g.text.slice(0,88)+'…':g.text),val:g.items.length>1?`×${g.items.length}`:'',attr:`data-sub="rule:${esc(g.key)}"`})).join('')}<button class="mo61" data-sub="rules">All rules ${icon('ArrowRight',12)}</button>`}):''}
       <div class="ac70"><button class="b50" data-view="trust">${icon('Maximize2',12)} Open the full table</button><button class="b50" data-view="simulate">${icon('Play',12)} Try a task</button></div>
       <p class="lb80">Everything</p>${row80({mark:icon('List',13),name:'All situations',val:`${S.situations}`,attr:'data-sub="all"',tip:'Every situation, with your call on each: allow, ask or never'})}
+      ${hosted?(BASE.answers&&BASE.answers.cards?row80({mark:icon('Heart',13),name:'Your trust check',sub:STYLES[BASE.answers.style]?`You're ${esc(STYLES[BASE.answers.style][0])}`:'',val:'',attr:'data-showreveal="1"',tip:'What you said you would let it do, beside what your harness backs'})
+        :row80({mark:icon('Heart',13),name:'Take the trust check',val:'',attr:'data-retake="1"',tip:'A few moments from this harness: would you let it? Then your answers beside the evidence'})):''}
     </div>`;
   bindAside(A); bindSub(A); bindRows(A); bindCalls(A);
   A.querySelectorAll('[data-fixex]').forEach(b=>b.onclick=()=>fixExposed());
+  A.querySelectorAll('[data-showreveal]').forEach(b=>b.onclick=()=>goView('check'));
   A.querySelectorAll('[data-fold80]').forEach(b=>b.onclick=()=>{const k=b.dataset.fold80;OPEN80.has(k)?OPEN80.delete(k):OPEN80.add(k);render()});
   A.querySelectorAll('.mo61[data-stake]').forEach(b=>b.onclick=()=>openStake(b.dataset.stake));
   bindTrustHover(A,d)}

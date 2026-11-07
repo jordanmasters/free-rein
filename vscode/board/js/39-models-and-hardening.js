@@ -55,13 +55,18 @@ function piecesModels(t){const M=BASE.models; if(!M||!['model-routing','modaliti
   const one=M.models.length===1&&!(M.agents||[]).some(a=>a.model!=='inherit');
   return fold('models','Which model does what',M.models.length,`${one?`<p class="nt75">${icon('Info',12)} One model does every job here. Routing gives each job its own: a fast one to search, a strong one to review.</p>`:''}${modGrid()}`,true)}
 // after the survey: the reveal, once, at the top of Situations
+// a situation in words: "Edit a skill (ux-review)", not the path it was played out on
+function sitPlain(s){const t=s.target||'', m=/\.claude\/skills\/([^/]+)\//.exec(t);
+  if(s.tool==='Edit'||s.tool==='Write'){if(m) return `Change the ${m[1]} skill`; const b=t.split('/').pop(); return `Change ${b||t}`}
+  if(s.tool==='Bash'){const ws=t.trim().split(/\s+/), keep=[]; for(const w of ws){if(keep.length>=3||/["'`$|<>()\\]/.test(w)||w.length>24) break; keep.push(w)} return `Run ${keep.join(' ')||ws[0]}${keep.length<ws.length?' …':''}`}
+  return s.what}
 function revealCard(){const a=BASE.answers; if(!a||!a.cards||!ovOK()) return ''; let seenK='v44-reveal-'+(BASE.key||''); try{if(localStorage.getItem(seenK)===a.at) return ''}catch(x){}
   const {d}=ovData(), S=id=>d.situations.find(x=>x.id===id), ahead=Object.entries(a.cards).filter(([id,c])=>c==='let'&&S(id)&&['exposed','classifier'].includes(S(id).verdict)).map(([id])=>S(id)), f=frictionRate(), st=STYLES[a.style];
-  const hosted=typeof HOST!=='undefined'&&canDraft()&&!BASE.profile;
   return `<div class="rv71"><div class="h">${st?`<b>You're ${esc(st[0])}</b><span>${esc(st[1])}.</span>`:'<b>Your trust check</b>'}<button class="x" data-revealx="1" aria-label="Dismiss">${icon('X',12)}</button></div>
-    ${ahead.length?`<p>You'd let it <b class="ex">${ahead.length} thing${ahead.length===1?'':'s'}</b> nothing in your harness backs: ${ahead.slice(0,3).map(x=>esc(x.what)).join(', ')}${ahead.length>3?'…':''}.</p>`:'<p>Everything you\'d let it do, your harness backs.</p>'}
-    ${f&&f.baby?`<p>And it would ask you about <b class="bb">${f.baby.toLocaleString()}</b> everyday things a session.</p>`:''}
-    ${hosted?`<div class="ac"><button class="bt61 pri" data-applycards="1">Make my answers the calls</button><small>Goes in the draft, measured first.</small></div>`:''}</div>`}
+    ${ahead.length?`<p>You said <b>Let it</b> to <b class="ex">${ahead.length} risky thing${ahead.length===1?'':'s'}</b> where nothing of yours would catch a mistake: ${(n=>n===ahead.length?'nothing stops them':n?'nothing stops some, and only Claude Code\'s own check stands in front of the rest':'only Claude Code\'s own check stands in the way')(ahead.filter(x=>x.verdict==='exposed').length)}.</p>
+      <ul class="rl71">${ahead.filter((x,i)=>ahead.findIndex(y=>sitPlain(y)===sitPlain(x))===i).slice(0,3).map(x=>`<li><button data-sitopen="${esc(x.id)}" title="${esc(x.target||'')}">${esc(sitPlain(x))}</button></li>`).join('')}</ul>`
+      :'<p>Everything you said <b>Let it</b> to, something in your harness backs.</p>'}
+    ${f&&f.baby?`<p>And it would ask you about <b class="bb">${f.baby.toLocaleString()}</b> everyday things a session.</p>`:''}<div class="ac"><button class="bt61" data-view="check">See all your answers ${icon('ArrowRight',12)}</button></div></div>`}
 function applyCards(){const a=BASE.answers, {d}=ovData(), ups=(BASE.lens&&BASE.lens.ups)||(BASE.draft&&BASE.draft.ups)||[], rules=[...draftRules()];
   Object.entries(a.cards||{}).forEach(([id,c])=>{const s=d.situations.find(x=>x.id===id); if(!s||!s.calls||ownCall(s)===c) return; const r=s.calls[c]; if(!r) return;
     const i=rules.findIndex(x=>x.sit===id); if(i>=0) rules.splice(i,1); rules.push({kind:r.kind,rule:r.rule,sit:id,preset:'survey'})});

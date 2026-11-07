@@ -25,7 +25,7 @@ function bindCards(V){const next=k=>{const c=CARDS[CI]; if(!c) return; CA[c.id]=
     const legacy={edit:stakes.everyday,commands:stakes.undo,knowledge:stakes.knowledge,unattended:stakes.outward,done:stakes.everyday};
     Object.keys(legacy).forEach(k=>legacy[k]==null&&delete legacy[k]);
     PENDING={what:'Setting your answers beside the evidence…'};busy();head();
-    HOST.answers({...legacy,stakes,cards:{...CA},style:styleOf(CA),at:new Date().toISOString()});CARDS=null;ANSWERED=true;LIST='sits';try{localStorage.setItem('v44-list','sits')}catch(x){}goView('board')});
+    ANSLOCAL={stakes,cards:{...CA},style:styleOf(CA),at:new Date().toISOString()};HOST.answers({...legacy,...ANSLOCAL});CARDS=null;ANSWERED=true;try{localStorage.setItem('v44-reveal-'+(BASE.key||''),ANSLOCAL.at)}catch(x){}goView('check')});
   if(!window.__cardkeys){window.__cardkeys=true;addEventListener('keydown',e=>{if(!CARDS||VIEW!=='trust'||!askFirst()&&!CARDS.length) return; if(e.target&&/input|select|textarea/i.test(e.target.tagName)) return;
     const k={'1':'let','2':'ask','3':'never',ArrowLeft:'let',ArrowDown:'ask',ArrowRight:'never'}[e.key]; if(k&&CI<CARDS.length){e.preventDefault();CA[CARDS[CI].id]=k;CI++;drawView()}})}}
 // the views other than the board
@@ -37,9 +37,41 @@ let TQ={};
 function appliedHTML(){const hs=[...(BASE.history||[])].reverse();
   return `<section class="cd50"><h3>Applied</h3>${hs.length?`<div class="ls50">${hs.map(h=>`<div class="row50"><div><b>${esc((h.applied||[]).join(', ')||'applied')}</b><small>${esc(new Date(h.at).toLocaleString())}${h.from?` · from level ${h.from.level} (${h.from.xp} XP)`:''}</small></div></div>`).join('')}</div>`:'<p class="mute">Nothing applied yet. Applying a draft records it here, with where the harness stood before.</p>'}</section>`+
     (DIFF&&!BASE.draft?`<section class="cd50"><h3>Last change this session</h3>${diffHTML(true)}</section>`:'')}
+// ---- your trust check, answered: each moment you were shown, what you said, what your harness does, and whether they agree
+let ANSLOCAL=null;   // the answers just sent, until they come back from VS Code
+const HARNSAYS={ahead:['let','Goes ahead'],asks:['ask','Asks you'],held:['never','Refused'],blocked:['never','Refused'],classifier:[null,'Claude Code decides'],depends:[null,'A hook may refuse']};
+const YOUSAID={let:'Let it',ask:'Ask me',never:'Never'};
+function checkMatch(you,s){const h=HARNSAYS[s.outcome]||[null,s.says||''], high=s.stakes!=='everyday';
+  if(s.outcome==='depends') return ['mid','Depends on a hook','A hook runs first and may refuse it; Free Rein reads hooks, it doesn\'t run them.'];
+  if(s.outcome==='classifier') return you==='let'?['mid','Up to Claude Code','It would likely go ahead, as you said, but only Claude Code\'s own check decides: nothing of yours.']
+    :['bad','Not your call','You said '+YOUSAID[you].toLowerCase()+', but no rule of yours says so: Claude Code\'s own check decides.'];
+  if(h[0]===you) return you==='let'&&high&&s.verdict==='exposed'?['mid','Agrees, unguarded','It goes ahead, as you said, and nothing would catch a mistake.']:['ok','Agrees','Your harness does what you said.'];
+  if(you==='let') return ['mid','Stricter than you',h[1]+': you said you would let it.'];
+  if(h[0]==='let') return ['bad','Goes ahead','You said '+YOUSAID[you].toLowerCase()+', but nothing stops it.'];
+  if(you==='never') return ['mid','Asks instead','You said never; it asks you, so a yes in the moment lets it through.'];
+  return ['mid','Stricter than you','Refused: you said you would want to be asked.']}
+function resultsHTML(head){const a=(BASE.answers&&BASE.answers.cards)?BASE.answers:ANSLOCAL, hosted=typeof HOST!=='undefined'&&!BASE.profile;
+  const again=hosted?'<button class="b50" data-retake="1">Take it again</button>':'';
+  if(!a||!a.cards) return head('Your trust check','You haven\'t taken it for this harness yet: a few moments from it, and whether you would let the agent do each.',again);
+  if(!ovOK()) return head('Your trust check','Setting your answers beside the evidence…');
+  const {d}=ovData(), st=STYLES[a.style], rows=Object.entries(a.cards).map(([id,you])=>{const s=d.situations.find(x=>x.id===id); return s?{s,you,m:checkMatch(you,s)}:null}).filter(Boolean);
+  const n=k=>rows.filter(r=>r.m[0]===k).length, when=a.at?new Date(a.at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}):'';
+  const order=[...d.stakes.filter(x=>x.high),...d.stakes.filter(x=>!x.high)];
+  const group=sk=>{const rs=rows.filter(r=>r.s.stakes===sk.id).sort((p,q)=>({bad:0,mid:1,ok:2}[p.m[0]]-{bad:0,mid:1,ok:2}[q.m[0]])); if(!rs.length) return '';
+    return `<section class="cd50 tc90"><h3>${icon(STAKEIC[sk.id]||'Circle',14)} ${esc(sk.name)}</h3>${rs.map(({s,you,m})=>`<button class="tr90 ${m[0]}" data-sitopen="${esc(s.id)}" title="Open this situation">
+        <span class="w"><b>${esc(sitPlain(s))}</b>${s.target&&!sitPlain(s).includes(s.target)?`<small>${esc(s.target)}</small>`:''}</span>
+        <span class="y"><small>You said</small>${esc(YOUSAID[you]||you)}</span>
+        <span class="h"><small>Your harness</small>${esc((HARNSAYS[s.outcome]||[0,s.says])[1])}</span>
+        <span class="m"><i>${esc(m[1])}</i><small>${esc(m[2])}</small></span></button>`).join('')}</section>`};
+  return head('Your trust check',`${rows.length} moments from ${esc(BASE.name)}${when?`, answered ${esc(when)}`:''}. What you said you'd let the agent do, beside what your harness actually does.`,again)+
+    `<section class="cd50 ts90">${st?`<p class="sty"><b>You're ${esc(st[0])}</b> ${esc(st[1])}.</p>`:''}
+      <div class="nums"><span class="ok"><b>${n('ok')}</b> agree</span><span class="mid"><b>${n('mid')}</b> partly</span><span class="bad"><b>${n('bad')}</b> don't</span></div>
+      <p class="mute">Agree: your harness does what you said. Partly: it's stricter than you, only asks where you said never, or goes ahead with nothing to catch a mistake. Don't: you wanted a say, and it goes ahead or Claude Code decides. Open one to see what decides it.</p></section>`+
+    order.map(group).join('')}
 function viewHTML(k){const K=briefKit(), hosted=typeof HOST!=='undefined', head=(t,p,extra='')=>`${askFirst()?'':`<button class="bk70" data-view="board">${icon('ChevronLeft',14)} Back to the board</button>`}<header class="vh50"><div><h2>${t}</h2><p>${p}</p></div>${extra}</header>`;
   if(k==='rules'){const t=RULESOF&&find(RULESOF); return head(t?`What ${esc(t.name)} says`:'What your harness says',"Every rule and sentence, where it's written, and whether anything of yours makes it so. Rules nothing enforces come first.")+rulesTableHTML()}
   if(k==='trust'&&askFirst()) return checkHTML();
+  if(k==='check') return resultsHTML(head);
   if(k==='trust'&&ovOK()) return ovViewHTML();
   if(k==='trust'){const cats=(BASE.trust&&BASE.trust.categories)||[];
     return head('Trust','How far this harness\'s own safeguards back the agent doing each kind of work without you, on the trust check\'s scale. Your own answers are the pins.',
