@@ -11,7 +11,7 @@ the harness you have, and designing the one you want.
 
 It reads files on your machine. It uses no AI model and sends nothing anywhere.
 
-> **Experimental.** Free Rein is under active development: some parts are
+> **Alpha.** Free Rein is under active development: some parts are
 > unfinished, some don't work yet, and it changes often. It reads harnesses for
 > Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI and OpenCode.
 

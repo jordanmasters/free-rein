@@ -2,7 +2,7 @@
 
 **See how much free rein your agent has.**
 
-> **Experimental.** Free Rein is under active development: some parts are
+> **Alpha.** Free Rein is under active development: some parts are
 > unfinished, some don't work yet, and much will change. Treat what it shows
 > as a second opinion, not a guarantee.
 
@@ -84,7 +84,7 @@ on Free Rein: `CONTRIBUTING.md` and `AGENTS.md`.
 
 ## Status
 
-**Experimental, and under development.** Some parts are unfinished and some
+**Alpha, and under development.** Some parts are unfinished and some
 don't work yet. The board, the command line and the harness document
 (`free-rein.harness/1`) may all change before 1.0, without notice. Its claims
 about each runtime are dated and sourced, and runtimes change too;

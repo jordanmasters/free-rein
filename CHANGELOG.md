@@ -3,9 +3,9 @@
 What changed, for people using Free Rein. The core (`core/`) and the extension
 (`vscode/`) share one version number and move together.
 
-## 0.2.0: the first preview
+## 0.2.0 (alpha)
 
-The first public version. Experimental: some parts are unfinished.
+The first public version, an early alpha: some parts are unfinished.
 
 **Reading a harness**
 
