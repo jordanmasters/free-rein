@@ -5,7 +5,7 @@ What changed, for people using Free Rein. The core (`core/`) and the extension
 
 ## 0.2.0: the first preview
 
-The first public version.
+The first public version. Experimental: some parts are unfinished.
 
 **Reading a harness**
 
@@ -32,7 +32,10 @@ The first public version.
 - Drafts measured on a copy before anything is written, and upgrades written
   as one edit you can undo.
 - Scans: the board reads again when a file it read changes, says when it last
-  did, and lists every scan.
+  did, and lists every scan in plain words (runs that found nothing folded).
+- The trust check: a few moments from your harness, "would you let it?", then
+  every answer beside what your harness actually does.
+- The bell: what to do next, most important first.
 - How Free Rein knows: every check, and how it knows (read, matched, recorded).
 - The agent review, a preview behind `freeRein.agentReview`: your own agent
   looks for what rules can't check; Free Rein keeps only findings whose quotes

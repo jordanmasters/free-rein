@@ -4,6 +4,10 @@
 
 *Your rules say one thing. What does your agent actually do?*
 
+> **Experimental.** Free Rein is under active development: some parts are
+> unfinished, some don't work yet, and much will change. Treat what it shows
+> as a second opinion, not a guarantee.
+
 Your `CLAUDE.md` says "never push to main". Does anything stop the agent if it
 tries? An AI coding agent is only as good as its **harness**: the instructions,
 skills, tools, hooks, permission rules, sandboxes and memory around it. Free Rein
@@ -45,37 +49,34 @@ NOTICE.md).
 
 ## Try it
 
-- **In VS Code or Cursor:** install **Free Rein** from the Marketplace or Open
-  VSX (`free-rein.free-rein`), open a repo, and run **Free Rein: Open your
-  harness**. See `vscode/README.md`.
-- **On the command line** (Node 22 or later, macOS or Linux):
+Free Rein isn't on the VS Code Marketplace, Open VSX or npm yet.
+
+- **In VS Code or Cursor:** download the `.vsix` from the
+  [latest release](https://github.com/jordanmasters/free-rein/releases), run
+  **Extensions: Install from VSIX…**, open a repo, and run **Free Rein: Open
+  your harness**. See `vscode/README.md`.
+- **From a clone** (Node 22 or later, macOS or Linux):
 
   ```bash
-  npx free-rein check .        # what needs attention, with where and how to fix it
-  npx free-rein upgrades .     # what it could add, and how
-  npx free-rein read .         # the harness document, as JSON
+  npm run setup && npm run build --prefix core
+  node core/out/src/cli.js check .                # what needs attention, with where and how to fix it
+  node core/out/src/cli.js upgrades .             # what it could add, and how
+  node core/out/src/cli.js read .                 # the harness document, as JSON
+  node examples/preview.mjs samples/solo          # the board in your browser
+  npm test
   ```
 
-  `free-rein check` also runs in CI and writes SARIF for GitHub code scanning:
-  see `core/README.md`.
-
-From a clone:
-
-```bash
-npm run setup && npm run build --prefix core
-node core/out/src/cli.js check samples/solo     # or your own repo
-node examples/preview.mjs samples/solo          # the board in your browser
-npm test
-```
+  `check` also runs in CI and writes SARIF for GitHub code scanning: see
+  `core/README.md`.
 
 New words (harness, piece, situation, level): see `docs/glossary.md`. Working
 on Free Rein: `CONTRIBUTING.md` and `AGENTS.md`.
 
 ## Status
 
-**A preview.** Free Rein works, and it changes often: the board, the command
-line and the harness document (`free-rein.harness/1`) may all change before
-1.0. Its claims about each runtime are dated and sourced, and runtimes change
+**Experimental, and under development.** Some parts are unfinished and some
+don't work yet. The board, the command line and the harness document
+(`free-rein.harness/1`) may all change before 1.0, without notice. Its claims about each runtime are dated and sourced, and runtimes change
 too; `model/runtimes/<id>.json` says when each was last checked.
 
 **Maintained by one person, in spare time.** Issues are read, usually within a
