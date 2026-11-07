@@ -1,10 +1,10 @@
 // ---- the character: a sprout, in the core. Its plant is the level, drawn: seven stages from 0
 // to 50, so it only says what the number says. It reacts to what changes on the board (a piece, the level, a reading
 // in progress) and goes back to neutral; it never wears a score. Its name, colour and whether it shows are the owner's
-let CHAR=Object.assign({on:true,kind:'jack',name:'Sprout',color:'green'},(()=>{try{return JSON.parse(localStorage.getItem('v44-char')||'{}')}catch(e){return {}}})());
+let CHAR=Object.assign({on:true,kind:'jack',name:'Sprout',color:'green'},(()=>{try{return JSON.parse(localStorage.getItem('v44-char')||'{}')}catch(e){return {}}})(),{kind:'jack'});
 const CHCOL={green:{name:'Green',hi:'#E4FFD9',mid:'#9BDF8C',lo:'#4E9E58',ink:'#2E4A2A'},peach:{name:'Peach',hi:'#FFE6D6',mid:'#FFB08F',lo:'#D9785A',ink:'#5A2230'},
   blue:{name:'Blue',hi:'#E1F0FF',mid:'#8EC1F2',lo:'#4F82B8',ink:'#1F3550'},slate:{name:'Slate',hi:'#EEF0F4',mid:'#B4BAC6',lo:'#6E7584',ink:'#2A2E36'}};
-const setChar=p=>{Object.assign(CHAR,p);try{localStorage.setItem('v44-char',JSON.stringify(CHAR))}catch(e){}if(typeof HOST!=='undefined')HOST.prefs({character:CHAR.on,characterKind:CHAR.kind,characterName:CHAR.name,characterColor:CHAR.color})};
+const setChar=p=>{Object.assign(CHAR,p);try{localStorage.setItem('v44-char',JSON.stringify(CHAR))}catch(e){}if(typeof HOST!=='undefined')HOST.prefs({character:CHAR.on})};
 const SOCKET=()=>CHAR.on&&CHAR.kind!=='sprout';
 const GROW=[['Seed',0],['Shoot',5],['Two leaves',12],['Leafy',20],['Bushy',30],['Lush',40],['Full grown',50]];
 const growOf=L=>GROW.reduce((s,[,f],i)=>L>=f?i:s,0);

@@ -232,36 +232,7 @@
         "freeRein.character": {
           "type": "boolean",
           "default": true,
-          "description": "Show something at the centre of the core (Jack or the Sprout, see Character Kind). Off: the level number."
-        },
-        "freeRein.characterKind": {
-          "type": "string",
-          "enum": [
-            "jack",
-            "sprout"
-          ],
-          "enumDescriptions": [
-            "Jack: your runtime on a dark disc your harness plugs into, with a face that reacts",
-            "A sprout whose plant grows with your level"
-          ],
-          "default": "jack",
-          "description": "What sits at the centre of your harness."
-        },
-        "freeRein.characterName": {
-          "type": "string",
-          "default": "Sprout",
-          "description": "What the Sprout is called."
-        },
-        "freeRein.characterColor": {
-          "type": "string",
-          "enum": [
-            "green",
-            "peach",
-            "blue",
-            "slate"
-          ],
-          "default": "green",
-          "description": "The Sprout's colour."
+          "description": "Show your runtime at the centre of the core. Off: the level number."
         },
         "freeRein.path": {
           "type": "string",

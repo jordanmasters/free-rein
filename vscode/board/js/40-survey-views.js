@@ -81,10 +81,7 @@ function viewHTML(k){const K=briefKit(), hosted=typeof HOST!=='undefined', head=
     return head('Settings','How your harness looks and reads. What counts (runtime, packages, your setup) is in the top bar.',hosted?`<button class="b50" data-vsset="1">${icon('Settings',14)} Free Rein settings in VS Code</button>`:'')+
       `<div class="gr50 two">
       <section class="cd50"><h3>Colours</h3>${seg('data-pal',Object.entries(PALS).map(([kk,pp])=>[kk,pp.name]),PAL)}</section>
-      <section class="cd50"><h3>The centre</h3><p class="mute">What sits in the middle of your harness. Jack shows your runtime, with your harness's cables plugged into it; the Sprout is a character whose plant grows with your level.</p>${sw('data-chon="1"',CHAR.on,'Show it in the core','Off: the level number, as before')}
-        ${seg('data-chkind',[['jack','Jack'],['sprout','Sprout']],CHAR.kind==='sprout'?'sprout':'jack')}
-        ${CHAR.kind==='sprout'?`<label class="chn82"><span>Name</span><input data-chname="1" maxlength="18" value="${esc(CHAR.name)}" placeholder="Sprout"></label>
-        ${seg('data-chcol',Object.entries(CHCOL).map(([kk,c])=>[kk,c.name]),CHAR.color)}`:''}</section></div>`}
+      <section class="cd50"><h3>The centre</h3><p class="mute">Your runtime sits in the middle of your harness, with your harness's cables plugged into it.</p>${sw('data-chon="1"',CHAR.on,'Show it in the core','Off: the level number, as before')}</section></div>`}
   return ''}
 // the dry run's task, and its last result (from simulate.ts, through VS Code)
 let SIMSTEPS=[{kind:'edit',target:'src/app.ts'},{kind:'edit',target:'.env'},{kind:'command',target:'npm test'},{kind:'done',target:''}], SIMRES=null, SIMHOOKS=false;
@@ -288,7 +285,7 @@ function render(){
 const applyPrefs=p=>{if(!p)return;if('agentReview' in p)AGENTREVIEW=!!p.agentReview;if(p.runtime&&CORES[p.runtime])core=p.runtime;if('countHome' in p)unseen=!!p.countHome;
   if(p.sounds&&SNDVOL[p.sounds]!=null)SNDLV=p.sounds;
   if(p.palette){PAL={vivid:'rarity',warm:'heat',calm:'calm'}[p.palette]||PAL;applyPal()}
-  if('character' in p)CHAR.on=p.character!==false;if(p.characterKind==='jack'||p.characterKind==='socket')CHAR.kind='jack';if(p.characterKind==='sprout')CHAR.kind='sprout';if(typeof p.characterName==='string')CHAR.name=p.characterName;if(p.characterColor&&CHCOL[p.characterColor])CHAR.color=p.characterColor;lastSig=null};
+  if('character' in p)CHAR.on=p.character!==false;lastSig=null};
 applyPrefs(window.FREE_REIN_PREFS);
 window.addEventListener('message',e=>{const m=e.data;if(m&&m.type==='prefs'){applyPrefs(m.prefs);render();layoutFit()}
   if(m&&m.type==='view'&&m.view){goView(m.view);return}

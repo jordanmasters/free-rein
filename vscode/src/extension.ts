@@ -162,7 +162,7 @@ const cfg = <T>(key: string, fallback: T) => vscode.workspace.getConfiguration("
 let channel: vscode.OutputChannel | undefined;
 const log = (msg: string) => (channel ??= vscode.window.createOutputChannel("Free Rein")).appendLine(`${new Date().toLocaleTimeString()}  ${msg}`);
 const prefs = () => ({ runtime: cfg("runtime", "claude"), countHome: cfg("countHome", true), palette: cfg("palette", "vivid"),
-  character: cfg("character", true), characterKind: cfg("characterKind", "jack"), characterName: cfg("characterName", "Sprout"), characterColor: cfg("characterColor", "green"),
+  character: cfg("character", true),
   sounds: cfg("sounds", "off"), agentReview: cfg("agentReview", false), editor: /cursor/i.test(vscode.env.appName) ? "cursor" : "vscode" });
 
 // where Free Rein's data comes from: a Free Rein repo (the setting, else the repo this extension runs from while
@@ -483,7 +483,7 @@ function onBoard(m: any) {
     if (m?.type === "copy" && typeof m.text === "string") vscode.env.clipboard.writeText(m.text).then(() => vscode.window.showInformationMessage(`Copied: ${m.text}`));
     // the board's own switches save to settings, which flow back to the board and sidebar
     if (m?.type === "prefs" && m.prefs) {
-      const c = vscode.workspace.getConfiguration("freeRein"), map: Record<string, string> = { runtime: "runtime", palette: "palette", countHome: "countHome", build: "build", character: "character", characterKind: "characterKind", characterName: "characterName", characterColor: "characterColor", sounds: "sounds", cursorRunMode: "cursorRunMode" };
+      const c = vscode.workspace.getConfiguration("freeRein"), map: Record<string, string> = { runtime: "runtime", palette: "palette", countHome: "countHome", build: "build", character: "character", sounds: "sounds", cursorRunMode: "cursorRunMode" };
       for (const [k, v] of Object.entries(m.prefs)) if (map[k]) c.update(map[k], v, vscode.ConfigurationTarget.Global);
     }
     // the board's own level (pieces, combos and the situations covered, in the mode it's read in)
