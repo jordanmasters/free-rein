@@ -116,3 +116,9 @@ test("connectors: signed in only when its tools appear", () => {
     + ' ... "name":"mcp__claude_ai_Claude_Docs__read" ...');
   assert.deepEqual(connectorsSeen([t]), { "Gmail": "not signed in", "Google Drive": "not signed in", "Claude Docs": "connected" });
 });
+test("connectors: a sign-in tool alone isn't connected", () => {
+  const t = ' "mcp__claude_ai_Google_Drive__authenticate" "mcp__claude_ai_Gmail__complete_authentication" "mcp__claude_ai_Claude_Docs__batch" ';
+  assert.deepEqual(connectorsSeen([t]), { "Google Drive": "not signed in", "Gmail": "not signed in", "Claude Docs": "connected" });
+  // once signed in, its own tools show up and it is connected
+  assert.equal(connectorsSeen([t, ' "mcp__claude_ai_Gmail__search_threads" '])["Gmail"], "connected");
+});

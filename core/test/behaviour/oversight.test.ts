@@ -215,3 +215,8 @@ describe("Layers", () => {
     assert.equal(simulate.state.LAYER, "yours");
   });
 });
+
+test("a decision log is high stakes wherever it sits: decisions/ at the top, or under a folder", () => {
+  for (const t of ["decisions/note.md", "docs/decisions/0001.md", "vault/tracking/decisions.md"]) assert.equal(oversight.stakesOf("Edit", t), "knowledge", t);
+  assert.equal(oversight.stakesOf("Edit", "src/indecisions.ts"), "everyday");
+});

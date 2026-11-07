@@ -615,7 +615,10 @@ function _files(base: string, pattern: string, deep = false): string[] {
   return sorted(listdir(base).filter(f => rx.search(f)).map(f => join(base, f)));
 }
 
-const CONNECTED_RE = re("mcp__claude_ai_([A-Za-z0-9]+(?:_[A-Za-z0-9]+)*?)__");
+// a connector you haven't signed in to still offers its sign-in tools (authenticate, complete_authentication):
+// those don't make it connected, only its other tools do
+const CONNECTED_RE = re("mcp__claude_ai_([A-Za-z0-9]+(?:_[A-Za-z0-9]+)*?)__(\\w+)");
+const SIGN_IN_TOOL = re("^(complete_)?authenticat");
 const UNAUTH_RE = re("require authentication[^\\n\\\\]*((?:\\\\n|\\n)(?:claude\\.ai [^\\n\\\\]+(?:\\\\n|\\n)?)+)");
 
 /** {name: "connected" | "not signed in"} from session transcripts. */
@@ -624,7 +627,11 @@ export function connectorsSeen(texts: string[]): Record<string, string> {
   for (const t of texts) {
     for (const m of UNAUTH_RE.finditer(t))
       for (const name of re("claude\\.ai ([^\\n\\\\]+)").findall(m.group(1)!) as string[]) { const k = strip(name); if (!(k in out)) out[k] = "not signed in"; }
-    for (const name of CONNECTED_RE.findall(t) as string[]) out[name.split("_").join(" ")] = "connected";
+    for (const m of CONNECTED_RE.finditer(t)) {
+      const k = m.group(1)!.split("_").join(" ");
+      if (SIGN_IN_TOOL.search(m.group(2)!)) { if (!(k in out)) out[k] = "not signed in"; }
+      else out[k] = "connected";
+    }
   }
   return out;
 }
