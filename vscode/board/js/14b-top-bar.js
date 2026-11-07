@@ -133,8 +133,8 @@ function lensCtl(){const hosted=typeof HOST!=='undefined', dr=BASE.draft, {ch,vw
       ${ch.length&&hosted&&!COMPACT?`<button class="lk50 go" data-view="drafts">Saved drafts and what you applied ${icon('ArrowRight',12)}</button>`:''}</div>`:'';
   return `<span class="g59 df86"><button class="dc86" data-diffopen="1" aria-expanded="${DIFFOPEN}" title="Differs from your files: ${esc([...ch,...vw].map(x=>x.t).join('; '))}">${icon('PencilRuler',14)}<b>${nm}</b><i class="ct86">${n}</i></button>${list}</span>`}
 
-// the board's own tools, in one menu: something wrong, how the board looks, drafts, settings, the legend
-function moreMenu(){const board=VIEW==='board', S=board?(BASE.symptoms||[]).filter(s=>bviewOn(s.view)):[];
+// the board's own tools, in one menu: something wrong (with Loops and Flows), how the board looks, drafts, settings, the legend
+function moreMenu(){const board=VIEW==='board', S=board&&FLAG_LOOPS?(BASE.symptoms||[]).filter(s=>bviewOn(s.view)):[];  // "something wrong?" comes back with Loops and Flows: with Harness alone it lists too little
   const sub=(k,ic,n,d)=>`<button class="mi86" data-moresub="${k}" aria-expanded="${MORESUB===k}">${icon(ic,14)}<span>${n}${d?`<small>${d}</small>`:''}</span>${icon(MORESUB===k?'ChevronUp':'ChevronDown',12)}</button>`;
   const item=(attr,ic,n)=>`<button class="mi86" ${attr}>${icon(ic,14)}<span>${n}</span></button>`;
   return `<div class="mr86 pop86" role="menu" aria-label="More">
@@ -145,7 +145,7 @@ function moreMenu(){const board=VIEW==='board', S=board?(BASE.symptoms||[]).filt
     ${item('data-topic="legend"','CircleHelp','Legend: what everything means')}
     ${item('data-scans="1"','History','Scans: every one, and when it ran')}
     ${item('data-checks="1"','ListChecks','How Free Rein checks: every check, and what it found')}</div>`}
-function moreBtn(){return `<span class="g59 tools mo86w"><button class="ib48" data-more="1" aria-expanded="${MOREOPEN}" aria-haspopup="menu" title="More: something wrong, view, drafts, settings, legend" aria-label="More">${icon('Ellipsis',16)}${SYMSEL?'<i class="dt86"></i>':''}</button>${MOREOPEN?moreMenu():''}</span>`}
+function moreBtn(){return `<span class="g59 tools mo86w"><button class="ib48" data-more="1" aria-expanded="${MOREOPEN}" aria-haspopup="menu" title="More: view, drafts, settings, legend" aria-label="More">${icon('Ellipsis',16)}${SYMSEL?'<i class="dt86"></i>':''}</button>${MOREOPEN?moreMenu():''}</span>`}
 
 // one open menu at a time; a click outside or Esc closes it
 function closePops(){if(!CTXOPEN&&!MOREOPEN&&!DIFFOPEN) return false; CTXOPEN=false;MOREOPEN=false;DIFFOPEN=false;MORESUB=null;return true}
