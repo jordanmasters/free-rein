@@ -46,11 +46,21 @@ async function main() {
     ["empty folder", mkTemp("free-rein-empty-")]];
   for (const [name, root] of roots) {
     const data = await readHarness(root, repo);
+    // a log of scans for the Scans page: one that found something, then a run of skill syncs that found nothing
+    if (name === "kitchen") { const at = Date.now(), b = { level: 3, xp: 400, equipped: 20, exposed: 2, files: 80, ms: 900 }, sync = ["~/.claude/skills/synced/abc/manifest.json"];
+      ((data as any).harnesses || [data])[0].scans = [{ ...b, at: at - 9e5, why: "You opened the folder", changed: [] },
+        ...[1, 2, 3, 4].map(k => ({ ...b, at: at - 9e5 + k * 6e4, why: "A file changed", changed: sync })),
+        { ...b, xp: 420, equipped: 21, at: at - 1e5, why: "A file changed", changed: ["CLAUDE.md"] }]; }
     for (const compact of [false, true]) {
       // the full kitchen board tests Loops and Flows, behind their flag; the others show what everyone sees
       const flagged = name === "kitchen" && !compact;
       const { errors, doc, close } = await render(data, compact, flagged ? { loops: true } : {}, flagged ? { agentReview: true } : {});
       if (!flagged && !compact) assert.deepEqual([...doc.querySelectorAll("#v44head [data-bview] .nm")].map((b: any) => b.textContent), ["Harness", "Free rein"], `${name}: Loops and Flows are behind a flag`);
+      if (!flagged && !compact) {
+        const m = doc.querySelector("#v44head [data-more]"); m.dispatchEvent(new doc.defaultView.MouseEvent("click", { bubbles: true }));
+        assert.ok(doc.querySelector("#v44head [data-more]") && !doc.querySelector('#v44head [data-moresub="sym"]'), `${name}: Something wrong? waits for Loops and Flows`);
+        doc.querySelector("#v44head [data-more]").dispatchEvent(new doc.defaultView.MouseEvent("click", { bubbles: true }));
+      }
       const filled = (id: string) => (doc.getElementById(id)?.innerHTML ?? "").length;
       const how = `${name}, ${compact ? "compact" : "full"}`;
       assert.deepStrictEqual(errors, [], `${how}: no script errors`);
@@ -253,6 +263,13 @@ async function main() {
         // Scans: both kinds named (the rules scan, no AI; the agent review, only started by you), from the More menu
         click("#v44head [data-more]"); click("#v44head .mr86 [data-scans]");
         assert.match(doc.getElementById("v44drawer").textContent, /Scans[\s\S]*Rules scan[\s\S]*no AI[\s\S]*Agent review[\s\S]*started by you/, "the two kinds of scan, by name");
+        {
+          const rows = [...doc.querySelectorAll("#v44drawer .sr86")].map((r: any) => r.querySelector(".t").textContent);
+          assert.equal(rows.length, 3, "a run of scans that found nothing folds into one line");
+          assert.match(rows[0], /A file changed: CLAUDE\.md/, "what changed, by name");
+          assert.match(doc.querySelector("#v44drawer .grp86").textContent, /4 scans[\s\S]*Nothing changed[\s\S]*Claude Code synced your skills/, "the fold says what it holds");
+          assert.ok([...doc.querySelectorAll("#v44drawer .fl86")].every((u: any) => u.closest("details")), "paths only behind Details");
+        }
         // a scan as it runs: a pill under the top bar with the current step, and the steps on the Scans page
         const msg = (data: any) => w.dispatchEvent(new w.MessageEvent("message", { data }));
         msg({ type: "reading", why: "A file changed", changed: ["CLAUDE.md"], at: Date.now() });

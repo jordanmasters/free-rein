@@ -47,21 +47,36 @@ function bindChecks(root){
 // the extension per folder); and the agent review, which only you start (not built yet)
 const clock=at=>{const d=new Date(at), today=new Date().toDateString()===d.toDateString();
   return `${today?'Today':d.toLocaleDateString(undefined,{month:'short',day:'numeric'})}, ${d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})}`};
+// what changed, in words: a skill sync is Claude Code's, one file is its name, several are the first and a count
+function scanWhat(files){const F=files||[]; if(!F.length) return '';
+  const nm=f=>{const p=f.split(/[\\/]/), b=p[p.length-1]; return b==='SKILL.md'&&p.length>1?`the ${p[p.length-2]} skill`:b};
+  if(F.every(f=>/[\\/]skills[\\/]synced[\\/]/.test(f))) return 'Claude Code synced your skills';
+  const n=[...new Set(F.map(nm))]; return n.length===1?n[0]:`${n[0]} and ${n.length-1} more`}
+// what the scan found, against the one before: in words, or nothing
+function scanFound(a,b){if(!b) return {txt:'First scan logged',same:false}; const out=[], d=(x,y,one,many)=>{const k=x-y; if(k) out.push(`${Math.abs(k)} ${k>0?'more':'fewer'} ${Math.abs(k)===1?one:many}`)};
+  if(a.level!==b.level) out.push(`Level ${b.level} → ${a.level}`); if(a.xp!==b.xp) out.push(`${a.xp>b.xp?'+':''}${a.xp-b.xp} XP`);
+  d(a.equipped,b.equipped,'piece in place','pieces in place'); d(a.exposed,b.exposed,'exposed situation','exposed situations');
+  return out.length?{txt:out.join(' · '),same:false,up:a.xp>=b.xp}:{txt:'Nothing changed',same:true}}
 function scansHTML(){const S=(BASE.scans||[]).slice().reverse(), R=freshOf(), hosted=typeof HOST!=='undefined';
-  const delta=(a,b)=>{if(!b) return '<span class="dl86">first logged</span>'; const out=[];
-    if(a.xp!==b.xp) out.push(`<b class="${a.xp>b.xp?'up':'dn'}">${a.xp>b.xp?'+':''}${a.xp-b.xp} XP</b>`);
-    if(a.level!==b.level) out.push(`level ${b.level} → ${a.level}`); if(a.equipped!==b.equipped) out.push(`pieces ${b.equipped} → ${a.equipped}`);
-    if(a.exposed!==b.exposed) out.push(`exposed ${b.exposed} → ${a.exposed}`);
-    return out.length?`<span class="dl86">${out.join(' · ')}</span>`:'<span class="dl86 same">no change</span>'};
-  const row=(s,i)=>`<div class="sr86"><div class="t"><b>${esc(clock(s.at))}</b><span>${esc(s.why)}</span></div>
-    ${(s.changed||[]).length?`<small class="ch">${esc(s.changed.slice(0,4).join(', '))}${s.changed.length>4?` and ${s.changed.length-4} more`:''}</small>`:''}
-    <div class="r">Level ${s.level} · ${s.xp} XP · ${s.equipped} pieces equipped · ${s.exposed} exposed ${delta(s,S[i+1])}</div>
-    <small class="m">${s.files} files · ${s.ms<1000?`${s.ms} ms`:`${(s.ms/1000).toFixed(1)} s`}</small></div>`;
+  const took=s=>s.ms<1000?`${s.ms} ms`:`${(s.ms/1000).toFixed(1)} s`;
+  const facts=s=>`<div class="fc86">Level ${s.level} · ${s.xp} XP · ${s.equipped} pieces in place · ${s.exposed} exposed · read ${s.files} files in ${took(s)}</div>`;
+  const files=F=>(F||[]).length?`<ul class="fl86">${F.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>`:'';
+  const row=(s,i)=>{const f=scanFound(s,S[i+1]), w=scanWhat(s.changed);
+    return `<div class="sr86${f.same?' same':''}"><div class="t"><b>${esc(clock(s.at))}</b><span>${esc(s.why)}${w?`: ${esc(w)}`:''}</span></div>
+      <div class="r ${f.same?'same':f.up?'up':'dn'}">${esc(f.txt)}</div>
+      <details class="dx86"><summary>Details</summary>${facts(s)}${files(s.changed)}</details></div>`};
+  // a run of scans that found nothing new folds into one line; open it for the times
+  const parts=[]; for(let i=0;i<S.length;){const f=scanFound(S[i],S[i+1]);
+    if(!f.same){parts.push(row(S[i],i));i++;continue}
+    let j=i; while(j<S.length&&scanFound(S[j],S[j+1]).same) j++;
+    if(j-i<3){for(let k=i;k<j;k++) parts.push(row(S[k],k))}
+    else parts.push(`<details class="sr86 grp86"><summary><div class="t"><b>${j-i} scans</b><span>${esc(clock(S[j-1].at))} to ${esc(clock(S[i].at).replace(/^Today, /,''))}</span></div><div class="r same">Nothing changed</div></summary>${S.slice(i,j).map((s,k)=>{const w=scanWhat(s.changed);return `<div class="gl86"><b>${esc(clock(s.at))}</b> ${esc(s.why)}${w?`: ${esc(w)}`:''}${(s.changed||[]).length?`<details class="dx86"><summary>Files</summary>${files(s.changed)}</details>`:''}</div>`}).join('')}</details>`);
+    i=j}
   return `${scanLive()}<div class="sk86 big"><div class="hd">${freshDot()}<b>Rules scan</b> ${kindTag('read')}<span class="v">${R?esc(agoText(R.at)):''}</span>${hosted&&!READING?'<button class="lk50" data-reread="1">Scan again</button>':''}</div>
       <p>Free Rein's own checks, run on this machine with no AI: it reads your files and applies its rules. It runs by itself when a file it read changes, when you come back to the window, or when you ask. <button class="lk50" data-checks="1">What it checks</button></p></div>
     ${agentRow(true)}
-    <p class="lb80">Rules scans <small>${S.length?`the last ${S.length}, newest first`:''}</small></p>
-    ${S.length?S.map(row).join(''):'<p class="mu74">None logged yet. From now on, each scan of your files is logged here. A draft or a what-if is measured on a copy, so it isn\'t a scan.</p>'}
+    <p class="lb80">Recent scans <small>${S.length?'newest first':''}</small></p>
+    ${S.length?parts.join(''):'<p class="mu74">None logged yet. From now on, each scan of your files is logged here. A draft or a what-if is measured on a copy, so it isn\'t a scan.</p>'}
     <p class="mu74">Each scan shows what a new session would load. A session already running loaded its files when it started.</p>`}
 if(typeof document!=='undefined'&&document.addEventListener) document.addEventListener('click',e=>{const t=e.target; if(!t||!t.closest) return;
   if(t.closest('[data-scans]')){e.preventDefault();closePops();if(INSPHIDE)setInsp(false);sel=null;selSet=null;selSlot=null;selSit=null;selStake=null;selLayer=null;MOVESOPEN=false;leftOpen=true;topic='scans';render();return}
