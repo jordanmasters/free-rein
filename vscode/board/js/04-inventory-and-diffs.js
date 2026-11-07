@@ -97,7 +97,7 @@ function drawDetail0(){
   box.hidden=false; $('v44edgeR').hidden=true; box.classList&&box.classList.toggle('rest50',!open&&!(leftOpen&&topic));
   const picked=open||(leftOpen&&topic)||selLayer;
   // picking something new shows the panel (the pickers do that); a redraw never overrides your hiding it
-  const shell=$('v44shell'), away=askFirst()||INSPHIDE||(VIEW!=='board'&&!open&&!(leftOpen&&topic));
+  const shell=$('v44shell'), away=inspAway();
   if(shell&&shell.classList) shell.classList.toggle('noinsp50',away); box.classList&&box.classList.toggle('off50',away);
   // the moves, opened from the bell, come before anything else the panel would show
   if(MOVESOPEN&&!INSPHIDE){box.classList&&box.classList.remove('rest50','off50');shell&&shell.classList&&shell.classList.remove('noinsp50');movesPane(box);return}

@@ -93,6 +93,17 @@ async function main() {
         assert.ok(!/\bLive\b/.test(doc.getElementById("v44head").textContent), "live says nothing");
         // the top bar: the context button, the views, the bell and More; the side panel's switch is on the divider
         assert.ok(doc.querySelector("#v44rz [data-toginsp]") && !doc.querySelector("#v44head [data-toginsp]"), "the side panel opens and closes from the divider");
+        {
+          // in the full situations table the panel starts shut, and the divider's switch opens and shuts it there too
+          const click = (q: string) => doc.querySelector(q).dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+          const shut = () => doc.getElementById("v44shell").classList.contains("noinsp50");
+          click('[data-list="sits"]'); click('[data-view="trust"]');
+          assert.ok(shut(), "the full table opens with the panel shut");
+          assert.equal(doc.querySelector("#v44rz [data-toginsp]").getAttribute("aria-pressed"), "false", "and the switch says so");
+          click("#v44rz [data-toginsp]"); assert.ok(!shut(), "the switch opens the panel beside the table");
+          click("#v44rz [data-toginsp]"); assert.ok(shut(), "and shuts it again");
+          click('[data-list="pieces"]');
+        }
         assert.strictEqual(doc.querySelectorAll("#v44head .tb59 > *").length <= 7, true, "a short top bar");
         doc.querySelector("#v44head [data-more]").dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
         doc.querySelector('#v44head [data-view="settings"]').dispatchEvent(new w.MouseEvent("click", { bubbles: true }));

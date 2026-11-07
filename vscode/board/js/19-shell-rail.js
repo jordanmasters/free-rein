@@ -1,7 +1,7 @@
 // ---- the shell: a rail of views, the main view, and an inspector beside it
 const VIEWS=[['board','Harness','Orbit'],['trust','Situations','ListChecks'],['drafts','Drafts','PencilRuler'],['simulate','Simulate','Play'],['history','History','History']];
 let VIEW=(()=>{try{const v=localStorage.getItem('v44-view')||'board';if(v==='friction'){localStorage.setItem('v44-ovf','friction');return 'trust'}return v}catch(x){return 'board'}})();
-function goView(k){if(COMPACT&&k!=='board'&&typeof HOST!=='undefined'&&HOST.openFull){HOST.openFull(k);return}VIEW=k;try{localStorage.setItem('v44-view',k)}catch(x){}render();if(k==='board')layoutFit()}
+function goView(k){INSPVIEW=false;if(COMPACT&&k!=='board'&&typeof HOST!=='undefined'&&HOST.openFull){HOST.openFull(k);return}VIEW=k;try{localStorage.setItem('v44-view',k)}catch(x){}render();if(k==='board')layoutFit()}
 // the board's three pictures of the same harness: the parts, the loops they make, how work flows between steps
 const BVIEWS=[['has','Harness','What it has: the parts, and what holds','Orbit'],['checks','Loops','How it knows it\'s done: it tries, something judges, the judgment comes back','RefreshCw'],['flows','Flows','Who does what, in what order','Route'],['free','Free rein','How much it does on its own, and whether your written rules hold','Gauge']];
 // Loops and Flows aren't ready: behind a flag, off. On, they're back as views, with their moves and symptoms (a page

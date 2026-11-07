@@ -1,6 +1,9 @@
 // ---- layers explained: what each one is, which pieces it supplies, and which only it supplies
 let selLayer=null, INSPHIDE=(()=>{try{return localStorage.getItem('v44-insp')==='hidden'}catch(x){return false}})();
-function setInsp(h){INSPHIDE=h;try{localStorage.setItem('v44-insp',h?'hidden':'shown')}catch(x){}render();layoutFit()}
+// a full-page view (the situations table, drafts, settings) keeps the panel shut until you open it there
+let INSPVIEW=false;
+function inspAway(){const open=sel||selSet||selSlot; return askFirst()||INSPHIDE||(VIEW!=='board'&&!INSPVIEW&&!open&&!(leftOpen&&topic))}
+function setInsp(h){if(!h&&VIEW!=='board')INSPVIEW=true; if(h)INSPVIEW=false; INSPHIDE=h;try{localStorage.setItem('v44-insp',h?'hidden':'shown')}catch(x){}render();layoutFit()}
 const LAYERDEF={
   rt:{kind:'Runtime',what:'What runs the agent. What it ships out of the box is the base everything else sits on.'},
   pkg:{kind:'Package',what:'Something installed on top of the runtime, written by someone else: skills, hooks, settings and folders that come as a bundle. Files it put into this folder count as its own, marked when you\'ve changed them since.'},

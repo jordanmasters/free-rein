@@ -9,16 +9,19 @@ const CALLK={allow:'let',ask:'ask',deny:'never'};
 // selected, and Claude Code (or the runtime's default) decides. Clicking the selected one in the draft takes it back.
 const CALLN2={let:'Allow',ask:'Ask',never:'Never'};
 function ownCall(s){const b=(s.by||[]).find(x=>x.piece==='permissions'&&x.rule); return b?{lets:'let',asks:'ask',refuses:'never'}[b.job]:null}
+// no rule of yours, but something else already asks or refuses (a review gate, a hook): that call shows as taken, outlined
+function viaCall(s){return !ownCall(s)&&['asks','held','blocked'].includes(s.outcome)&&s.call?s.call:null}
+const viaWhat=s=>{const b=(s.by||[]).find(x=>x.piece!=='permissions')||(s.by||[])[0]; return b?b.what:'Something outside your permission rules'};
 function callSeg(s){const hosted=typeof HOST!=='undefined'&&canDraft()&&!BASE.profile; if(!hosted||!s.calls) return '';
-  const dr=draftRules().find(r=>r.sit===s.id), own=ownCall(s), cur=dr?CALLK[dr.kind]:own;
-  return `<span class="cs53${dr?' dr':''}" role="group" aria-label="Your call">${['let','ask','never'].map(c=>{const can=!!s.calls[c]&&!(s.fixed&&!dr), on=c===cur;
-    const tip=on&&dr?`In the draft: ${dr.kind} ${dr.rule}. Click to take it back`:on?'Your rule already does this':!can?'Something you can\'t change here holds it (a hook, or a rule outside this folder)':`Add to the draft: ${s.calls[c].kind} ${s.calls[c].rule}`;
-    return `<button data-call="${esc(s.id)}:${c}" aria-pressed="${on}" ${can||on?'':'disabled'} title="${esc(tip)}">${CALLN2[c]}</button>`}).join('')}</span>`}
+  const dr=draftRules().find(r=>r.sit===s.id), own=ownCall(s), cur=dr?CALLK[dr.kind]:own, via=dr?null:viaCall(s);
+  return `<span class="cs53${dr?' dr':''}" role="group" aria-label="Your call">${['let','ask','never'].map(c=>{const can=!!s.calls[c]&&!(s.fixed&&!dr), on=c===cur, by=!on&&c===via;
+    const tip=by?`Already: ${viaWhat(s)}. Not a permission rule of yours`:on&&dr?`In the draft: ${dr.kind} ${dr.rule}. Click to take it back`:on?'Your rule already does this':!can?'Something you can\'t change here holds it (a hook, or a rule outside this folder)':`Add to the draft: ${s.calls[c].kind} ${s.calls[c].rule}`;
+    return `<button data-call="${esc(s.id)}:${c}" aria-pressed="${on||by}"${by?' class="by53"':''} ${can||on||by?'':'disabled'} title="${esc(tip)}">${CALLN2[c]}</button>`}).join('')}</span>`}
 function setCall(id,c,tag){const {d}=ovData(), s=d.situations.find(x=>x.id===id); if(!s) return;
   const others=draftRules().filter(r=>r.sit!==id), dr=draftRules().find(r=>r.sit===id), ups=(BASE.lens&&BASE.lens.ups)||(BASE.draft&&BASE.draft.ups)||[];
   let rules;
   if(dr&&CALLK[dr.kind]===c) rules=others;                          // the selected one: take it back out of the draft
-  else{if(!dr&&ownCall(s)===c) return; const r=s.calls[c]; if(!r||(s.fixed&&!dr)) return; rules=[...others,{kind:r.kind,rule:r.rule,sit:id,...(tag?{preset:tag}:{})}]}
+  else{if(!dr&&(ownCall(s)===c||viaCall(s)===c)) return; const r=s.calls[c]; if(!r||(s.fixed&&!dr)) return; rules=[...others,{kind:r.kind,rule:r.rule,sit:id,...(tag?{preset:tag}:{})}]}
   PENDING={what:dr&&CALLK[dr.kind]===c?`Taking the call on ${s.what} out of the draft…`:`Measuring your call: ${CALLN2[c].toLowerCase()}, on ${s.what}…`};busy();head();
   const back=dr&&CALLK[dr.kind]===c; document.querySelectorAll('[data-call]').forEach(b=>{if(!b.dataset.call.startsWith(id+':'))return;const on=!back&&b.dataset.call===id+':'+c;b.setAttribute('aria-pressed',on);b.classList.toggle('wait82',on)});
   HOST.draft({ups,rules})}

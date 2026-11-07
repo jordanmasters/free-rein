@@ -193,11 +193,11 @@ const pwClamp=w=>Math.max(PWMIN,Math.min(PWMAX,Math.min(w,(window.innerWidth||12
 let PWSET=false;
 function drawDivider(){const el=$('v44rz'), sh=$('v44shell'); if(!el||!sh) return;
   if(!PWSET){PWSET=true; try{const w=+localStorage.getItem('v44-pw'); if(w&&sh.style&&sh.style.setProperty) sh.style.setProperty('--pw',w+'px')}catch(x){}}
-  const away=INSPHIDE||(sh.classList&&sh.classList.contains('noinsp50'));
+  const away=inspAway();
   el.hidden=!!COMPACT; if(COMPACT) return;
   el.classList&&el.classList.toggle('shut',!!away);
-  el.innerHTML=`<button class="rzb86" data-toginsp="1" aria-pressed="${!INSPHIDE}" title="${INSPHIDE?'Show':'Hide'} the side panel" aria-label="${INSPHIDE?'Show':'Hide'} the side panel">${icon(INSPHIDE?'PanelRightOpen':'PanelRightClose',14)}</button>`;
-  el.querySelectorAll('[data-toginsp]').forEach(b=>b.onclick=e=>{e.stopPropagation();setInsp(!INSPHIDE)});
+  el.innerHTML=`<button class="rzb86" data-toginsp="1" aria-pressed="${!away}" title="${away?'Show':'Hide'} the side panel" aria-label="${away?'Show':'Hide'} the side panel">${icon(away?'PanelRightOpen':'PanelRightClose',14)}</button>`;
+  el.querySelectorAll('[data-toginsp]').forEach(b=>b.onclick=e=>{e.stopPropagation();setInsp(!inspAway())});
   if(el.dataset&&el.dataset.bound) return; if(el.dataset) el.dataset.bound='1';
   const set=w=>{const v=pwClamp(w);sh.style.setProperty('--pw',v+'px');return v};
   el.addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('button')||INSPHIDE||window.innerWidth<=700) return;
