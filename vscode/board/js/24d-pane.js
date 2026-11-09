@@ -17,7 +17,7 @@ function moveCard(m,pick){return `<div class="mc73${pick?' pk':''}${MOVEPICK.inc
   <button class="tx" data-move="${esc(m.id)}"><b>${esc(m.title)}</b><small>${esc(m.why)}</small><span class="tg">${m.sources.map(s=>`<i>${SRCN[s]}</i>`).join('')}<i class="ef ${m.effort}">${EFFN[m.effort]}</i></span></button>
   <span class="xp73">${m.xp?`+${m.xp} XP`:m.protects?`protects ${m.protects}`:''}</span></div>`}
 // the side panel with nothing picked: the moves for the view you're in
-function movesPane(box){const all=movesAll(), v=VIEW==='board'?BVIEW:'has', ms=v==='has'?all:v==='free'?all.filter(m=>(m.sources||[]).some(s=>s==='situations'||s==='rules')):all.filter(m=>m.view===v);
+function movesPane(box){const all=movesAll(), v=VIEW==='board'?(BVIEW==='words'?'free':BVIEW):'has', ms=v==='has'?all:v==='free'?all.filter(m=>(m.sources||[]).some(s=>s==='situations'||s==='rules')):all.filter(m=>m.view===v);
   const shown=MOVESALL?ms:ms.slice(0,5), picked=MOVEPICK.filter(id=>all.some(m=>m.id===id)), xp=all.filter(m=>picked.includes(m.id)).reduce((a,m)=>a+(m.xp||0),0), hosted=typeof HOST!=='undefined'&&canDraft();
   // at rest (not opened from the bell), the tabs stay above the moves: picking one leaves them
   const tabs=!MOVESOPEN&&typeof listSwitch==='function'?`<div class="rt93">${listSwitch(true)}</div>`:'';

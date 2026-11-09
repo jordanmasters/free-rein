@@ -3,11 +3,11 @@ const VIEWS=[['board','Harness','Orbit'],['trust','Situations','ListChecks'],['d
 let VIEW=(()=>{try{const v=localStorage.getItem('v44-view')||'board';if(v==='friction'){localStorage.setItem('v44-ovf','friction');return 'trust'}return v}catch(x){return 'board'}})();
 function goView(k){INSPVIEW=false;if(COMPACT&&k!=='board'&&typeof HOST!=='undefined'&&HOST.openFull){HOST.openFull(k);return}VIEW=k;try{localStorage.setItem('v44-view',k)}catch(x){}render();if(k==='board')layoutFit()}
 // the board's three pictures of the same harness: the parts, the loops they make, how work flows between steps
-const BVIEWS=[['has','Harness','What it has: the parts, and what holds','Orbit'],['checks','Loops','How it knows it\'s done: it tries, something judges, the judgment comes back','RefreshCw'],['flows','Flows','Who does what, in what order','Route'],['free','Free rein','How much it does on its own, and whether your written rules hold','Gauge']];
+const BVIEWS=[['has','Harness','What it has: the parts, and what holds','Orbit'],['checks','Loops','How it knows it\'s done: it tries, something judges, the judgment comes back','RefreshCw'],['flows','Flows','Who does what, in what order','Route'],['free','Free rein','How much it does on its own, and whether your written rules hold','Gauge'],['words','Context','What your agent reads: instructions, skills and notes, when each loads, and what they say','TextQuote']];
 // Loops and Flows aren't ready: behind a flag, off. On, they're back as views, with their moves and symptoms (a page
 // that sets window.FREE_REIN_FLAGS = {loops: true} before the board loads turns it on, as the tests do)
 const FLAG_LOOPS=!!(typeof window!=='undefined'&&window.FREE_REIN_FLAGS&&window.FREE_REIN_FLAGS.loops);
-const bviewOn=k=>FLAG_LOOPS||k==='has'||k==='free';
+const bviewOn=k=>FLAG_LOOPS||k==='has'||k==='free'||k==='words';
 // the moves the board shows: without the flag, none that belong to Loops or Flows
 const movesAll=()=>(BASE.moves||[]).filter(m=>FLAG_LOOPS||!['checks','flows'].includes(m.view));
 let BVIEW=(()=>{try{const v=localStorage.getItem('v44-bview');return BVIEWS.some(([k])=>k===v)&&bviewOn(v)?v:'has'}catch(x){return 'has'}})();
@@ -19,15 +19,15 @@ const viewsOn=()=>VIEW==='board'&&!COMPACT&&!askFirst();
 function viewSwitch(){if(!viewsOn()) return '';
   const n={checks:((BASE.loops||{}).findings||[]).length,flows:((BASE.flows||{}).findings||[]).length};
   // each view's score, in the tab: pieces in place for Harness, the free-rein share for Free rein
-  const T=types(), F=typeof frNow==='function'?frNow():BASE.free_rein, sc={has:[`${T.filter(t=>t.stage===2).length}/${T.length}`,'pieces in place'],free:F?[`${F.pct}%`,`does ${F.pct}% of the actions Free Rein tests on its own${F.exposed?`; ${F.exposed} high-stakes with nothing in the way`:''}`]:null};
+  const T=types(), F=typeof frNow==='function'?frNow():BASE.free_rein, sc={has:[`${T.filter(t=>t.stage===2).length}/${T.length}`,'pieces in place'],words:BASE.words?[`~${wtok(BASE.words.totals.start_tokens)}`,`About ${wtok(BASE.words.totals.start_tokens)} tokens load at the start of every session, before you type (an estimate: about four characters to a token)`]:null,free:F?[`${F.pct}%`,`does ${F.pct}% of the actions Free Rein tests on its own${F.exposed?`; ${F.exposed} high-stakes with nothing in the way`:''}`]:null};
   return `<span class="g59 vw83" role="tablist" aria-label="Views of the harness">${BVIEWS.filter(([k])=>bviewOn(k)).map(([k,name,tip,ic])=>`<button role="tab" data-bview="${k}" aria-selected="${BVIEW===k}" title="${esc(name)}: ${esc(tip)}">${icon(ic,14)}<span class="nm">${esc(name)}</span>${sc[k]?`<b class="sc83${k==='free'&&F&&F.exposed?' bad':''}" title="${esc(sc[k][1])}">${esc(sc[k][0])}</b>`:''}${n[k]?`<i class="ct83">${n[k]}</i>`:''}</button>`).join('')}</span>`}
 // the left rail is gone: Situations, Drafts, Simulate and Settings open from where they belong, and come back with
 // "Back to the board" or Esc. The views switch in the top bar; above the board, only a chosen symptom's banner
 function drawRail(){const R=$('v44rail'); if(R){R.hidden=true;R.innerHTML=''}
   const S=$('v44vsw'); if(!S) return; const on=viewsOn(), ban=on&&BVIEW==='has'&&typeof symBanner==='function'?symBanner():''; S.hidden=!ban; S.innerHTML=ban; if(!on) return;
   const P=$('v44bview'), F=$('v44boardview'); if(P&&F&&F.classList){const pic=BVIEW!=='has'; P.hidden=!pic; F.classList.toggle('pic70',pic);
-    if(pic){P.innerHTML=BVIEW==='checks'?(typeof loopViewHTML==='function'?loopViewHTML():''):BVIEW==='free'?freeViewHTML():(typeof flowViewHTML==='function'?flowViewHTML():'');
-      if(BVIEW==='free') bindFree(P); else if(typeof bindBView==='function') bindBView(P)}}}
+    if(pic){P.innerHTML=BVIEW==='checks'?(typeof loopViewHTML==='function'?loopViewHTML():''):BVIEW==='free'?freeViewHTML():BVIEW==='words'?wordsViewHTML():(typeof flowViewHTML==='function'?flowViewHTML():'');
+      if(BVIEW==='free') bindFree(P); else if(BVIEW==='words') bindWords(P); else if(typeof bindBView==='function') bindBView(P)}}}
 // any [data-view] goes to that view, wherever it's drawn; Esc comes back to the board
 if(typeof document!=='undefined'&&document.addEventListener){document.addEventListener('click',e=>{const b=e.target&&e.target.closest&&e.target.closest('[data-view]');if(b&&!b.closest('#v44rail')){e.preventDefault();goView(b.dataset.view)}});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&VIEW!=='board'&&!askFirst()&&!(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))){goView('board')}})}

@@ -99,17 +99,19 @@ function layersPanel(){const L=layerList().slice().reverse(), hosted=typeof HOST
   // each layer named by where it applies, tagged by who gets it; the line under it says what that means, in general
   // terms, then the files this runtime reads there (from its record: ~/.claude for Claude Code, ~/.codex for Codex)
   const SHORT={...LYNAME,builtin:agentName}, TAG=LYTAG;
-  const GEN={org:'managed settings, override everything',local:'not in git: ignored or not yet committed',project:'committed to git: everyone who clones it',user:'in every repo you open',builtin:'what it does with no files at all'};
+  const GEN={org:'managed settings, override everything',local:'kept out of git: ignored, or a .local file',project:'in git: everyone who clones it',user:'in every repo you open',builtin:'what it does with no files at all'};
   const fileHint=l=>{const f=(l.files||[]).filter(x=>!/^the managed/.test(x)).slice(0,2).map(x=>x.replace(/ \(.*\)$/,'')); return f.length?` · ${f.join(', ')}`:''};
   const SUB=Object.fromEntries(Object.keys(GEN).map(k=>[k,GEN[k]]));
-  const WHO={org:'Everyone in your organization, in every repo',local:'Only you, in this repo: on your disk, not in git',project:'Everyone who works on this repo: in git',user:'Only you, in every repo on this machine',builtin:`Everyone who uses ${agentName}: what it ships`};
+  const WHO={org:'Everyone in your organization, in every repo',local:'Only you, in this repo: kept out of git on purpose',project:'Everyone who works on this repo: in git, or once it\'s committed',user:'Only you, in every repo on this machine',builtin:`Everyone who uses ${agentName}: what it ships`};
   const lvlRow=l=>{const k='ly:'+l.id, open=OPEN80.has(k), on=levelOn(l), n=l.pieces.length;
     const attr=l.id==='builtin'?(!BASE.profile&&!BASE.new?`data-baseon="${on?0:1}"`:''):l.id==='user'?'data-homeon="1"':(l.id==='project'||l.id==='local')&&!BASE.profile?'data-yours="1"':'';
     const from=l.from.filter(f=>f.name!=='yours'&&l.id!=='builtin').map(f=>`${f.n} from ${esc(f.name)}`);
     // opened: only what the row doesn't say. What it sets; the other models its files name; then each piece it gives,
     // with the file(s) that give it. The runtime's layer: its modes, then what it gives out of the box
     const gives=(l.gives||[]).filter(g=>find(g.piece));
-    const giveRow=g=>{const t=find(g.piece); return row80({mark:`<i class="pd80 st-${stageOf(t)}"></i>`,name:esc(t.name),sub:g.files.length?esc(g.files.slice(0,3).join(', ')+(g.files.length>3?` and ${g.files.length-3} more`:'')):'',val:'',attr:`data-pcopen="${t.id}"`,tip:t.what})};
+    // a file in the repo git doesn't track yet (and doesn't ignore) is the repo's: shared once it's committed
+    const unc=new Set(l.uncommitted||[]);
+    const giveRow=g=>{const t=find(g.piece), wait=g.files.length&&g.files.every(f=>unc.has(f)); return row80({mark:`<i class="pd80 st-${stageOf(t)}"></i>`,name:esc(t.name),sub:g.files.length?esc(g.files.slice(0,3).join(', ')+(g.files.length>3?` and ${g.files.length-3} more`:''))+(wait?' · <i class="uc75">not committed yet</i>':''):'',val:'',attr:`data-pcopen="${t.id}"`,tip:t.what})};
     // the files this runtime reads at this level (from its record), named only once the layer is open
     const where=l.id!=='builtin'&&(l.files||[]).length?`<p class="lb80">Where ${esc(agentName)} reads it</p>${l.files.map(f=>`<p class="fl75">${esc(f)}</p>`).join('')}`:'';
     const body=()=>`${where}${!l.readable?`<p class="mu74">${esc(agentName)} keeps these where Free Rein can't read them.</p>`:''}
@@ -120,7 +122,8 @@ function layersPanel(){const L=layerList().slice().reverse(), hosted=typeof HOST
         ${RM.set_by&&RM.set_by.file?`<p class="mu74">Set in ${esc(RM.set_by.file)}${RM.set_by.key?` (${esc(RM.set_by.key)})`:''}.</p>`:''}${!claudeRt?(RM.repo?`<p class="mu74">Picking a model on the row tries it in a draft: Free Rein writes it to ${esc(RM.repo.file)}${RM.repo.note?` (${esc(RM.repo.note)})`:''} on a copy, measures it, and changes nothing until you apply.</p>`:`<p class="mu74">${esc(agentName)} keeps the model in its own picker, not in a file in the repo, so a pick on the row is a what-if: Free Rein can't write it for you.${MWHATIF[rtid]?` What-if now: <b>${esc(MWHATIF[rtid])}</b>.`:''}</p>`):''}`:''}</details>`:''}
       ${l.id==='builtin'&&notes?`<div class="nt96">${notes}</div>`:''}
       ${l.id==='builtin'&&away?`<button class="lk50" data-rtback="1">Back to ${esc((bases.find(b=>b.id===lens.home)||{}).name||lens.home)}</button>`:''}
-      ${gives.length?`<p class="lb80">${l.id==='builtin'?'What it gives out of the box':'What its files give'} <small>${gives.length}</small></p>${gives.map(giveRow).join('')}`:''}`;
+      ${gives.length?`<p class="lb80">${l.id==='builtin'?'What it gives out of the box':'What its files give'} <small>${gives.length}</small></p>${gives.map(giveRow).join('')}`:''}
+      ${unc.size?`<p class="mu74">${unc.size===1?'One file isn\'t':`${unc.size} files aren't`} committed yet: they're in this repo, but a teammate gets them only once you commit them.</p>`:''}`;
     const tag=`<i class="tg75 ${TAG[l.id]==='just you'?'me':''}">${esc(TAG[l.id]||'')}</i>`;
     // the runtime's row: its name is the picker, so its tag goes on the line under it
     const RM=BASE.runtime_models, claudeRt=(BASE.runtime||{}).core==='claude', rtid=(BASE.runtime||{}).id, mPick=modelPickHTML();

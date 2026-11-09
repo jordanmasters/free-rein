@@ -242,6 +242,25 @@ async function load() {
           changed: cause.changed.map(f => f.startsWith(t + path.sep) ? path.relative(t, f) : f.replace(os.homedir(), "~")).slice(0, 12), ms: Date.now() - t0,
           files: readFiles.length, xp: s.xp, level: s.level, equipped: s.equipped, backed: s.backed, exposed: sits.filter(x => x.verdict === "exposed").length,
           ...(h0.free_rein ? { free: h0.free_rein.pct, rules: h0.free_rein.rules.written, measured: h0.free_rein.rules.measured, enforced: h0.free_rein.rules.enforced } : {}) })); } }
+    // the agent review: when review.json was written after the last one seen, it came back. Logged as a scan of its
+    // own, and you're told, with a way to see it; one older than when you asked doesn't end the wait
+    if (h0 && !isProfile(t)) {
+      const rv: any = h0.review, wait = ctx.workspaceState.get<string>(`freeRein.reviewing:${t}`), seenKey = `freeRein.reviewSeen:${t}`, seen = ctx.workspaceState.get<string>(seenKey);
+      const back = !!(rv && rv.at && (!wait || rv.at > wait) && rv.at !== seen);
+      if (back) {
+        await ctx.workspaceState.update(seenKey, rv.at);
+        if (seen || wait) {
+          const placed = h0.words?.totals?.agent_placed ?? 0, ar = h0.words?.totals?.agent_found_rules ?? 0, s = summary();
+          await ctx.globalState.update(key, logScan(ctx.globalState.get<Scan[]>(key, []), { at: rv.at, kind: "review", why: `${rv.agent || "Your agent"} reviewed it`, changed: [], ms: 0,
+            files: 0, xp: s?.xp ?? 0, level: s?.level ?? 0, equipped: s?.equipped ?? 0, backed: s?.backed ?? 0, exposed: 0,
+            agent: rv.agent, findings: rv.findings.length, dropped: rv.dropped.length, placed, agent_rules: ar }));
+          void vscode.window.showInformationMessage(`Free Rein: your agent's review is in: ${rv.findings.length} finding${rv.findings.length === 1 ? "" : "s"}${placed ? `, ${placed} sentence${placed === 1 ? "" : "s"} placed (${ar} rule${ar === 1 ? "" : "s"})` : ""}${rv.dropped.length ? `, ${rv.dropped.length} dropped` : ""}.`, "Show me", "See its findings")
+            .then(async a => { if (!a) return; await openBoard(); post({ type: "goto", bview: a === "Show me" ? "words" : "free", agent: a !== "Show me" }); });
+        }
+        if (wait) await ctx.workspaceState.update(`freeRein.reviewing:${t}`, undefined);
+      }
+      h0.reviewing = back ? null : ctx.workspaceState.get<string>(`freeRein.reviewing:${t}`) ?? null;
+    }
     if (h0) h0.scans = isProfile(t) ? [] : ctx.globalState.get<Scan[]>(key, []).slice(-50);
     if (!isProfile(t)) await st.addRecent(ctx.globalState, t);
   } catch (e) {
@@ -303,6 +322,7 @@ async function runReview() {
   if (!claude) {
     await vscode.env.clipboard.writeText(prompt);
     vscode.window.showInformationMessage(`Free Rein: the brief is in ${C.REVIEW_DIR}/${C.BRIEF_FILE}. The request is copied: paste it into your agent.`);
+    waitForReview(t);
     return;
   }
   // Claude Code, in a terminal in the folder: it may read and search; it may write only the review without asking; it
@@ -315,6 +335,14 @@ async function runReview() {
   term.show();
   term.sendText(`claude ${q(prompt)} --permission-mode default --allowedTools ${allow.map(q).join(" ")} --disallowedTools ${deny.map(q).join(" ")}`);
   because("Your agent started a review");
+  waitForReview(t);
+}
+
+/** Waiting for the agent's review: the board says so until review.json is written after this moment. */
+function waitForReview(t: string) {
+  const since = new Date().toISOString();
+  void ctx.workspaceState.update(`freeRein.reviewing:${t}`, since);
+  post({ type: "reviewing", since });
 }
 
 // the files the board was read from, checked again: any changed since, it reads them again

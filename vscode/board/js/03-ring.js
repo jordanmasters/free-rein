@@ -13,6 +13,6 @@ function bindTypes(root){
     el.onmouseleave=()=>{hov=null;hp.t=null;paint();$('v44tip').hidden=true}});
 }
 
-const SETNAME={"Curated canon":"Curated knowledge base"};
+const SETNAME={};
 const setName=s=>SETNAME[s.name]||s.name;
 let hiSet=null;

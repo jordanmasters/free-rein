@@ -50,14 +50,18 @@ async function main() {
     if (name === "kitchen") { const at = Date.now(), b = { level: 3, xp: 400, equipped: 20, exposed: 2, files: 80, ms: 900 }, sync = ["~/.claude/skills/synced/abc/manifest.json"];
       ((data as any).harnesses || [data])[0].scans = [{ ...b, at: at - 9e5, why: "You opened the folder", changed: [] },
         ...[1, 2, 3, 4].map(k => ({ ...b, at: at - 9e5 + k * 6e4, why: "A file changed", changed: sync })),
-        { ...b, xp: 420, equipped: 21, at: at - 1e5, why: "A file changed", changed: ["CLAUDE.md"] }];
+        { ...b, xp: 420, equipped: 21, at: at - 1e5, why: "A file changed", changed: ["CLAUDE.md"] },
+        // an agent review that came back: its own row, never compared with the rules scans
+        { ...b, at: at - 5e4, kind: "review", why: "Claude Code reviewed it", changed: [], agent: "Claude Code", findings: 3, dropped: 1, placed: 12, agent_rules: 4 }];
+      // and one asked for since: the board waits for it
+      ((data as any).harnesses || [data])[0].reviewing = new Date(at - 3e4).toISOString();
       // a trust check already taken: its result opens the Situations tab
       ((data as any).harnesses || [data])[0].answers = { stakes: { everyday: 4 }, cards: {}, style: "pilot", at: "2026-11-07T10:00:00Z" }; }
     for (const compact of [false, true]) {
       // the full kitchen board tests Loops and Flows, behind their flag; the others show what everyone sees
       const flagged = name === "kitchen" && !compact;
       const { errors, doc, close } = await render(data, compact, flagged ? { loops: true } : {}, flagged ? { agentReview: true } : {});
-      if (!flagged && !compact) assert.deepEqual([...doc.querySelectorAll("#v44head [data-bview] .nm")].map((b: any) => b.textContent), ["Harness", "Free rein"], `${name}: Loops and Flows are behind a flag`);
+      if (!flagged && !compact) assert.deepEqual([...doc.querySelectorAll("#v44head [data-bview] .nm")].map((b: any) => b.textContent), ["Harness", "Free rein", "Context"], `${name}: Loops and Flows are behind a flag`);
       if (!flagged && !compact) {
         const m = doc.querySelector("#v44head [data-more]"); m.dispatchEvent(new doc.defaultView.MouseEvent("click", { bubbles: true }));
         assert.ok(doc.querySelector("#v44head [data-more]") && !doc.querySelector('#v44head [data-moresub="sym"]'), `${name}: Something wrong? waits for Loops and Flows`);
@@ -98,8 +102,8 @@ async function main() {
         // outside the board there's no View menu
         // no left rail: Settings from the gear, Drafts beside it, each with a way back; the views in the top bar, no Live tag
         assert.strictEqual(doc.querySelectorAll("#v44rail button").length, 0, "no left rail");
-        assert.strictEqual(doc.querySelectorAll("#v44head [data-bview]").length, 4, "the four views, in the top bar");
-        assert.deepEqual([...doc.querySelectorAll("#v44head [data-bview] .nm")].map((b: any) => b.textContent), ["Harness", "Loops", "Flows", "Free rein"], "with the flag on, all four");
+        assert.strictEqual(doc.querySelectorAll("#v44head [data-bview]").length, 5, "the five views, in the top bar");
+        assert.deepEqual([...doc.querySelectorAll("#v44head [data-bview] .nm")].map((b: any) => b.textContent), ["Harness", "Loops", "Flows", "Free rein", "Context"], "with the flag on, all five");
         assert.match(doc.querySelector('#v44head [data-bview="has"] .sc83').textContent, /^\d+\/62$/, "Harness shows pieces in place");
         assert.match(doc.querySelector('#v44head [data-bview="free"] .sc83').textContent, /^\d+%$/, "Free rein shows its share");
         assert.ok(!/\bLive\b/.test(doc.getElementById("v44head").textContent), "live says nothing");
@@ -166,6 +170,25 @@ async function main() {
         assert.ok(doc.querySelectorAll("#v44bview .wf97 i[data-sitopen]").length >= 10, "one square per action, each opening it");
         click(doc.querySelector('[data-bview="has"]'));
         console.log("ok  Free rein: how much it does on its own; written rules, measured and enforced; by kind of action");
+        // Context: everything it reads, by when it loads; a skill split into its description and body; a file opens to its sentences
+        click(doc.querySelector('[data-bview="words"]'));
+        const wv = doc.getElementById("v44bview").textContent;
+        assert.match(wv, /Your agent reads \d+ files?[\s\S]*tokens at the start[\s\S]*Where your words live[\s\S]*Every file, by when it loads[\s\S]*From the start of every session/, "a sentence, the dashboard, then every file by moment");
+        assert.match(doc.querySelector('#v44head [data-bview="words"] .sc83').textContent, /^~\d/, "the tab shows what it reads at the start");
+        const sk = [...doc.querySelectorAll("#v44bview .wf91 .nm")].map((x: any) => x.textContent);
+        assert.ok(sk.filter(t => /^\//.test(t)).length >= 2 && new Set(sk.filter(t => /^\//.test(t))).size < sk.filter(t => /^\//.test(t)).length, "a skill shows at the start (its description) and when used (its body)");
+        const f1 = doc.querySelector("#v44bview details.wf91");
+        assert.ok(f1.querySelectorAll(".sn91").length >= 1 && f1.querySelector(".sn91[data-open][data-lines]"), "its sentences, each opening its line");
+        assert.match(doc.querySelector("#v44bview .db92 .tiles90").textContent, /At the start of every session[\s\S]*tokens[\s\S]*Files it reads[\s\S]*Rules enforced[\s\S]*Not classified/, "the headline numbers");
+        assert.ok(doc.querySelectorAll("#v44bview .rr92").length >= 1, "what loads at the start, ranked");
+        assert.ok(doc.querySelectorAll("#v44bview .tb92:not(.kt92) tbody tr").length >= 1, "where the words live: a row per layer");
+        const kt = [...doc.querySelectorAll("#v44bview .kt92 tbody tr")];
+        assert.ok(kt.length >= 3 && kt.length <= 6 && kt.every((r: any) => r.querySelector(".sw92")), "what the words say: a row per kind (five hues and a gray), each with its swatch");
+        assert.ok(kt.some((r: any) => r.querySelector(".x a[data-open][data-lines]")), "with an example sentence that opens its line");
+        assert.match(doc.getElementById("v44bview").textContent, /Rules Free Rein can test/);
+        assert.match(doc.querySelector("#v44bview .rv92.wait").textContent, /Waiting for your agent's review/, "a review asked for: the board waits for it");
+        click(doc.querySelector('[data-bview="has"]'));
+        console.log("ok  Context: everything it reads, when each loads, sentence by sentence");
         // Something wrong? a symptom switches to its view and outlines the pieces that answer it
         const sym = () => { click(doc.querySelector("#v44head [data-more]")); click(doc.querySelector('#v44head [data-moresub="sym"]')); };
         sym();
@@ -272,7 +295,8 @@ async function main() {
         click("#v44head [data-more]"); click("#v44head .mr86 [data-scans]");
         assert.match(doc.getElementById("v44drawer").textContent, /Scans[\s\S]*Rules scan[\s\S]*no AI[\s\S]*Agent review[\s\S]*started by you/, "the two kinds of scan, by name");
         {
-          const rows = [...doc.querySelectorAll("#v44drawer .sr86")].map((r: any) => r.querySelector(".t").textContent);
+          const rows = [...doc.querySelectorAll("#v44drawer .sr86:not(.rv86)")].map((r: any) => r.querySelector(".t").textContent);
+          assert.match(doc.querySelector("#v44drawer .sr86.rv86").textContent, /Claude Code reviewed it[\s\S]*3 findings[\s\S]*12 sentences placed, 4 rules[\s\S]*1 dropped/, "the agent's review, in the same timeline, on its own row");
           assert.equal(rows.length, 3, "a run of scans that found nothing folds into one line");
           assert.match(rows[0], /A file changed: CLAUDE\.md/, "what changed, by name");
           assert.match(doc.querySelector("#v44drawer .grp86").textContent, /4 scans[\s\S]*Nothing changed[\s\S]*Claude Code synced your skills/, "the fold says what it holds");

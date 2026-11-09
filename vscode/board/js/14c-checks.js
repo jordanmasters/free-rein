@@ -57,7 +57,11 @@ function scanFound(a,b){if(!b) return {txt:'First scan logged',same:false}; cons
   if(a.level!==b.level) out.push(`Level ${b.level} → ${a.level}`); if(a.xp!==b.xp) out.push(`${a.xp>b.xp?'+':''}${a.xp-b.xp} XP`);
   d(a.equipped,b.equipped,'piece in place','pieces in place'); d(a.exposed,b.exposed,'exposed situation','exposed situations');
   return out.length?{txt:out.join(' · '),same:false,up:a.xp>=b.xp}:{txt:'Nothing changed',same:true}}
-function scansHTML(){const S=(BASE.scans||[]).slice().reverse(), R=freshOf(), hosted=typeof HOST!=='undefined';
+function scansHTML(){const S=(BASE.scans||[]).filter(s=>s.kind!=='review').slice().reverse(), R=freshOf(), hosted=typeof HOST!=='undefined';
+  // the agent's reviews, in the same timeline: when each came back, by what, and what it found
+  const RVS=(BASE.scans||[]).filter(s=>s.kind==='review').slice().reverse();
+  const rvRow=s=>`<div class="sr86 rv86"><div class="t"><b>${esc(clock(s.at))}</b><span>${esc(s.why)} <i class="kd86 k-agent">Your AI</i></span></div>
+    <div class="r up">${s.findings} finding${s.findings===1?'':'s'}${s.placed?` · ${s.placed} sentence${s.placed===1?'':'s'} placed, ${s.agent_rules} rule${s.agent_rules===1?'':'s'}`:''}${s.dropped?` · ${s.dropped} dropped`:''}</div></div>`;
   const took=s=>s.ms<1000?`${s.ms} ms`:`${(s.ms/1000).toFixed(1)} s`;
   const facts=s=>`<div class="fc86">Level ${s.level} · ${s.xp} XP · ${s.equipped} pieces in place · ${s.exposed} exposed · read ${s.files} files in ${took(s)}</div>`;
   const files=F=>(F||[]).length?`<ul class="fl86">${F.map(f=>`<li>${esc(f)}</li>`).join('')}</ul>`:'';
@@ -75,6 +79,7 @@ function scansHTML(){const S=(BASE.scans||[]).slice().reverse(), R=freshOf(), ho
   return `${scanLive()}<div class="sk86 big"><div class="hd">${freshDot()}<b>Rules scan</b> ${kindTag('read')}<span class="v">${R?esc(agoText(R.at)):''}</span>${hosted&&!READING?'<button class="lk50" data-reread="1">Scan again</button>':''}</div>
       <p>Free Rein's own checks, run on this machine with no AI: it reads your files and applies its rules. It runs by itself when a file it read changes, when you come back to the window, or when you ask. <button class="lk50" data-checks="1">What it checks</button></p></div>
     ${agentRow(true)}
+    ${RVS.length?`<p class="lb80">Your agent's reviews <small>newest first</small></p>${RVS.slice(0,10).map(rvRow).join('')}`:''}
     <p class="lb80">Recent scans <small>${S.length?'newest first':''}</small></p>
     ${S.length?parts.join(''):'<p class="mu74">None logged yet. From now on, each scan of your files is logged here. A draft or a what-if is measured on a copy, so it isn\'t a scan.</p>'}
     <p class="mu74">Each scan shows what a new session would load. A session already running loaded its files when it started.</p>`}
@@ -92,7 +97,7 @@ function agentRow(big){const hostedOn=typeof HOST!=='undefined'&&!BASE.profile;
     <p>Your own AI (the agent you already use) reads the files for what rules miss${big?': a rule said another way, files that contradict each other, what a hook\'s script decides, vague skills. Only ever started by you; it asks first, and it can\'t read your sensitive files':''}. Turned on, you start it from here.</p></div>`;
   const RV=BASE.review, hosted=typeof HOST!=='undefined'&&!BASE.profile;
   const btn=hosted?`<button class="lk50" data-review="1">${RV?'Run it again':'Ask your agent'}</button>`:'';
-  const st=RV&&RV.at?`${esc(agoText(RV.at))} · ${RV.findings.length} finding${RV.findings.length===1?'':'s'}`:'Not run yet';
+  const st=BASE.reviewing?`Waiting for your agent · asked ${esc(agoText(BASE.reviewing))}`:RV&&RV.at?`${esc(agoText(RV.at))} · ${RV.findings.length} finding${RV.findings.length===1?'':'s'}`:'Not run yet';
   const by=RV?`${esc(RV.agent)}${RV.model?` (${esc(RV.model)}, as it reports)`:''}`:'';
   return `<div class="sk86${big?' big':''}${RV?'':' off'}"><div class="hd"><i class="fd86${RV?' ag':' no'}"></i><b>Agent review</b>${big?` <i class="kd86 k-agent">Your AI</i>`:''}<span class="v">${st}</span>${btn}</div>
     <p>${RV?`By ${by}. ${RV.dropped.length?`${RV.dropped.length} finding${RV.dropped.length===1?'':'s'} dropped (a quote that isn't in the file, or a sensitive file). `:''}${RV.changed_since.length?`<b class="cs">${RV.changed_since.length} file${RV.changed_since.length===1?'':'s'} it cited changed since.</b> `:''}`:''}${big?'Your own AI (the agent you already use) reads the files for what rules miss: a rule said another way, files that contradict each other, what a hook\'s script decides, vague skills. Only ever started by you; it says first that your files go to your model\'s provider, and it can\'t read your sensitive files. Its findings don\'t count toward XP or verdicts.':'Your own AI reads the files for what rules miss. Only ever started by you.'}

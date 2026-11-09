@@ -55,6 +55,8 @@ export function watchList(root: string, home: boolean): { base: string; glob: st
       { base: path.join(h, ".config", "opencode"), glob: "**" },
       { base: path.join(h, ".cursor"), glob: "{rules/**,mcp.json}" },
       { base: path.join(h, ".agents"), glob: "skills/**" },
+      // the notes your agent keeps for this repo (Claude Code's auto memory)
+      { base: path.join(h, ".claude", "projects", path.resolve(root).replace(/[^A-Za-z0-9]/g, "-"), "memory"), glob: "*.md" },
     );
   }
   return w;
@@ -88,8 +90,10 @@ export function noise(f: string): boolean {
 /** One scan of your files: when, what started it, how long it took, and what it found. Kept per folder, newest last,
  * for the board's list of scans and for readings over time. Only your files as they are: a draft or a what-if is
  * measured on a copy and isn't a scan. */
-export interface Scan { at: string; kind: "rules"; why: string; changed: string[]; ms: number; files: number;
+export interface Scan { at: string; kind: "rules" | "review"; why: string; changed: string[]; ms: number; files: number;
   xp: number; level: number; equipped: number; backed: number; exposed: number;
   /** free rein: the share of actions it does on its own; and the written rules, how many measured, how many enforced */
-  free?: number; rules?: number; measured?: number; enforced?: number }
+  free?: number; rules?: number; measured?: number; enforced?: number;
+  /** an agent review: who, its findings that held up, the ones dropped, the sentences it placed and the rules among them */
+  agent?: string; findings?: number; dropped?: number; placed?: number; agent_rules?: number }
 export function logScan(log: Scan[], s: Scan, cap = 100): Scan[] { return [...log, s].slice(-cap); }

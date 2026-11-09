@@ -3,7 +3,7 @@ let SHOWC=false, SOLO=false, wasC=false;   // combinations are in the side panel
 let COMBO="cards", LAY="corners", MID="bars";
 let GEO=null;
 const segA={};
-const SETICON={"Continuity":"Infinity","Curated canon":"BookCheck","Grounded recall":"Anchor","Defense in depth":"ShieldPlus","Knows when to stop":"OctagonX","Learning loop":"RefreshCw","Designed crew":"Users","Earned completion":"BadgeCheck",
+const SETICON={"Continuity":"Infinity","Curated knowledge base":"BookCheck","Grounded recall":"Anchor","Defense in depth":"ShieldPlus","Knows when to stop":"OctagonX","Learning loop":"RefreshCw","Designed crew":"Users","Earned completion":"BadgeCheck",
   "Approval fatigue":"BellRing","Heavy pack":"Weight","Unread record":"FileX","Accidental swarm":"Bug","Too many tools to choose from":"ListX","Marks its own work":"PencilLine","Closed loop":"Repeat","Paper trail":"ScrollText","Safe autopilot":"Sparkles"};
 const CST={earned:"Earned",near:"One piece away",locked:"Not started",curse:"Weak spot",cleared:"Fixed"};
 function comboState(s){if(s.kind==="synergy"){const have=s.ids.filter(on).length;return s.status==="active"?"earned":s.ids.length-have===1?"near":"locked"}
