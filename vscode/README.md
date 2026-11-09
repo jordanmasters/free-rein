@@ -20,7 +20,7 @@ It reads files on your machine. It uses no AI model and sends nothing anywhere.
 ## What it shows
 
 **The Harness view.** Every kind of piece a harness can have (62, in ten
-sections such as Context, Guardrails and Memory), drawn around the agent it
+sections such as Instructions, Guardrails and Memory), drawn around the agent it
 wraps. A piece lights up as it goes from started to equipped to enforced:
 enforced means something holds on its own, a hook that refuses or a rule that's
 applied, not just a sentence that asks. Pieces that work better together earn

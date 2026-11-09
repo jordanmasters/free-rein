@@ -107,6 +107,7 @@ a context, `ctx`:
 | `afterSignals(ctx)` | near the end | its config, specs, and what its tools write |
 | `contexts(ctx)` | last | which of its modes each node is live in (`node.contexts`) |
 | `vaults(root, read)` | any harness | knowledge-base folders its config names: `[[folder, "configured in …"]]` |
+| `owns(root, read)` | a harness that uses it | the files and folders that are its own, wherever its config puts them (its config, its vaults, what its tools write as they run): `[".claude/tidy.json", "notes"]`. Free Rein credits what's there to the plugin |
 
 ### Checking
 

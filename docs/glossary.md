@@ -19,7 +19,7 @@ parts through a plugin (`docs/plugins.md`).
 
 **Piece.** One kind of thing a harness can have: project instructions, skills,
 blocking hooks, permission rules, a completion check, an event log… Free Rein knows
-62, in ten **sections**: Context, Protocols, Abilities, Agents, Environment,
+62, in ten **sections**: Instructions, Protocols, Abilities, Agents, Environment,
 Guardrails, Verification, Validation, Observability and Memory.
 
 **Level of a piece.** How far it has come: empty, started, equipped, hardened.
@@ -75,6 +75,23 @@ of action (pushing, deleting, secrets…), what your words say sits beside what
 happens: they agree; said but nothing enforces it; enforced but no rule says so;
 nothing says it and nothing stops it; or only the runtime's own check stands in
 the way.
+
+**Context.** The board's view of everything your agent reads: instructions, skills
+and the notes it keeps for itself, by when each enters its context (from the start
+of every session, when work reaches a folder, when a skill is used, when the agent
+opens it, when a hook adds it), where it applies and who wrote it (you, a package,
+your agent). Each sentence has a kind: a rule (never, avoid, always, should), a
+step, a trigger (when to use it), a definition, a fact (how the project is or
+works), a claim, a pointer, or not classified. Sizes are estimates, about four
+characters to a token. Your agent can read what the patterns couldn't place; its
+reading is shown as its own and never counts toward verdicts.
+
+**Your agent's notes (memory).** What the agent writes down for itself between
+sessions, such as Claude Code's auto memory: an index that loads at the start of
+every session, and notes it reads when it needs them. They apply to this repo,
+just you, though they sit in your home folder. Free Rein reads them on your
+machine only; what it shares (the harness document, `check`) counts them, never
+quotes them.
 
 **What to do next.** The bell's list: every problem the board finds (a risky
 situation, rules nothing enforces, a piece the harness would gain most from)

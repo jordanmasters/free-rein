@@ -3,6 +3,33 @@
 What changed, for people using Free Rein. The core (`core/`) and the extension
 (`vscode/`) share one version number and move together.
 
+## Unreleased
+
+- **Context**, a new view: everything your agent reads (instructions,
+  skills, the notes it keeps for itself), when each loads (from the start of
+  every session, when work reaches a folder, when a skill is used, when the agent
+  opens it), where it applies and who wrote it, with every sentence sorted by
+  kind and each testable rule marked enforced, asks first or only said. Sizes are
+  estimates.
+- Your agent's notes (Claude Code's auto memory) are read, in this repo's layer
+  just for you, with a note that names a file that's gone or hasn't changed in
+  two months marked. What's shared (the harness document, `check`) counts them,
+  never quotes them; `check` no longer reads `~/.claude/CLAUDE.md` when the home
+  folder doesn't count.
+- A new kind of sentence, a fact (how the project is or works), takes most of
+  what wasn't classified; no rule moved.
+- The agent review reads the sentences Free Rein couldn't place. While it runs
+  the board says so; when it's back you're told, it's in the list of scans, and
+  its time is when the file was written (a model guesses the time).
+- Layers: a file in the repo that isn't committed yet stays shared, marked; just
+  you means kept out of git on purpose (ignored, or a `.local` file). A repo's
+  folders in your home (its memory, its transcripts) are this repo, just you.
+  A framework's plugin can name the files that are its own (`owns`), wherever
+  its config puts them.
+- The board's Context section is now called Instructions: it holds the
+  instructions the agent is given (project, personal, folder, injected).
+- The top bar stays in view while a long view scrolls.
+
 ## 0.2.0 (alpha)
 
 The first public version, an early alpha: some parts are unfinished.
