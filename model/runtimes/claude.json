@@ -36,9 +36,9 @@
       "url": "https://code.claude.com/docs/en/skills",
       "kind": "official",
       "checked": {
-        "on": "2026-10-07",
-        "version": "2.1.288",
-        "note": "docs ~v2.1.288, read 2026-10-07"
+        "on": "2026-11-08",
+        "version": "2.1.319",
+        "note": "docs read 2026-11-08 with Claude Code 2.1.319: descriptions in context, bodies on use"
       }
     },
     "cc-modes": {
@@ -75,8 +75,9 @@
       "url": "https://code.claude.com/docs/en/memory",
       "kind": "official",
       "checked": {
-        "on": "2026-10-24",
-        "note": "docs read 2026-10-24; the page states no version"
+        "on": "2026-11-08",
+        "version": "2.1.319",
+        "note": "docs read 2026-11-08 with Claude Code 2.1.319: what loads at launch, on demand, and auto memory"
       }
     },
     "cc-hooks": {
@@ -466,6 +467,31 @@
       "how": "A subfolder's CLAUDE.md, and .claude/rules scoped by paths, load once it works in that folder",
       "status": "confirmed",
       "source": "cc-memory"
+    },
+    "loads": {
+      "instructions": {
+        "how": "CLAUDE.md and CLAUDE.local.md from the filesystem root down to the working folder, ~/.claude/CLAUDE.md, the managed CLAUDE.md and .claude/rules files without paths load in full at launch; a subfolder's files and rules with paths load once it works there",
+        "status": "confirmed",
+        "source": "cc-memory"
+      },
+      "skills": {
+        "how": "Each skill's description (with when_to_use) is in context from the start, so Claude knows when to use it; the body loads only when the skill is used, and stays. A skill with disable-model-invocation has no description in context",
+        "status": "confirmed",
+        "source": "cc-skills",
+        "description_chars": 1536
+      },
+      "memory": {
+        "how": "Auto memory: notes Claude writes for itself, on by default, one folder per git repository (worktrees and subfolders share it), on this machine only. The first 200 lines or 25 KB of MEMORY.md, its index, load at the start of every session; the topic notes are read on demand. autoMemoryDirectory moves it",
+        "status": "confirmed",
+        "source": "cc-memory",
+        "dir": "~/.claude/projects/<project>/memory",
+        "index": "MEMORY.md",
+        "start_lines": 200,
+        "start_kb": 25,
+        "per": "repo",
+        "on": true,
+        "by_hand": true
+      }
     },
     "session": {
       "how": "--settings, flags such as --model and --permission-mode, and choices made during a run",

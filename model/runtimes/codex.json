@@ -337,6 +337,16 @@
       "status": "confirmed",
       "source": "agents_md"
     },
+    "loads": {
+      "memory": {
+        "how": "Memories, off by default (features.memories), generated in the background into ~/.codex/memories; not for editing by hand",
+        "status": "confirmed",
+        "source": "memories",
+        "dir": "~/.codex/memories",
+        "on": false,
+        "by_hand": false
+      }
+    },
     "combine": {
       "instructions": {
         "how": "The AGENTS.md files are joined, the root's first and the working folder's last, up to 32 KB",

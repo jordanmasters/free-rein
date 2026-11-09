@@ -405,6 +405,119 @@
             }
           },
           "additionalProperties": false
+        },
+        "loads": {
+          "description": "When each kind of text enters the agent's context: at the start of every session, when work reaches a folder (layers.folders), when a skill is used, when the agent opens it. Each answer {how, status, source}, with what the core needs to measure it",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "instructions": {
+              "type": "object",
+              "required": [
+                "how",
+                "status"
+              ],
+              "properties": {
+                "how": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "confirmed",
+                    "believed",
+                    "none"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "description": "Instructions files: which load at the start",
+              "additionalProperties": false
+            },
+            "skills": {
+              "type": "object",
+              "required": [
+                "how",
+                "status"
+              ],
+              "properties": {
+                "how": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "confirmed",
+                    "believed",
+                    "none"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "description_chars": {
+                  "type": "integer",
+                  "description": "how much of a skill's description (with when_to_use) the listing keeps"
+                }
+              },
+              "description": "Skills: what of each loads at the start (its description) and what once it's used (its body)",
+              "additionalProperties": false
+            },
+            "memory": {
+              "type": "object",
+              "required": [
+                "how",
+                "status"
+              ],
+              "properties": {
+                "how": {
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "confirmed",
+                    "believed",
+                    "none"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "dir": {
+                  "type": "string",
+                  "description": "where the notes are, ~ for the home folder; <project> for a folder named after the repo"
+                },
+                "index": {
+                  "type": "string",
+                  "description": "the file that loads at the start (the rest are read on demand)"
+                },
+                "start_lines": {
+                  "type": "integer"
+                },
+                "start_kb": {
+                  "type": "integer",
+                  "description": "of the index, what loads at the start: the first start_lines lines or start_kb KB, whichever comes first"
+                },
+                "per": {
+                  "enum": [
+                    "repo",
+                    "user"
+                  ],
+                  "description": "one set of notes per repo, or one for you everywhere"
+                },
+                "on": {
+                  "type": "boolean",
+                  "description": "on by default"
+                },
+                "by_hand": {
+                  "type": "boolean",
+                  "description": "false when the runtime says not to edit them by hand"
+                }
+              },
+              "description": "The notes the agent keeps for itself: where, what loads at the start, what it reads on demand",
+              "additionalProperties": false
+            }
+          }
         }
       },
       "additionalProperties": false
