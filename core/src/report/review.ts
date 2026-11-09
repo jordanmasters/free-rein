@@ -15,7 +15,12 @@ export interface Quote { file: string; line: number; quote: string; path?: strin
 export interface ReviewFinding extends Quote { kind: string; title: string; detail: string; severity: "high" | "medium" | "low"; fix: string; also: Quote[];
   /** where the quote really is, when the agent cited a nearby line */
   found_line: number }
+/** a sentence the patterns couldn't place, as your agent reads it: kept only when its quote is in the file */
+export interface ReadSentence { id: string; kind: string; strength: string | null; file: string; line: number }
+export const SENTENCE_KINDS = ["rule", "direction", "trigger", "definition", "fact", "claim", "pointer"];
 export interface Review { at: string; agent: string; model: string; findings: ReviewFinding[]; dropped: { title: string; reason: string }[];
+  /** the sentences Free Rein's patterns couldn't place, as your agent read them (the Context view) */
+  sentences: ReadSentence[];
   /** files the review cited that changed since it was written */
   changed_since: string[] }
 
@@ -53,6 +58,11 @@ export function reviewBrief(root: string, b: any): string {
     if (["hard-gate", "completion-check", "live-injection", "auto-fix"].includes(t.id) && !/\.json$/i.test(x.path)) hooks.add(rel(x.path));
   }
   const untested = F ? F.all.filter((r: any) => r.status === "untested").slice(0, 40) : [];
+  // the sentences Free Rein's patterns couldn't place (the Context view), yours and your packages'; your agent's own notes are named,
+  // never quoted here, since this brief is a file in the repo
+  const W = b.words || null;
+  const unplaced = W ? W.files.filter((f: any) => f.who !== "agent").flatMap((f: any) => f.sentences.filter((x: any) => x.kind === "residual" && x.id).map((x: any) => ({ ...x, file: f.file }))).slice(0, 150) : [];
+  const notes = W ? W.files.filter((f: any) => f.who === "agent").map((f: any) => f.file) : [];
   const L: string[] = [];
   L.push(`# Free Rein agent review: ${b.name}`, "",
     "You are reviewing this repo's agent harness (the instructions, skills, agents, commands and hooks an AI coding agent loads) for what rule-based checks miss. Free Rein has already read it with its own checks; you are the second look. Read, don't change anything: the only file you write is the review.", "",
@@ -71,14 +81,20 @@ export function reviewBrief(root: string, b: any): string {
     "6. **unstated-dependency**: something a skill or agent relies on and never says (a tool, an environment variable, a folder, another skill).",
     "", "Report only what you can quote. Prefer a few solid findings over many weak ones; ten is plenty.", "",
     "## Files to read", "", ...[...prose].sort().slice(0, 120).map(f => `- \`${f}\``), ...(hooks.size ? ["", "Hook scripts:", "", ...[...hooks].sort().map(f => `- \`${f}\``)] : []),
+    ...(unplaced.length ? ["", "## Sentences Free Rein couldn't place", "",
+      `Free Rein sorts each sentence into a kind: ${SENTENCE_KINDS.join(", ")} (a rule says must, must not, should or may; a direction is a step to follow; a trigger says when something applies; a fact says how the project is or works). These ${unplaced.length} it couldn't place. Give each one you can a kind in \`sentences\`, with its id; a preference with no never or always (\"No emojis.\", \"Concise responses.\") is a rule:`, "",
+      ...unplaced.map((x: any) => `- \`${x.id}\` (${x.file}:${x.line}): ${String(x.text).replace(/\s+/g, " ").slice(0, 160)}`)] : []),
+    ...(notes.length ? ["", "## Your agent's own notes", "", "Notes the agent wrote for itself (its memory). Read them, and report as a **contradiction** a note that tells the agent something your instructions or skills contradict, and as a **stale-instruction** one that no longer matches the repo. Don't copy their text anywhere but the quote:", "",
+      ...notes.slice(0, 40).map((f: string) => `- \`${f}\``)] : []),
     ...(untested.length ? ["", "## Rules Free Rein couldn't test", "", "These name an action but Free Rein has no situation for them. Say, where you can, whether anything enforces them:", "",
       ...untested.map((r: any) => `- \`${r.file}:${r.line}\`: ${String(r.text).replace(/\s+/g, " ").slice(0, 160)}`)] : []),
     "", "## Write your review", "",
     `Write one file, \`${REVIEW_DIR}/${REVIEW_FILE}\`, in this repo, and nothing else. Its shape:`, "",
-    "```json", JSON.stringify({ version: 1, at: "<now, ISO 8601>", agent: "<your product, e.g. Claude Code>", model: "<the model you are>",
+    "```json", JSON.stringify({ version: 1, agent: "<your product, e.g. Claude Code>", model: "<the model you are>",
       findings: [{ kind: KINDS.join("|"), title: "<one line>", detail: "<two or three sentences: what, and why it matters>", severity: "high|medium|low",
         file: "<path as given above>", line: 12, quote: "<the exact text on that line, copied, at least 12 characters>",
-        also: [{ file: "<for a contradiction: the other file>", line: 30, quote: "<exact text>" }], fix: "<one sentence: what would settle it>" }] }, null, 2), "```", "",
+        also: [{ file: "<for a contradiction: the other file>", line: 30, quote: "<exact text>" }], fix: "<one sentence: what would settle it>" }],
+      sentences: [{ id: "<the id given above>", kind: SENTENCE_KINDS.join("|"), strength: "must|must-not|should|should-not|may (rules only)", quote: "<the exact text, at least 12 characters>" }] }, null, 2), "```", "",
     "Free Rein checks every quote against the file and line you cite and drops any that isn't there, and any that quotes a sensitive file. Copy quotes exactly.",
     "When you've written the file, say so in one line. Free Rein's board picks it up by itself.");
   return L.join("\n");
@@ -90,7 +106,7 @@ export function readReview(root: string | null): Review | null {
   if (!root) return null;
   const p = path.join(root, REVIEW_DIR, REVIEW_FILE);
   let raw: any;
-  try { raw = JSON.parse(fs.readFileSync(p, "utf8")); } catch { return fs.existsSync(p) ? { at: "", agent: "", model: "", findings: [], dropped: [{ title: "review.json", reason: "it isn't valid JSON" }], changed_since: [] } : null; }
+  try { raw = JSON.parse(fs.readFileSync(p, "utf8")); } catch { return fs.existsSync(p) ? { at: "", agent: "", model: "", findings: [], dropped: [{ title: "review.json", reason: "it isn't valid JSON" }], sentences: [], changed_since: [] } : null; }
   if (!raw || typeof raw !== "object") return null;
   const resolve = (f: string) => !f ? null : f.startsWith("~/") ? path.join(os.homedir(), f.slice(2)) : path.isAbsolute(f) ? f : path.join(root, f);
   const lines = new Map<string, string[] | null>();
@@ -118,9 +134,19 @@ export function readReview(root: string | null): Review | null {
       file: x.file, line: Number(x.line) || found[0], quote: String(x.quote).slice(0, 400), found_line: found[0], fix: String(x.fix || "").slice(0, 400),
       also: qs.slice(1).map((q, i) => ({ file: q.file, path: resolve(q.file)!, line: found[i + 1], quote: String(q.quote).slice(0, 400) })) });
   }
-  const at = typeof raw.at === "string" && Date.parse(raw.at) ? raw.at : (() => { try { return fs.statSync(p).mtime.toISOString(); } catch { return ""; } })();
+  // the sentences, each by its id (file:line:hash): its quote must be at that line, or near it
+  const sentences: ReadSentence[] = [];
+  for (const x of Array.isArray(raw.sentences) ? raw.sentences.slice(0, 400) : []) {
+    if (!x || typeof x.id !== "string" || typeof x.quote !== "string" || !SENTENCE_KINDS.includes(x.kind)) continue;
+    const m = /^(.*):(\d+):[0-9a-f]{6,}$/.exec(x.id); if (!m || isSensitive(m[1])) continue;
+    const line = locate({ file: m[1], line: +m[2], quote: x.quote }); if (!line || Math.abs(line - +m[2]) > 3) continue;
+    const st = x.kind === "rule" && ["must", "must-not", "should", "should-not", "may"].includes(x.strength) ? x.strength : x.kind === "rule" ? "should" : null;
+    sentences.push({ id: x.id, kind: x.kind, strength: st, file: m[1], line: +m[2] });
+  }
+  // when it was written: the file's own time. Not the agent's: a model doesn't know the time, and guesses one
+  const at = (() => { try { return fs.statSync(p).mtime.toISOString(); } catch { return ""; } })();
   const t = Date.parse(at) || 0;
   const changed = [...cited].filter(f => { try { return fs.statSync(f).mtimeMs > t + 1000; } catch { return true; } })
     .map(f => f.startsWith(path.resolve(root) + path.sep) ? path.relative(root, f) : f.replace(os.homedir(), "~"));
-  return { at, agent: String(raw.agent || "your agent").slice(0, 60), model: String(raw.model || "").slice(0, 80), findings, dropped, changed_since: changed };
+  return { at, agent: String(raw.agent || "your agent").slice(0, 60), model: String(raw.model || "").slice(0, 80), findings, dropped, sentences, changed_since: changed };
 }

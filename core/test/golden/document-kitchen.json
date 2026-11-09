@@ -438,7 +438,7 @@
      },
      {
       "path": "~/.claude/projects/<kitchen-history>",
-      "layer": "home"
+      "layer": "project"
      }
     ],
     "supplied_by": "you"
@@ -1081,7 +1081,7 @@
     "instances": [
      {
       "path": "~/.claude/projects/<kitchen-history>",
-      "layer": "home"
+      "layer": "project"
      }
     ],
     "supplied_by": "you"
@@ -1439,6 +1439,14 @@
     "piece": "proj-instructions"
    },
    {
+    "id": "CLAUDE.local.md:1:2451644a",
+    "kind": "fact",
+    "text": "Personal: prefer short answers.",
+    "path": "CLAUDE.local.md",
+    "line": 1,
+    "piece": "proj-instructions"
+   },
+   {
     "id": "~/.claude/CLAUDE.md:3:06369aa6",
     "kind": "rule",
     "text": "Always answer in English.",
@@ -1488,6 +1496,14 @@
     "path": ".claude/skills/commit-it/SKILL.md",
     "line": 5,
     "strength": "must-not",
+    "piece": "skills"
+   },
+   {
+    "id": ".claude/skills/commit-it/SKILL.md:5:cd60e8fb",
+    "kind": "fact",
+    "text": "Writes progress.md.",
+    "path": ".claude/skills/commit-it/SKILL.md",
+    "line": 5,
     "piece": "skills"
    },
    {
@@ -1598,6 +1614,14 @@
     "piece": "skills"
    },
    {
+    "id": ".claude/skills/review-work/SKILL.md:32:e4adf2eb",
+    "kind": "fact",
+    "text": "Bad bytes:  café  end.",
+    "path": ".claude/skills/review-work/SKILL.md",
+    "line": 32,
+    "piece": "skills"
+   },
+   {
     "id": ".claude/skills/tidy-notes/SKILL.md:3:f52ced3e",
     "kind": "trigger",
     "text": "Formats notes in the vault nicely",
@@ -1638,11 +1662,25 @@
     "line": 3
    },
    {
+    "id": ".claude/agents/reviewer.md:7:c9f127a1",
+    "kind": "fact",
+    "text": "Give a verdict: pass or fail, with findings.",
+    "path": ".claude/agents/reviewer.md",
+    "line": 7
+   },
+   {
     "id": ".claude/agents/scribe.md:2:a9876523",
     "kind": "trigger",
     "text": "Writes notes",
     "path": ".claude/agents/scribe.md",
     "line": 2
+   },
+   {
+    "id": ".claude/agents/scribe.md:5:f4198b11",
+    "kind": "fact",
+    "text": "Writes.",
+    "path": ".claude/agents/scribe.md",
+    "line": 5
    }
   ],
   "situations": [
@@ -1876,7 +1914,7 @@
     ]
    },
    {
-    "id": "curated-canon",
+    "id": "curated-knowledge-base",
     "kind": "synergy",
     "status": "active",
     "pieces": [

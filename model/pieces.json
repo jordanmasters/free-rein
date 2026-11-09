@@ -20,8 +20,8 @@
   "slots": [
     {
       "id": "context",
-      "name": "Context",
-      "job": "what it reads before it acts",
+      "name": "Instructions",
+      "job": "what it's told before it acts",
       "family": "surface",
       "icon": "book",
       "items": [
@@ -1848,7 +1848,7 @@
       "effect": "The next session picks up the work itself, not a retelling of it."
     },
     {
-      "id": "curated-canon",
+      "id": "curated-knowledge-base",
       "kind": "synergy",
       "name": "Curated knowledge base",
       "all": [

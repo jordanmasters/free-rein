@@ -1685,6 +1685,7 @@
   "review": null,
   "checks": null,
   "moves": [],
+  "words": null,
   "stack": {
    "runtime": "Claude Code",
    "levels": [
@@ -1804,7 +1805,8 @@
        "files": []
       }
      ],
-     "models": []
+     "models": [],
+     "uncommitted": []
     }
    ],
    "unused": [
@@ -3608,8 +3610,8 @@
   "slots": [
    {
     "id": "context",
-    "name": "Context",
-    "job": "what it reads before it acts",
+    "name": "Instructions",
+    "job": "what it's told before it acts",
     "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
     "types": [
      {
@@ -11639,6 +11641,7 @@
   "review": null,
   "checks": null,
   "moves": [],
+  "words": null,
   "stack": null,
   "runtime_models": {
    "providers": "one",
@@ -13424,8 +13427,8 @@
   "slots": [
    {
     "id": "context",
-    "name": "Context",
-    "job": "what it reads before it acts",
+    "name": "Instructions",
+    "job": "what it's told before it acts",
     "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
     "types": [
      {
@@ -21337,6 +21340,7 @@
   "review": null,
   "checks": null,
   "moves": [],
+  "words": null,
   "stack": null,
   "runtime_models": {
    "providers": "one",
@@ -23054,8 +23058,8 @@
   "slots": [
    {
     "id": "context",
-    "name": "Context",
-    "job": "what it reads before it acts",
+    "name": "Instructions",
+    "job": "what it's told before it acts",
     "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
     "types": [
      {
@@ -29037,7 +29041,7 @@
    "next_rank": null,
    "earned": [
     "continuity",
-    "curated-canon",
+    "curated-knowledge-base",
     "grounded-recall",
     "defense-in-depth",
     "knows-when-to-stop",

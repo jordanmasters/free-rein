@@ -1789,8 +1789,8 @@
     {
      "id": "record",
      "name": "Claude Code's record",
-     "looks": "65 confirmed, 9 believed",
-     "hits": 74,
+     "looks": "68 confirmed, 9 believed",
+     "hits": 77,
      "where": []
     }
    ]
@@ -1919,6 +1919,173 @@
    "effort": "larger"
   }
  ],
+ "words": {
+  "runtime": "claude",
+  "recorded": true,
+  "files": [
+   {
+    "file": "~/.claude/CLAUDE.md",
+    "path": "<home>/.claude/CLAUDE.md",
+    "layer": "user",
+    "who": "you",
+    "pkg": null,
+    "piece": "personal-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 15,
+      "lines": 4
+     }
+    ],
+    "kinds": {
+     "rule": 2
+    },
+    "rules": {
+     "enforced": 1,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": "~/.claude/CLAUDE.md:3:06369aa6",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "Always answer in English."
+     },
+     {
+      "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "Never commit secrets."
+     }
+    ]
+   },
+   {
+    "file": ".claude/skills/release/SKILL.md",
+    "path": "<solo>/.claude/skills/release/SKILL.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "skills",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 15,
+      "lines": 1
+     },
+     {
+      "when": "use",
+      "tokens": 19,
+      "lines": 3
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "residual": 2
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/skills/release/SKILL.md:3:9b8457c1",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Cut a release: bump the version, tag it, write the notes.",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/skills/release/SKILL.md:6:fd5e9145",
+      "line": 6,
+      "kind": "residual",
+      "text": "Bump the version in package.json."
+     },
+     {
+      "id": ".claude/skills/release/SKILL.md:7:3999f5bb",
+      "line": 7,
+      "kind": "residual",
+      "text": "Tag it and write the release notes."
+     }
+    ]
+   },
+   {
+    "file": "CLAUDE.md",
+    "path": "<solo>/CLAUDE.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "proj-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 31,
+      "lines": 7
+     }
+    ],
+    "kinds": {
+     "residual": 1,
+     "direction": 2,
+     "rule": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": "CLAUDE.md:3:0343a10d",
+      "line": 3,
+      "kind": "residual",
+      "text": "A small app."
+     },
+     {
+      "id": "CLAUDE.md:3:a4e1d4ad",
+      "line": 3,
+      "kind": "direction",
+      "text": "Run `npm test` before you say you're done."
+     },
+     {
+      "id": "CLAUDE.md:5:50e1e572",
+      "line": 5,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": null,
+      "text": "- Never edit `.env`."
+     },
+     {
+      "id": "CLAUDE.md:6:da56d48d",
+      "line": 6,
+      "kind": "direction",
+      "text": "- Ask before pushing to main."
+     }
+    ]
+   }
+  ],
+  "hooks": [],
+  "totals": {
+   "files": 3,
+   "start_tokens": 61,
+   "tokens": 80,
+   "sentences": 9,
+   "unclassified": 3,
+   "rules": 3,
+   "enforced": 1,
+   "asks": 0,
+   "only_said": 0,
+   "agent_notes": 0,
+   "agent_rules": 0
+  }
+ },
  "stack": {
   "runtime": "Claude Code",
   "levels": [
@@ -1999,6 +2166,7 @@
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -2056,6 +2224,7 @@
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -2179,7 +2348,8 @@
       "files": []
      }
     ],
-    "models": []
+    "models": [],
+    "uncommitted": []
    }
   ],
   "unused": [
@@ -14479,8 +14649,8 @@
  "slots": [
   {
    "id": "context",
-   "name": "Context",
-   "job": "what it reads before it acts",
+   "name": "Instructions",
+   "job": "what it's told before it acts",
    "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
    "types": [
     {

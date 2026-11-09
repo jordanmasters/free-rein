@@ -1,5 +1,5 @@
 {
- "text": "Warnings (3)\n  Read secrets: Exposed: nothing stops it (refuse: Read(.env))\n  Stops when it says it's done: The agent decides when it's done.\n  ~/.claude/CLAUDE.md:3  \"Never commit secrets.\": nothing of yours makes it so in Edit secrets, Read secrets\n\nNotes (9)\n  Delete a folder: Claude Code decides: no rule of yours (ask first: Bash(rm -rf:*))\n  Throw away uncommitted changes: Claude Code decides: no rule of yours (ask first: Bash(git reset --hard:*))\n  Run a script from the web: Claude Code decides: no rule of yours (ask first: Bash(curl -fsSL https://example.com/install.sh | sh))\n  Push: Claude Code decides: no rule of yours (ask first: Bash(git push:*))\n  Force push: rewrite shared history: Claude Code decides: no rule of yours (ask first: Bash(git push --force:*))\n  Publish a package: Claude Code decides: no rule of yours (ask first: Bash(npm publish:*))\n  Change its instructions: Claude Code decides: no rule of yours (ask first: Edit(CLAUDE.md) or add Blocking hooks)\n  Change its own permissions and hooks: Claude Code decides: no rule of yours (ask first: Edit(.claude/settings.json) or add Blocking hooks)\n  Edit secrets: Claude Code decides: no rule of yours (refuse: Edit(.env) or add Blocking hooks)\n\n0 errors, 3 warnings, 9 notes (read in auto mode)\n",
+ "text": "Warnings (2)\n  Read secrets: Exposed: nothing stops it (refuse: Read(.env))\n  Stops when it says it's done: The agent decides when it's done.\n\nNotes (9)\n  Delete a folder: Claude Code decides: no rule of yours (ask first: Bash(rm -rf:*))\n  Throw away uncommitted changes: Claude Code decides: no rule of yours (ask first: Bash(git reset --hard:*))\n  Run a script from the web: Claude Code decides: no rule of yours (ask first: Bash(curl -fsSL https://example.com/install.sh | sh))\n  Push: Claude Code decides: no rule of yours (ask first: Bash(git push:*))\n  Force push: rewrite shared history: Claude Code decides: no rule of yours (ask first: Bash(git push --force:*))\n  Publish a package: Claude Code decides: no rule of yours (ask first: Bash(npm publish:*))\n  Change its instructions: Claude Code decides: no rule of yours (ask first: Edit(CLAUDE.md) or add Blocking hooks)\n  Change its own permissions and hooks: Claude Code decides: no rule of yours (ask first: Edit(.claude/settings.json) or add Blocking hooks)\n  Edit secrets: Claude Code decides: no rule of yours (refuse: Edit(.env) or add Blocking hooks)\n\n0 errors, 2 warnings, 9 notes (read in auto mode)\n",
  "sarif": {
   "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
   "version": "2.1.0",
@@ -61,23 +61,6 @@
         "defaultConfiguration": {
          "level": "warning"
         }
-       },
-       {
-        "id": "unbacked-rule",
-        "name": "UnbackedRule",
-        "shortDescription": {
-         "text": "A rule in your instructions that nothing enforces"
-        },
-        "fullDescription": {
-         "text": "Your instructions say never, always or ask first about an action, but no permission rule, hook or approval step makes it so."
-        },
-        "help": {
-         "text": "It holds only if the model follows the instruction every time. Back it with a permission rule or a hook, or reword it as guidance.",
-         "markdown": "Your instructions say never, always or ask first about an action, but no permission rule, hook or approval step makes it so.\n\n**Why it matters:** It holds only if the model follows the instruction every time.\n\n**What to do:** Back it with a permission rule or a hook, or reword it as guidance."
-        },
-        "defaultConfiguration": {
-         "level": "warning"
-        }
        }
       ]
      }
@@ -110,31 +93,6 @@
       },
       "partialFingerprints": {
        "freeReinFinding": "d243fc22c8bd6a33a622851582c9cc4b"
-      }
-     },
-     {
-      "ruleId": "unbacked-rule",
-      "ruleIndex": 3,
-      "level": "warning",
-      "message": {
-       "text": "\"Never commit secrets.\": nothing of yours makes it so in Edit secrets, Read secrets"
-      },
-      "locations": [
-       {
-        "physicalLocation": {
-         "artifactLocation": {
-          "uri": "~/.claude/CLAUDE.md",
-          "uriBaseId": "SRCROOT"
-         },
-         "region": {
-          "startLine": 3,
-          "endLine": 3
-         }
-        }
-       }
-      ],
-      "partialFingerprints": {
-       "freeReinFinding": "916d14eae1c2f742535b9da825687aad"
       }
      },
      {

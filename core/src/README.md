@@ -15,7 +15,8 @@ is one of those steps; data flows read → judge → report or write.
 | `runtimes.ts` | Which files each runtime reads (Claude Code, Codex, Cursor, …) |
 | `plugins.ts` | Loads frameworks' plugins (`docs/plugins.md`) |
 | `spec.ts` | Loads Free Rein's model (`model/pieces.json`, `model/runtimes/`) |
-| `home.ts` | Whether your home folder (`~/.claude`) counts, and where Claude Code keeps a folder's sessions |
+| `home.ts` | Whether your home folder (`~/.claude`) counts, where Claude Code keeps a folder's sessions and memory, and which home folders belong to this repo alone |
+| `memory.ts` | The notes your agent keeps for itself (Claude Code's auto memory, Codex's memories): the index that loads at the start, each note's type, date and the files it names |
 
 ## judge/: how it stands
 
@@ -46,6 +47,7 @@ is one of those steps; data flows read → judge → report or write.
 | `score.ts` | The reference scorer: XP and level from a harness document (also built into the board) |
 | `check.ts` | `free-rein check`: findings with a level, a place and a fix; text, JSON or SARIF |
 | `review.ts` | The agent review: the brief for your agent, the sensitive files it mustn't read (named, never opened), and its review read back, keeping only findings whose quotes check out |
+| `words.ts` | Context: everything the agent reads (instructions, skills, its own notes), when each loads, where it applies, who wrote it, and what it says, sentence by sentence, with your agent's reading laid over |
 | `stack.ts` | The layers: the levels a runtime reads a harness at (its own words, from `model/runtimes/<id>.json`), what's at each and where it came from, what each sets, how they combine |
 
 ## write/: what it changes

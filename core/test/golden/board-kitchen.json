@@ -2874,8 +2874,8 @@
     {
      "id": "record",
      "name": "Claude Code's record",
-     "looks": "65 confirmed, 9 believed",
-     "hits": 74,
+     "looks": "68 confirmed, 9 believed",
+     "hits": 77,
      "where": []
     }
    ]
@@ -2937,6 +2937,857 @@
    "effort": "larger"
   }
  ],
+ "words": {
+  "runtime": "claude",
+  "recorded": true,
+  "files": [
+   {
+    "file": "~/.claude/CLAUDE.md",
+    "path": "<home>/.claude/CLAUDE.md",
+    "layer": "user",
+    "who": "you",
+    "pkg": null,
+    "piece": "personal-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 15,
+      "lines": 4
+     }
+    ],
+    "kinds": {
+     "rule": 2
+    },
+    "rules": {
+     "enforced": 1,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": "~/.claude/CLAUDE.md:3:06369aa6",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "Always answer in English."
+     },
+     {
+      "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "Never commit secrets."
+     }
+    ]
+   },
+   {
+    "file": ".claude/agents/reviewer.md",
+    "path": "<kitchen>/.claude/agents/reviewer.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": null,
+    "parts": [
+     {
+      "when": "use",
+      "tokens": 39,
+      "lines": 8
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "fact": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/agents/reviewer.md:3:0932e109",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Reviews work and gives a verdict with findings",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/agents/reviewer.md:7:c9f127a1",
+      "line": 7,
+      "kind": "fact",
+      "text": "Give a verdict: pass or fail, with findings."
+     }
+    ]
+   },
+   {
+    "file": ".claude/agents/scribe.md",
+    "path": "<kitchen>/.claude/agents/scribe.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": null,
+    "parts": [
+     {
+      "when": "use",
+      "tokens": 15,
+      "lines": 6
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "fact": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/agents/scribe.md:2:a9876523",
+      "line": 2,
+      "kind": "trigger",
+      "text": "Writes notes",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/agents/scribe.md:5:f4198b11",
+      "line": 5,
+      "kind": "fact",
+      "text": "Writes."
+     }
+    ]
+   },
+   {
+    "file": ".claude/CLAUDE.md",
+    "path": "<kitchen>/.claude/CLAUDE.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "proj-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 13,
+      "lines": 1
+     }
+    ],
+    "kinds": {
+     "residual": 3
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/CLAUDE.md:1:0ab2e7c1",
+      "line": 1,
+      "kind": "residual",
+      "text": "Project notes in .claude."
+     },
+     {
+      "id": ".claude/CLAUDE.md:1:4f27c11c",
+      "line": 1,
+      "kind": "residual",
+      "text": "Lone CR line."
+     },
+     {
+      "id": ".claude/CLAUDE.md:1:c5b1f394",
+      "line": 1,
+      "kind": "residual",
+      "text": "Another."
+     }
+    ]
+   },
+   {
+    "file": ".claude/rules/style.md",
+    "path": "<kitchen>/.claude/rules/style.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "folder-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 12,
+      "lines": 3
+     }
+    ],
+    "kinds": {
+     "residual": 1,
+     "rule": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": ".claude/rules/style.md:1:09f4e460",
+      "line": 1,
+      "kind": "residual",
+      "text": "- Prefer plain words."
+     },
+     {
+      "id": ".claude/rules/style.md:2:f57acff6",
+      "line": 2,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "- You must cite sources."
+     }
+    ]
+   },
+   {
+    "file": ".claude/skills/commit-it/SKILL.md",
+    "path": "<kitchen>/.claude/skills/commit-it/SKILL.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "skills",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 6,
+      "lines": 1
+     },
+     {
+      "when": "use",
+      "tokens": 15,
+      "lines": 2
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "direction": 1,
+     "rule": 1,
+     "fact": 1
+    },
+    "rules": {
+     "enforced": 1,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/skills/commit-it/SKILL.md:3:3b34c48e",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Commit with a message",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/skills/commit-it/SKILL.md:5:172678c4",
+      "line": 5,
+      "kind": "direction",
+      "text": "Commit the changes."
+     },
+     {
+      "id": ".claude/skills/commit-it/SKILL.md:5:496fe40e",
+      "line": 5,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "Never force-push."
+     },
+     {
+      "id": ".claude/skills/commit-it/SKILL.md:5:cd60e8fb",
+      "line": 5,
+      "kind": "fact",
+      "text": "Writes progress.md."
+     }
+    ]
+   },
+   {
+    "file": ".claude/skills/lint-notes/SKILL.md",
+    "path": "<kitchen>/.claude/skills/lint-notes/SKILL.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "skills",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 21,
+      "lines": 1
+     },
+     {
+      "when": "use",
+      "tokens": 16,
+      "lines": 3
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "pointer": 1,
+     "direction": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/skills/lint-notes/SKILL.md:3:2e4228f2",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Use when the user asks to check the notes for broken links before committing them.",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/skills/lint-notes/SKILL.md:5:8394b2f7",
+      "line": 5,
+      "kind": "pointer",
+      "text": "Read every note."
+     },
+     {
+      "id": ".claude/skills/lint-notes/SKILL.md:6:12e2da25",
+      "line": 6,
+      "kind": "direction",
+      "text": "Report each broken link with its line."
+     }
+    ]
+   },
+   {
+    "file": ".claude/skills/review-work/SKILL.md",
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "skills",
+    "parts": [
+     {
+      "when": "use",
+      "tokens": 196,
+      "lines": 28
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "pointer": 2,
+     "direction": 4,
+     "residual": 3,
+     "rule": 3,
+     "fact": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 3
+    },
+    "sentences": [
+     {
+      "id": ".claude/skills/review-work/SKILL.md:3:9191cc00",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Use when the user asks to review work before it ships; triggers on 'review'.",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:7:e0f4a5f7",
+      "line": 7,
+      "kind": "pointer",
+      "text": "Goal: Review the draft and record a verdict in vault/reviews.md."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:11:6f35cf2a",
+      "line": 11,
+      "kind": "direction",
+      "text": "**Read the draft** from drafts/current.md."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:12:3de24e50",
+      "line": 12,
+      "kind": "direction",
+      "text": "**Show the findings for review** and await approval before writing."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:13:561184eb",
+      "line": 13,
+      "kind": "direction",
+      "text": "**Write the verdict** to vault/reviews.md and log it with `emit.py review-done`."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:13:433829a3",
+      "line": 13,
+      "kind": "direction",
+      "text": "**Step 4 — Sign off on the result.**"
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:16:4787246a",
+      "line": 16,
+      "kind": "residual",
+      "text": "If the user says no, stop."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:16:33915313",
+      "line": 16,
+      "kind": "residual",
+      "text": "When in doubt, ask: \"Proceed?\""
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:18:aa108ef5",
+      "line": 18,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "The user must say something like \"yes, ship it\" or \"approved\"; a second confirmation is required for `vault/decisions.md`."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:20:c2398994",
+      "line": 20,
+      "kind": "pointer",
+      "text": "Then call /commit-it and see lib/tools.py and engines/review/PROTOCOL.md."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:29:1eb58044",
+      "line": 29,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": null,
+      "text": "- Never write to vault/ without approval."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:30:a24bf4a2",
+      "line": 30,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": null,
+      "text": "- Don't skip the tests."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:32:e4adf2eb",
+      "line": 32,
+      "kind": "fact",
+      "text": "Bad bytes:  café  end."
+     },
+     {
+      "id": ".claude/skills/review-work/SKILL.md:32:1a0c7ef7",
+      "line": 32,
+      "kind": "residual",
+      "text": "Templates live in templates/ — ✨ emoji ✨."
+     }
+    ]
+   },
+   {
+    "file": ".claude/skills/tidy-notes/SKILL.md",
+    "path": "<kitchen>/.claude/skills/tidy-notes/SKILL.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "skills",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 9,
+      "lines": 1
+     },
+     {
+      "when": "use",
+      "tokens": 11,
+      "lines": 3
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "pointer": 1,
+     "residual": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".claude/skills/tidy-notes/SKILL.md:3:f52ced3e",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Formats notes in the vault nicely",
+      "from": "frontmatter description"
+     },
+     {
+      "id": ".claude/skills/tidy-notes/SKILL.md:5:1b084e14",
+      "line": 5,
+      "kind": "pointer",
+      "text": "Read the notes."
+     },
+     {
+      "id": ".claude/skills/tidy-notes/SKILL.md:6:b317dedf",
+      "line": 6,
+      "kind": "residual",
+      "text": "Fix the formatting."
+     }
+    ]
+   },
+   {
+    "file": ".husky/commit-msg",
+    "path": "<kitchen>/.husky/commit-msg",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": null,
+    "parts": [
+     {
+      "when": "use",
+      "tokens": 6,
+      "lines": 2
+     }
+    ],
+    "kinds": {
+     "residual": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": ".husky/commit-msg:1:c3a997a0",
+      "line": 1,
+      "kind": "residual",
+      "text": "npx commitlint --edit"
+     }
+    ]
+   },
+   {
+    "file": "AGENTS.md",
+    "path": "<kitchen>/AGENTS.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "proj-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 19,
+      "lines": 4
+     }
+    ],
+    "kinds": {
+     "residual": 2,
+     "claim": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": "AGENTS.md:1:73f58484",
+      "line": 1,
+      "kind": "residual",
+      "text": "﻿# Agents"
+     },
+     {
+      "id": "AGENTS.md:3:d8848ab2",
+      "line": 3,
+      "kind": "residual",
+      "text": "Shared instructions for every runtime."
+     },
+     {
+      "id": "AGENTS.md:3:5b3d360f",
+      "line": 3,
+      "kind": "claim",
+      "text": "Hooks block force pushes."
+     }
+    ]
+   },
+   {
+    "file": "CLAUDE.md",
+    "path": "<kitchen>/CLAUDE.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "proj-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 134,
+      "lines": 20
+     }
+    ],
+    "kinds": {
+     "residual": 2,
+     "direction": 4,
+     "rule": 5,
+     "claim": 1
+    },
+    "rules": {
+     "enforced": 4,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": "CLAUDE.md:3:ebe294de",
+      "line": 3,
+      "kind": "residual",
+      "text": "A sample harness with one of everything, for Free Rein's tests."
+     },
+     {
+      "id": "CLAUDE.md:3:0edfa7ab",
+      "line": 3,
+      "kind": "residual",
+      "text": "Café rules apply."
+     },
+     {
+      "id": "CLAUDE.md:5:a56b1f91",
+      "line": 5,
+      "kind": "direction",
+      "text": "Start here: docs/map-schema.md and ARCHITECTURE.md. @docs/extra.md"
+     },
+     {
+      "id": "CLAUDE.md:10:ca0722fb",
+      "line": 10,
+      "kind": "direction",
+      "text": "Keep the plan."
+     },
+     {
+      "id": "CLAUDE.md:12:4cc95702",
+      "line": 12,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "- Never push to main without a review."
+     },
+     {
+      "id": "CLAUDE.md:13:ba37f724",
+      "line": 13,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "- Always run /review-work before /commit-it."
+     },
+     {
+      "id": "CLAUDE.md:14:9bf74e5d",
+      "line": 14,
+      "kind": "claim",
+      "text": "- Don't edit vault/decisions.md directly; it is gated."
+     },
+     {
+      "id": "CLAUDE.md:15:3ff85dec",
+      "line": 15,
+      "kind": "direction",
+      "text": "- Use `lib/tools.py` for exports."
+     },
+     {
+      "id": "CLAUDE.md:16:e55b6caa",
+      "line": 16,
+      "kind": "direction",
+      "text": "- Stop."
+     },
+     {
+      "id": "CLAUDE.md:17:412a6663",
+      "line": 17,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "- Never publish a package."
+     },
+     {
+      "id": "CLAUDE.md:18:e6fb489b",
+      "line": 18,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "- Never edit `vault/notes/` without asking first."
+     },
+     {
+      "id": "CLAUDE.md:19:5fd17c4e",
+      "line": 19,
+      "kind": "rule",
+      "strength": "must",
+      "backed": true,
+      "text": "- Always ask before you write to the vault."
+     }
+    ]
+   },
+   {
+    "file": "REVIEW.md",
+    "path": "<kitchen>/REVIEW.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": null,
+    "parts": [
+     {
+      "when": "use",
+      "tokens": 4,
+      "lines": 2
+     }
+    ],
+    "kinds": {
+     "residual": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": "REVIEW.md:1:7e40c3d8",
+      "line": 1,
+      "kind": "residual",
+      "text": "Review guide."
+     }
+    ]
+   },
+   {
+    "file": "skills/commit-it/SKILL.md",
+    "path": "<kitchen>/skills/commit-it/SKILL.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "skills",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 3,
+      "lines": 1
+     },
+     {
+      "when": "use",
+      "tokens": 7,
+      "lines": 2
+     }
+    ],
+    "kinds": {
+     "trigger": 1,
+     "residual": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": "skills/commit-it/SKILL.md:3:a27c6359",
+      "line": 3,
+      "kind": "trigger",
+      "text": "Another copy",
+      "from": "frontmatter description"
+     },
+     {
+      "id": "skills/commit-it/SKILL.md:5:e312ab61",
+      "line": 5,
+      "kind": "residual",
+      "text": "A different commit skill."
+     }
+    ]
+   },
+   {
+    "file": "sub/CLAUDE.md",
+    "path": "<kitchen>/sub/CLAUDE.md",
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "folder-instructions",
+    "parts": [
+     {
+      "when": "folder",
+      "tokens": 16,
+      "lines": 4
+     }
+    ],
+    "kinds": {
+     "rule": 1
+    },
+    "rules": {
+     "enforced": 1,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": "sub/CLAUDE.md:3:47cf7ddb",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": true,
+      "text": "Rules for the sub folder: never delete files in data/."
+     }
+    ]
+   },
+   {
+    "file": "CLAUDE.local.md",
+    "path": "<kitchen>/CLAUDE.local.md",
+    "layer": "local",
+    "who": "you",
+    "pkg": null,
+    "piece": "proj-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 8,
+      "lines": 2
+     }
+    ],
+    "kinds": {
+     "fact": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": "CLAUDE.local.md:1:2451644a",
+      "line": 1,
+      "kind": "fact",
+      "text": "Personal: prefer short answers."
+     }
+    ]
+   }
+  ],
+  "hooks": [
+   {
+    "label": "sig:session-start:project",
+    "path": "<kitchen>/.claude/settings.json",
+    "layer": "project"
+   }
+  ],
+  "totals": {
+   "files": 16,
+   "start_tokens": 240,
+   "tokens": 565,
+   "sentences": 56,
+   "unclassified": 15,
+   "rules": 13,
+   "enforced": 7,
+   "asks": 0,
+   "only_said": 0,
+   "agent_notes": 0,
+   "agent_rules": 0
+  }
+ },
  "stack": {
   "runtime": "Claude Code",
   "levels": [
@@ -2950,11 +3801,14 @@
     "readable": true,
     "sets": [],
     "found": [
-     "CLAUDE.local.md"
+     "CLAUDE.local.md",
+     "~/.claude/projects/<kitchen-history>"
     ],
-    "count": 1,
+    "count": 3,
     "pieces": [
-     "proj-instructions"
+     "proj-instructions",
+     "connected-accounts",
+     "transcripts"
     ],
     "gives": [
      {
@@ -2962,13 +3816,26 @@
       "files": [
        "CLAUDE.local.md"
       ]
+     },
+     {
+      "piece": "connected-accounts",
+      "files": [
+       "~/.claude/projects/<kitchen-history>"
+      ]
+     },
+     {
+      "piece": "transcripts",
+      "files": [
+       "~/.claude/projects/<kitchen-history>"
+      ]
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
-      "n": 1
+      "n": 3
      }
     ]
    },
@@ -3374,6 +4241,7 @@
       "for": "turning text into vectors for search"
      }
     ],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -3395,29 +4263,20 @@
     ],
     "found": [
      "~/.claude/CLAUDE.md",
-     "~/.claude/projects/<kitchen-history>",
      "~/.claude/settings.json"
     ],
-    "count": 6,
+    "count": 4,
     "pieces": [
      "personal-instructions",
-     "connected-accounts",
      "permissions",
      "secrets-out",
-     "auto-fix",
-     "transcripts"
+     "auto-fix"
     ],
     "gives": [
      {
       "piece": "personal-instructions",
       "files": [
        "~/.claude/CLAUDE.md"
-      ]
-     },
-     {
-      "piece": "connected-accounts",
-      "files": [
-       "~/.claude/projects/<kitchen-history>"
       ]
      },
      {
@@ -3437,19 +4296,14 @@
       "files": [
        "~/.claude/settings.json"
       ]
-     },
-     {
-      "piece": "transcripts",
-      "files": [
-       "~/.claude/projects/<kitchen-history>"
-      ]
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
-      "n": 6
+      "n": 4
      }
     ]
    },
@@ -3567,7 +4421,8 @@
       "files": []
      }
     ],
-    "models": []
+    "models": [],
+    "uncommitted": []
    }
   ],
   "unused": [
@@ -8401,7 +9256,7 @@
     },
     "earned": [
      "continuity",
-     "curated-canon",
+     "curated-knowledge-base",
      "defense-in-depth",
      "knows-when-to-stop",
      "earned-done"
@@ -10194,7 +11049,7 @@
     "mcp": 0,
     "plugins": 0,
     "web": 2,
-    "connected-accounts": 2,
+    "connected-accounts": 0,
     "subagents": 2,
     "orchestration": 0,
     "autonomous-runs": 1,
@@ -10258,7 +11113,7 @@
     "mcp": 0,
     "plugins": 0,
     "web": 2,
-    "connected-accounts": 2,
+    "connected-accounts": 0,
     "subagents": 2,
     "orchestration": 0,
     "autonomous-runs": 1,
@@ -10308,7 +11163,7 @@
     "retrieval": 0
    },
    "progression": {
-    "xp": 515,
+    "xp": 480,
     "level": 14,
     "level_start": 467,
     "next_level_at": 536,
@@ -10330,7 +11185,7 @@
     "earned": [],
     "cleared": [],
     "situation_xp": 0,
-    "xp_total": 515,
+    "xp_total": 480,
     "level_curve": 2.38,
     "max_level": 50
    },
@@ -12267,7 +13122,7 @@
     },
     "earned": [
      "continuity",
-     "curated-canon",
+     "curated-knowledge-base",
      "defense-in-depth",
      "knows-when-to-stop",
      "earned-done"
@@ -17324,6 +18179,21 @@
     "path": "<kitchen>/AGENTS.md"
    },
    {
+    "id": "CLAUDE.local.md:1:2451644a",
+    "kind": "fact",
+    "text": "Personal: prefer short answers.",
+    "source": {
+     "file": "CLAUDE.local.md",
+     "line": 1,
+     "node": "CLAUDE.local.md"
+    },
+    "about": [],
+    "strength": null,
+    "scope": "harness",
+    "piece": "proj-instructions",
+    "path": "<kitchen>/CLAUDE.local.md"
+   },
+   {
     "id": "~/.claude/CLAUDE.md:3:06369aa6",
     "kind": "rule",
     "text": "Always answer in English.",
@@ -17444,6 +18314,25 @@
      "Never",
      "force-push"
     ],
+    "scope": "unit",
+    "piece": "skills",
+    "path": "<kitchen>/.claude/skills/commit-it/SKILL.md"
+   },
+   {
+    "id": ".claude/skills/commit-it/SKILL.md:5:cd60e8fb",
+    "kind": "fact",
+    "text": "Writes progress.md.",
+    "source": {
+     "file": ".claude/skills/commit-it/SKILL.md",
+     "line": 5,
+     "node": ".claude/skills/commit-it/SKILL.md"
+    },
+    "about": [
+     {
+      "action": "write"
+     }
+    ],
+    "strength": null,
     "scope": "unit",
     "piece": "skills",
     "path": "<kitchen>/.claude/skills/commit-it/SKILL.md"
@@ -17710,6 +18599,21 @@
     "path": "<kitchen>/.claude/skills/review-work/SKILL.md"
    },
    {
+    "id": ".claude/skills/review-work/SKILL.md:32:e4adf2eb",
+    "kind": "fact",
+    "text": "Bad bytes:  café  end.",
+    "source": {
+     "file": ".claude/skills/review-work/SKILL.md",
+     "line": 32,
+     "node": ".claude/skills/review-work/SKILL.md"
+    },
+    "about": [],
+    "strength": null,
+    "scope": "unit",
+    "piece": "skills",
+    "path": "<kitchen>/.claude/skills/review-work/SKILL.md"
+   },
+   {
     "id": ".claude/skills/tidy-notes/SKILL.md:3:f52ced3e",
     "kind": "trigger",
     "text": "Formats notes in the vault nicely",
@@ -17804,6 +18708,21 @@
     "path": "<kitchen>/.claude/agents/reviewer.md"
    },
    {
+    "id": ".claude/agents/reviewer.md:7:c9f127a1",
+    "kind": "fact",
+    "text": "Give a verdict: pass or fail, with findings.",
+    "source": {
+     "file": ".claude/agents/reviewer.md",
+     "line": 7,
+     "node": ".claude/agents/reviewer.md"
+    },
+    "about": [],
+    "strength": null,
+    "scope": "unit",
+    "piece": null,
+    "path": "<kitchen>/.claude/agents/reviewer.md"
+   },
+   {
     "id": ".claude/agents/scribe.md:2:a9876523",
     "kind": "trigger",
     "text": "Writes notes",
@@ -17822,13 +18741,32 @@
     "from": "frontmatter description",
     "piece": null,
     "path": "<kitchen>/.claude/agents/scribe.md"
+   },
+   {
+    "id": ".claude/agents/scribe.md:5:f4198b11",
+    "kind": "fact",
+    "text": "Writes.",
+    "source": {
+     "file": ".claude/agents/scribe.md",
+     "line": 5,
+     "node": ".claude/agents/scribe.md"
+    },
+    "about": [
+     {
+      "action": "write"
+     }
+    ],
+    "strength": null,
+    "scope": "unit",
+    "piece": null,
+    "path": "<kitchen>/.claude/agents/scribe.md"
    }
   ],
   "residual": {
-   "proj-instructions": 8,
+   "proj-instructions": 7,
    "folder-instructions": 1,
-   "skills": 7,
-   "other": 4
+   "skills": 5,
+   "other": 2
   },
   "backing": {
    "CLAUDE.md:12:4cc95702": {
@@ -18954,8 +19892,8 @@
  "slots": [
   {
    "id": "context",
-   "name": "Context",
-   "job": "what it reads before it acts",
+   "name": "Instructions",
+   "job": "what it's told before it acts",
    "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
    "types": [
     {
@@ -21175,7 +22113,7 @@
       },
       {
        "label": "sig:connected-accounts:claude-ai",
-       "scope": "user",
+       "scope": "local",
        "pkg": null,
        "hold": null,
        "ctx": [
@@ -25366,7 +26304,7 @@
      "inst": [
       {
        "label": "sig:transcripts:history",
-       "scope": "user",
+       "scope": "local",
        "pkg": null,
        "hold": null,
        "ctx": [
@@ -27205,7 +28143,7 @@
   },
   "earned": [
    "continuity",
-   "curated-canon",
+   "curated-knowledge-base",
    "defense-in-depth",
    "knows-when-to-stop",
    "earned-done"

@@ -1712,8 +1712,8 @@
     {
      "id": "record",
      "name": "Claude Code's record",
-     "looks": "65 confirmed, 9 believed",
-     "hits": 74,
+     "looks": "68 confirmed, 9 believed",
+     "hits": 77,
      "where": []
     }
    ]
@@ -1927,6 +1927,68 @@
    "effort": "quick"
   }
  ],
+ "words": {
+  "runtime": "claude",
+  "recorded": true,
+  "files": [
+   {
+    "file": "~/.claude/CLAUDE.md",
+    "path": "<home>/.claude/CLAUDE.md",
+    "layer": "user",
+    "who": "you",
+    "pkg": null,
+    "piece": "personal-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 15,
+      "lines": 4
+     }
+    ],
+    "kinds": {
+     "rule": 2
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 1,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": "~/.claude/CLAUDE.md:3:06369aa6",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "Always answer in English."
+     },
+     {
+      "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": false,
+      "text": "Never commit secrets."
+     }
+    ]
+   }
+  ],
+  "hooks": [],
+  "totals": {
+   "files": 1,
+   "start_tokens": 15,
+   "tokens": 15,
+   "sentences": 2,
+   "unclassified": 0,
+   "rules": 2,
+   "enforced": 0,
+   "asks": 0,
+   "only_said": 1,
+   "agent_notes": 0,
+   "agent_rules": 0
+  }
+ },
  "stack": {
   "runtime": "Claude Code",
   "levels": [
@@ -1963,6 +2025,7 @@
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -2020,6 +2083,7 @@
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -2143,7 +2207,8 @@
       "files": []
      }
     ],
-    "models": []
+    "models": [],
+    "uncommitted": []
    }
   ],
   "unused": [
@@ -13982,8 +14047,8 @@
  "slots": [
   {
    "id": "context",
-   "name": "Context",
-   "job": "what it reads before it acts",
+   "name": "Instructions",
+   "job": "what it's told before it acts",
    "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
    "types": [
     {

@@ -1729,8 +1729,8 @@
     {
      "id": "record",
      "name": "Claude Code's record",
-     "looks": "65 confirmed, 9 believed",
-     "hits": 74,
+     "looks": "68 confirmed, 9 believed",
+     "hits": 77,
      "where": []
     }
    ]
@@ -1954,6 +1954,119 @@
    "effort": "larger"
   }
  ],
+ "words": {
+  "runtime": "claude",
+  "recorded": true,
+  "files": [
+   {
+    "file": "~/.claude/CLAUDE.md",
+    "path": "<home>/.claude/CLAUDE.md",
+    "layer": "user",
+    "who": "you",
+    "pkg": null,
+    "piece": "personal-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 15,
+      "lines": 4
+     }
+    ],
+    "kinds": {
+     "rule": 2
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 1,
+     "unmeasured": 1
+    },
+    "sentences": [
+     {
+      "id": "~/.claude/CLAUDE.md:3:06369aa6",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must",
+      "backed": null,
+      "text": "Always answer in English."
+     },
+     {
+      "id": "~/.claude/CLAUDE.md:3:45b2cccf",
+      "line": 3,
+      "kind": "rule",
+      "strength": "must-not",
+      "backed": false,
+      "text": "Never commit secrets."
+     }
+    ]
+   },
+   {
+    "file": "CLAUDE.md",
+    "path": null,
+    "layer": "project",
+    "who": "you",
+    "pkg": null,
+    "piece": "proj-instructions",
+    "parts": [
+     {
+      "when": "start",
+      "tokens": 62,
+      "lines": 13
+     }
+    ],
+    "kinds": {
+     "residual": 3,
+     "pointer": 1
+    },
+    "rules": {
+     "enforced": 0,
+     "asks": 0,
+     "only_said": 0,
+     "unmeasured": 0
+    },
+    "sentences": [
+     {
+      "id": "CLAUDE.md:3:33c51617",
+      "line": 3,
+      "kind": "residual",
+      "text": "Standing rules for working in this repo."
+     },
+     {
+      "id": "CLAUDE.md:7:eb2b060f",
+      "line": 7,
+      "kind": "pointer",
+      "text": "- Read the code you're changing before you change it."
+     },
+     {
+      "id": "CLAUDE.md:8:f53b8a48",
+      "line": 8,
+      "kind": "residual",
+      "text": "- Before you call anything done, run the project's checks."
+     },
+     {
+      "id": "CLAUDE.md:12:b04e24ba",
+      "line": 12,
+      "kind": "residual",
+      "text": "- Small commits with a message that says why."
+     }
+    ]
+   }
+  ],
+  "hooks": [],
+  "totals": {
+   "files": 2,
+   "start_tokens": 77,
+   "tokens": 77,
+   "sentences": 6,
+   "unclassified": 3,
+   "rules": 2,
+   "enforced": 0,
+   "asks": 0,
+   "only_said": 1,
+   "agent_notes": 0,
+   "agent_rules": 0
+  }
+ },
  "stack": {
   "runtime": "Claude Code",
   "levels": [
@@ -2013,6 +2126,7 @@
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -2070,6 +2184,7 @@
      }
     ],
     "models": [],
+    "uncommitted": [],
     "from": [
      {
       "name": "yours",
@@ -2193,7 +2308,8 @@
       "files": []
      }
     ],
-    "models": []
+    "models": [],
+    "uncommitted": []
    }
   ],
   "unused": [
@@ -14026,8 +14142,8 @@
  "slots": [
   {
    "id": "context",
-   "name": "Context",
-   "job": "what it reads before it acts",
+   "name": "Instructions",
+   "job": "what it's told before it acts",
    "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
    "types": [
     {

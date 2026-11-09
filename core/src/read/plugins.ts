@@ -88,6 +88,10 @@ export interface Plugin {
   contexts?(ctx: ReadContext): void;
   /** the knowledge bases it configures: [folder, how Free Rein knows] (read for every harness) */
   vaults?(root: string, read: (p: string) => string): [string, string][];
+  /** the files and folders in this harness that are its own, wherever its config puts them: its config, the vaults it
+   *  configures, what its tools write as they run. Repo-relative, forward slashes; a folder covers what's in it. Free Rein
+   *  credits what's there to the plugin (only when detect(root) holds) */
+  owns?(root: string, read: (p: string) => string): string[];
 
   // checking
   /** lint findings, after the core's vocabulary check */

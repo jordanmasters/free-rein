@@ -145,6 +145,31 @@
      "status": "confirmed",
      "source": "cc-memory"
     },
+    "loads": {
+     "instructions": {
+      "how": "CLAUDE.md and CLAUDE.local.md from the filesystem root down to the working folder, ~/.claude/CLAUDE.md, the managed CLAUDE.md and .claude/rules files without paths load in full at launch; a subfolder's files and rules with paths load once it works there",
+      "status": "confirmed",
+      "source": "cc-memory"
+     },
+     "skills": {
+      "how": "Each skill's description (with when_to_use) is in context from the start, so Claude knows when to use it; the body loads only when the skill is used, and stays. A skill with disable-model-invocation has no description in context",
+      "status": "confirmed",
+      "source": "cc-skills",
+      "description_chars": 1536
+     },
+     "memory": {
+      "how": "Auto memory: notes Claude writes for itself, on by default, one folder per git repository (worktrees and subfolders share it), on this machine only. The first 200 lines or 25 KB of MEMORY.md, its index, load at the start of every session; the topic notes are read on demand. autoMemoryDirectory moves it",
+      "status": "confirmed",
+      "source": "cc-memory",
+      "dir": "~/.claude/projects/<project>/memory",
+      "index": "MEMORY.md",
+      "start_lines": 200,
+      "start_kb": 25,
+      "per": "repo",
+      "on": true,
+      "by_hand": true
+     }
+    },
     "session": {
      "how": "--settings, flags such as --model and --permission-mode, and choices made during a run",
      "status": "confirmed",
@@ -236,7 +261,7 @@
      "title": "Extend Claude with skills",
      "url": "https://code.claude.com/docs/en/skills",
      "kind": "official",
-     "checked": "docs ~v2.1.288, read 2026-10-07"
+     "checked": "docs read 2026-11-08 with Claude Code 2.1.319: descriptions in context, bodies on use"
     },
     "cc-modes": {
      "title": "Choose a permission mode",
@@ -260,7 +285,7 @@
      "title": "How Claude remembers your project",
      "url": "https://code.claude.com/docs/en/memory",
      "kind": "official",
-     "checked": "docs read 2026-10-24; the page states no version"
+     "checked": "docs read 2026-11-08 with Claude Code 2.1.319: what loads at launch, on demand, and auto memory"
     },
     "cc-hooks": {
      "title": "Hooks reference",
@@ -548,6 +573,16 @@
      "how": "AGENTS.md in each folder from the project root down to the working folder, joined in order",
      "status": "confirmed",
      "source": "agents_md"
+    },
+    "loads": {
+     "memory": {
+      "how": "Memories, off by default (features.memories), generated in the background into ~/.codex/memories; not for editing by hand",
+      "status": "confirmed",
+      "source": "memories",
+      "dir": "~/.codex/memories",
+      "on": false,
+      "by_hand": false
+     }
     },
     "combine": {
      "instructions": {
@@ -2109,8 +2144,8 @@
  "slots": [
   {
    "id": "context",
-   "name": "Context",
-   "job": "what it reads before it acts",
+   "name": "Instructions",
+   "job": "what it's told before it acts",
    "family": "surface",
    "icon": "book",
    "about": "Everything it reads before it starts on your request: your rules, the project's rules, rules for one folder, and context a hook pushes in on each prompt, at the start of a session or when a long one is summarised.",
@@ -7361,7 +7396,7 @@
    ]
   },
   {
-   "id": "curated-canon",
+   "id": "curated-knowledge-base",
    "kind": "synergy",
    "name": "Curated knowledge base",
    "all": [
@@ -7950,7 +7985,7 @@
   {
    "guarded": "knowledge-base",
    "by": "human-gate",
-   "combo": "curated-canon",
+   "combo": "curated-knowledge-base",
    "active": false
   },
   {

@@ -129,7 +129,7 @@ export function stakesOf(tool: string, target: string): string | null {
     if (b.startsWith(".env") || b.endsWith(".pem") || b.endsWith(".key") || ("/" + t).includes("/secrets/")) return "secrets";
     if (tool === "Read") return null;
     if (t.startsWith(".claude/settings") || t.startsWith(".claude/hooks/")) return "safeguards";
-    if (b === "CLAUDE.md" || b === "AGENTS.md" || ["vault/", "canon/", ".claude/memory", "memory/", ".claude/skills/", ".claude/agents/", ".claude/commands/"].some(p => t.startsWith(p)) || ("/" + t).includes("/decisions"))
+    if (b === "CLAUDE.md" || b === "AGENTS.md" || ["vault/", ".claude/memory", "memory/", ".claude/skills/", ".claude/agents/", ".claude/commands/"].some(p => t.startsWith(p)) || ("/" + t).includes("/decisions"))
       return "knowledge";
     return "everyday";
   }

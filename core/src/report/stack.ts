@@ -4,7 +4,7 @@
 // level; the session and the folders are named, with what can't be read from files said plainly.
 import * as os from "os";
 import * as path from "path";
-import { tracked } from "../read/git";
+import { tracked, ignored } from "../read/git";
 
 type Claim = { how: string; status: string; source?: string };
 export interface Level {
@@ -14,6 +14,9 @@ export interface Level {
   gives: { piece: string; files: string[] }[];
   /** models named in this level's files (a model for one job, not the main one), with what for */
   models: { name: string; for: string }[];
+  /** this repo's files at this level that aren't committed yet: in the repo for everyone, but a teammate doesn't have
+   *  them until they're committed */
+  uncommitted: string[];
 }
 export interface Stack {
   runtime: string; levels: Level[]; unused: { id: string; name: string }[];
@@ -45,13 +48,17 @@ export function stack(o: { root: string | null; rt: any; rtName: string; slots: 
   };
   const types = o.slots.flatMap((s: any) => s.types || []);
   const parts = types.flatMap((t: any) => (t.inst || []).map((x: any) => ({ ...x, piece: t.id })));
-  // shared with your team means committed: a file in the repo that git doesn't track (ignored, or not committed yet) is
-  // only yours, in this repo. Read from git's index; with none, every file in the repo counts as shared
-  const git = root ? tracked(root) : null;
+  // only yours, in this repo, means kept out of git on purpose: a file git ignores (or a .local one, by its name). A file
+  // in the repo that git doesn't track and doesn't ignore isn't committed yet: it's the repo's, shared once it's
+  // committed, so it stays shared and is marked. Read from git's index and ignore files; with no index, every file in
+  // the repo counts as shared, as before
+  const git = root ? tracked(root) : null, ign = root && git ? ignored(root) : null;
+  const notTracked = (r: string) => !!git && !git.has(r) && ![...git].some(t => t.startsWith(r + "/"));
+  const pending = new Set<any>();
   if (git) for (const x of parts) if (x.scope === "project" && x.path) {
     const a = path.resolve(x.path); if (!a.startsWith(root! + path.sep)) continue;
     const r = path.relative(root!, a).split(path.sep).join("/");
-    if (!git.has(r) && ![...git].some(t => t.startsWith(r + "/"))) x.scope = "local";
+    if (notTracked(r)) { if (ign && ign(r)) x.scope = "local"; else pending.add(x); }
   }
   // which level a file sets the mode or the model from
   const levelOfFile = (f: string): Level["id"] | null => /settings\.local\.json$|CLAUDE\.local\.md$/.test(f) ? "local"
@@ -69,7 +76,7 @@ export function stack(o: { root: string | null; rt: any; rtName: string; slots: 
   const levelOfAbs = (f: string): Level["id"] | null => {
     if (!f || /^https?:/.test(f)) return null;
     const a = path.resolve(f), r = root && a.startsWith(root + path.sep) ? path.relative(root, a).split(path.sep).join("/") : null;
-    if (r != null) return git && !git.has(r) ? "local" : /settings\.local\.json$|CLAUDE\.local\.md$/.test(r) ? "local" : "project";
+    if (r != null) return git && !git.has(r) && ign && ign(r) ? "local" : /settings\.local\.json$|CLAUDE\.local\.md$/.test(r) ? "local" : "project";
     return a.startsWith(home + path.sep) ? "user" : null;
   };
   const named: Record<string, { name: string; for: string }[]> = {};
@@ -87,6 +94,7 @@ export function stack(o: { root: string | null; rt: any; rtName: string; slots: 
       found: [...new Set(mine.map((x: any) => rel(x.path)).filter(Boolean))].slice(0, 40) as string[], count: mine.length,
       pieces: [...new Set(mine.map((x: any) => x.piece))] as string[],
       gives: Object.entries(gives).map(([piece, f]) => ({ piece, files: [...f].slice(0, 6) })), models: named[k.id] || [],
+      uncommitted: [...new Set(mine.filter((x: any) => pending.has(x)).map((x: any) => rel(x.path)).filter(Boolean))].slice(0, 40) as string[],
       from: Object.entries(byPkg).map(([name, n]) => ({ name, n })).sort((a, b) => b.n - a.n) });
   }
   // the runtime's own: what it ships, whether or not the harness adds anything
@@ -95,13 +103,13 @@ export function stack(o: { root: string | null; rt: any; rtName: string; slots: 
     const names = ships.map(([id]) => (types.find((t: any) => t.id === id) || { name: id }).name);
     levels.push({ id: "builtin", name: `${o.rtName}, built in`, files: names.slice(0, 4).concat(names.length > 4 ? [`and ${names.length - 4} more`] : []),
       found: [], pieces: ships.map(([id]) => id), count: ships.length, from: [{ name: o.rtName, n: ships.length }], readable: true, sets: sets.builtin || [],
-      gives: ships.map(([id]) => ({ piece: id, files: [] })), models: [] });
+      gives: ships.map(([id]) => ({ piece: id, files: [] })), models: [], uncommitted: [] });
   }
   // a known level a runtime keeps where Free Rein can't read it says so, even when nothing was found
   for (const k of known.filter((k: any) => k.readable === false)) {
     const u = unused.findIndex(x => x.id === k.id);
     if (u >= 0) { unused.splice(u, 1); levels.splice(levels.findIndex(l => l.id === "builtin") >= 0 ? levels.length - 1 : levels.length, 0,
-      { id: k.id, name: k.name, files: k.files || [], found: [], pieces: [], count: 0, from: [], readable: false, sets: [], gives: [], models: [] }); }
+      { id: k.id, name: k.name, files: k.files || [], found: [], pieces: [], count: 0, from: [], readable: false, sets: [], gives: [], models: [], uncommitted: [] }); }
   }
   const pk: Record<string, { n: number; levels: Set<string>; pieces: Set<string> }> = {};
   const brought = types.flatMap((t: any) => [...(t.inst || []), ...(t.extra || [])].map((x: any) => ({ ...x, piece: t.id })));

@@ -2,6 +2,7 @@
 import { withoutSamples } from "./samples";
 import { SKILL_DIRS } from "./extract";
 import { createHash } from "crypto";
+import { memory } from "./memory";
 import {
   re, I, M, S, strip, splitlines, len, slice, count, unique, join, abspath, relpath, dirname, expanduser, isfile, walk, readText,
 } from "../py";
@@ -16,7 +17,7 @@ export const ACTIONS: [string, string][] = [
   ["publish", "\\b(publish(es|ing|ed)?|release(s|d)?|npm publish)\\b"],
   ["deploy", "\\bdeploy(s|ing|ed|ment)?\\b"],
   ["install", "\\binstall(s|ing|ed)?\\b"],
-  ["write", "\\b(writ(e|es|ing)|edit(s|ing|ed)?|modif(y|ies|ying)|overwrit(e|es|ing))\\b|\\b(chang(e|es|ing)|updat(e|es|ing))\\b(?=[^.]{0,30}\\b(files?|vault|canon|notes?|docs?|config|settings|\\.md)\\b)|\\b(code|files?|vault|canon|notes?|docs?|config)\\s+(?:or\\s+\\w+\\s+)?(changes|edits|updates)\\b"],
+  ["write", "\\b(writ(e|es|ing)|edit(s|ing|ed)?|modif(y|ies|ying)|overwrit(e|es|ing))\\b|\\b(chang(e|es|ing)|updat(e|es|ing))\\b(?=[^.]{0,30}\\b(files?|vault|notes?|docs?|config|settings|\\.md)\\b)|\\b(code|files?|vault|notes?|docs?|config)\\s+(?:or\\s+\\w+\\s+)?(changes|edits|updates)\\b"],
   // a token only when it's a credential ("design tokens" and "token budgets" are not secrets)
   ["read-secrets", "\\b(secrets?|\\.env|credentials?|api keys?|private keys?)\\b|\\b(api|access|auth|bearer|oauth|refresh|session|github|npm|production|sandbox)[ -]tokens?\\b|\\b(hardcod\\w*|leak\\w*|expos\\w*|print\\w*|log|logs|logging|commit\\w*|shar\\w*|stor\\w*|put|keep) (a |the |any |your |raw |one )?(key or )?tokens?\\b|\\btokens?\\b(?=[^.]{0,50}\\b(environment|env vars?|source code|tracked files|in git|out of git)\\b)"],
   ["run", "\\b(run(s|ning)?|execut(e|es|ing))\\b"],
@@ -26,7 +27,7 @@ export const ACTIONS: [string, string][] = [
 const TOOLS = "\\b(Bash|Edit|Write|MultiEdit|Read|Grep|Glob|WebFetch|WebSearch|Skill|Agent|AskUserQuestion|TodoWrite|NotebookEdit)\\b";
 const PATH = "`([^`\\s]+\\.(?:md|json|ya?ml|toml|py|ts|js|sh|txt|jsonl))`|`((?:\\.?[\\w-]+/)+[\\w.*-]*)`|(?<![\\w/])((?:\\.?[\\w-]+/){1,6}[\\w*-]+\\.(?:md|json|ya?ml|toml|py|ts|js|sh|jsonl))";
 const SKILL = "(?:^|[\\s(`])/([a-z][a-z0-9-]{2,})\\b";
-const STORE = "\\b(the vault|the canon|the knowledge base|vault files?|canon files?|curated zones?)\\b";
+const STORE = "\\b(the vault|the knowledge base|vault files?|curated zones?)\\b";
 
 const STRENGTH: [string, string][] = [
   ["must-not", "\\b(never|don'?t|do not|must not|mustn'?t|cannot|can'?t|not allowed|forbidden|no (one|agent|skill) (may|should|can))\\b"],
@@ -41,6 +42,10 @@ const DEFINITION = re("^\\s*(?:[-*]\\s*)?\\*\\*([^*]{2,40})\\*\\*\\s*(?:[—:–
 export const STEP = re("^\\s*(?:\\d+[.)]|step \\d+\\b|\\*\\*step \\d+)", I);
 const IMPERATIVE = re("^\\s*(?:[-*]\\s+)?(?:\\*\\*)?(read|run|show|write|ask|load|check|create|add|update|commit|open|list|draft|propose|wait|confirm|emit|record|find|look|search|fetch|move|delete|copy|call|use|keep|put|start|stop|set|tell|report|summari[sz]e|compare|walk|surface|offer|present|parse|scan|build|generate|apply|test|describe|name|link|mark|route|log|save|pick|choose|skip|ignore)\\b", I);
 const POINTER_ONLY = re("^\\s*(?:[-*]\\s*)?(see|read|refer to|details in|more in|follow)\\b|^\\s*@[\\w./~-]+\\s*$|^\\s*(?:[-*]\\s*)?\\[[^\\]]+\\]\\([^)]+\\)\\s*$", I);
+// a fact: how the project is or works, said as description. A label and its value ("Targets: core, vscode"), a sentence
+// led by a name in code ("`npm test` runs the tests"), or one whose verb describes ("X is …", "it holds …"). Only what
+// the kinds above leave: a fact is never a rule
+const FACT = re("^\\s*(?:[-*]\\s*)?(?:\\*\\*[^*]{1,40}\\*\\*|`[^`]{1,60}`|[A-Z][\\w ()/-]{0,30}):\\s+\\S|^\\s*(?:[-*]\\s*)?`[^`]+`\\s+\\w|^\\s*(?:[-*]\\s*)?this (file|repo|repository|project|folder|package)\\b|\\b(is|are|was|were|has|have|holds|keeps|uses|contains|runs|reads|writes|resolves|lives|sits|provides|supports|maps|returns|loads|starts|stores|builds|calls|judges|computes|tracks|requires|defines)\\b", I);
 const CODE = re("`[^`]*`");
 const HEADING = re("^#{1,6}\\s");
 
@@ -81,6 +86,7 @@ export function classify(line: string, inSteps = false): [string, string | null]
   if (STEP.search(raw) || (inSteps && IMPERATIVE.search(raw)) || IMPERATIVE.search(raw)) return ["direction", null];
   if (DEFINITION.search(raw)) return ["definition", null];
   if (re(PATH).search(raw) || re(SKILL).search(raw)) return ["pointer", null];
+  if (FACT.search(raw) && !re("\\?\\s*$").search(raw)) return ["fact", null];
   return ["residual", null];
 }
 
@@ -184,6 +190,10 @@ export function harness(rootIn: string, g?: any, home?: string | false | null, m
     }
   }
   for (const m of more) files.push([isfile(m) ? m : join(m, "SKILL.md"), "unit"]);
+  // the notes your agent keeps for itself, when the home folder counts (memory.ts)
+  const notes = new Map<string, any>();
+  const ruled = new Set<string>();
+  if (home !== false) for (const n of (memory(root) || { notes: [] }).notes) { files.push([n.path, "memory"]); notes.set(abspath(n.path), n); }
   for (let [p, scope] of files) {
     p = abspath(p);
     if (seen.has(p) || !isfile(p)) continue;
@@ -193,10 +203,24 @@ export function harness(rootIn: string, g?: any, home?: string | false | null, m
     const n = nodes.get(p);
     let rel = relpath(p, root);
     if (!abspath(p).startsWith(root + "/")) rel = "~/" + relpath(p, expanduser("~"));
+    const note = notes.get(p);
     for (const x of read(p, text, n ? n.id : rel, scope, root)) {
       x.source.file = rel;
       x.id = rel + x.id.slice(x.id.indexOf(":"));
-      x.piece = pieceOf(rel);
+      x.piece = note ? "saved-facts" : pieceOf(rel);
+      if (note) {
+        x.who = "agent";
+        // a note's description says what's in it: not a trigger, as a skill's is
+        if (x.from === "frontmatter description") x.kind = "fact";
+        // the index's lines point at the notes and repeat them: pointers, so nothing counts twice
+        else if (note.index) { x.kind = "pointer"; x.strength = null; delete x.matched; }
+        // a feedback note is a rule your agent gave itself: its first sentence is the rule, however it's worded
+        else if (note.type === "feedback" && !ruled.has(rel) && x.kind !== "trigger" && !/^\*\*(why|how to apply)/i.test(x.text)) {
+          ruled.add(rel);
+          if (x.kind !== "rule") { x.kind = "rule"; x.strength = x.strength || "should"; x.matched = matched(x.text); }
+          x.from = "memory feedback";
+        }
+      }
       out.push(x);
     }
   }

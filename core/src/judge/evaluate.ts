@@ -4,6 +4,7 @@ import { modelDir, repoDir, load } from "../read/spec";
 import { re, I, readText, loads, join, dirname, relpath, realpath, expanduser, glob, sorted, unique, round, get, iter, items as pyItems, isDict, or, truthy } from "../py";
 import { lint, Finding } from "./lint";
 import { discoverVaults } from "../read/extract";
+import { used as usedPlugins, tryPlugin } from "../read/plugins";
 import * as progress from "./progress";
 import * as runtimes from "../read/runtimes";
 import * as packages from "../write/packages";
@@ -117,6 +118,11 @@ export function evaluate(root: string | null, opts: EvalOpts = {}): any {
   const prof = opts.profile ? loadProfile(opts.profile) : null;
   progress.INSTALLED.clear();
   if (root && !prof) for (const [k, v] of Object.entries(packages.installedBy(root))) progress.INSTALLED.set(k, v);
+  progress.OWNED.clear();
+  if (root && !prof) for (const p of usedPlugins(root)) {
+    const own = tryPlugin(p, "owns", () => p.owns?.(root, (f: string) => { try { return readText(f); } catch { return ""; } }) ?? [], [] as string[]);
+    for (const r of own) { const k = String(r || "").replace(/\\/g, "/").replace(/^\.\/|^\/+|\/+$/g, ""); if (k && !progress.OWNED.has(k)) progress.OWNED.set(k, p.id); }
+  }
   let nodes: any[], edges: any[], findings: Finding[], home: Record<string, any[]>, g: any = null, bound = new Set<string>();
   // skills in this repo this runtime doesn't load (another runtime's folder, a plugin's own skills/)
   let unloaded: any[] = [];

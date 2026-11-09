@@ -4,7 +4,7 @@ import { readText, join, dirname, basename, isdir, isfile, exists, realpath, rel
 import { levelStart } from "../report/score";
 
 /** The home folder, read when used (Python reads it once at import; tests that move HOME set it before) */
-import { home as HOME } from "../read/home";
+import { home as HOME, repoHomeFolders } from "../read/home";
 const MANAGED = ["/Library/Application Support/ClaudeCode", "/etc/claude-code"];
 const W: Record<string, number> = { asks: 1, checks: 2, blocks: 3 };
 
@@ -23,6 +23,8 @@ export const TAGS = new Map<string, string>();
 export const CHECKERS = new Set(["address-findings"]);
 /** files a package's installer put into this folder: rel path -> {pkg, changed} */
 export const INSTALLED = new Map<string, { pkg: string; changed: boolean }>();
+/** files and folders a plugin says are its own here (Plugin.owns): rel path -> package; a folder covers what's in it */
+export const OWNED = new Map<string, string>();
 
 /** [scope, package] for one file: who it applies to, and who supplied it. */
 export function where(path: string | null | undefined, root: string, freeReinDir: string): [string | null, string | null] {
@@ -33,6 +35,8 @@ export function where(path: string | null | undefined, root: string, freeReinDir
   if (MANAGED.some(m => path.startsWith(m))) scope = "org";
   else if (["CLAUDE.local.md", "settings.local.json"].includes(basename(path))) scope = "local";
   else if (inside) scope = "project";
+  // your home's folders for this repo alone (its transcripts, its memory) are this repo, just you
+  else if (repoHomeFolders(root).some(f => path === f || path.startsWith(f + "/"))) scope = "local";
   else if (path.startsWith(home)) scope = "user";
   else scope = "project";
   let pkg: string | null = null;
@@ -41,6 +45,10 @@ export function where(path: string | null | undefined, root: string, freeReinDir
   if (INSTALLED.size && real.startsWith(rroot + "/")) {
     const hit = INSTALLED.get(relpath(real, rroot));
     if (hit) return [scope, hit.pkg];
+  }
+  if (OWNED.size && (real === rroot || real.startsWith(rroot + "/"))) {
+    const r = relpath(real, rroot);
+    for (const [k, v] of OWNED) if (r === k || r.startsWith(k + "/")) return [scope, v];
   }
   if (!inside) {
     if (real.includes("/.claude/plugins/")) {

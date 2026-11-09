@@ -49,6 +49,7 @@
       "type": "array",
       "items": {"type": "object", "required": ["id", "kind", "text"], "properties": {"kind": {"type": "string"}, "path": {"type": ["string", "null"]}, "line": {"type": ["integer", "null"]}, "strength": {"type": "string"}, "piece": {"type": "string"}}}
     },
+    "memory": {"type": "object", "description": "The notes the agent keeps for itself (its memory), counted, never quoted: they stay on the machine", "required": ["statements", "rules"], "properties": {"statements": {"type": "integer", "minimum": 0}, "rules": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
     "situations": {
       "type": "array",
       "items": {"type": "object", "required": ["id", "stakes", "verdict", "accounted", "decided_by"], "properties": {"stakes": {"type": "string"}, "verdict": {"type": "string"}, "accounted": {"type": "boolean"}, "decided_by": {"type": "array", "items": {"type": "string"}}}}

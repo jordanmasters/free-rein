@@ -74,7 +74,9 @@ export function document(h: any, spec: Spec, root?: string | null, mode?: string
     pieces.push(p);
   }
   const said = get(h, "said") || {};
-  const statements = (get(said, "statements") || []).map((s: any) => ({
+  // your agent's notes (memory) are yours alone: the document, which is meant to be shared, counts them, never quotes them
+  const all = get(said, "statements") || [], mine = all.filter((s: any) => get(s, "who") === "agent");
+  const statements = all.filter((s: any) => get(s, "who") !== "agent").map((s: any) => ({
     id: s.id, kind: s.kind, text: s.text, path: get(get(s, "source") || {}, "file"), line: get(get(s, "source") || {}, "line"),
     ...(truthy(get(s, "strength")) ? { strength: s.strength } : {}), ...(truthy(get(s, "piece")) ? { piece: s.piece } : {}) }));
   const m = mode || readMode(get(h, "oversight"));
@@ -92,6 +94,7 @@ export function document(h: any, spec: Spec, root?: string | null, mode?: string
     ...(countsHome !== null && countsHome !== undefined ? { counts_home: countsHome } : {}),
     pieces, statements, situations, combos,
   };
+  if (mine.length) doc.memory = { statements: mine.length, rules: mine.filter((s: any) => s.kind === "rule").length };
   if (truthy(get(h, "build"))) doc.runtime.build = get(h.build, "id");
   return doc;
 }

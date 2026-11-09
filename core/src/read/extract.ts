@@ -10,6 +10,7 @@ import {
 import { models as readModels, INPUTS, OUTPUTS } from "./models";
 import * as pyAll from "../py";
 import { plugins, used, tryPlugin, Kit, ReadContext } from "./plugins";
+import { memory } from "./memory";
 import { historyDir } from "./home";
 
 // --- detection patterns ---
@@ -33,7 +34,7 @@ const READONLY_RE = re("read-?only|never writes|does not write|nothing is writte
 const WRITE_HINT_RE = re("\\b(?:write|writes|written|append|appends|append-only|log|logs|create|creates|scaffold|scaffolds|update|updates|edit|edits|mark|save)\\b", I);
 const EXIT_BLOCK_RE = re("\\bexit\\s+[1-9]\\b");
 
-const AUTHORITATIVE_HINTS = ["vault/", "canon/", "tracking/", "theses/", "decisions/", "research/", "snapshots/", "watchlist/",
+const AUTHORITATIVE_HINTS = ["vault/", "tracking/", "theses/", "decisions/", "research/", "snapshots/", "watchlist/",
   "postmortems/", "values-goals/", "frameworks/", "principles/", "macro-notes/"];
 /** Folders of sample harnesses kept for tests and demos: someone else's harness, not this one's instructions. */
 /** The folders a runtime loads skills from (each skill: <folder>/<name>/SKILL.md) */
@@ -246,7 +247,7 @@ export function discoverVaults(root: string): [string, string][] {
     vs = tryPlugin(p, "vaults", () => p.vaults?.(root, read) ?? [], []);
     for (const [vp, how] of vs) if (vp && isdir(join(root, vp)) && !found.has(vp)) found.set(vp, how);
   }
-  for (const name of ["vault", "canon", "knowledge", "notes", "wiki"])
+  for (const name of ["vault", "knowledge", "notes", "wiki"])
     if (isdir(join(root, name)) && !found.has(name)) found.set(name, "conventional name");
   for (const name of sorted(listdir(root)))
     if (!name.startsWith(".") && isdir(join(root, name, ".obsidian")) && !found.has(name)) found.set(name, "has an .obsidian folder");
@@ -819,6 +820,12 @@ function harnessSignals(g: Graph, root: string, home: string) {
     if (n.type === "unit" && re("\\bsign[- ]off\\b|\\baccept(ance)?\\b.*\\b(result|work)\\b", I).search(read(provPath(n))))
       sig("sign-off", n.label, n.provenance.path, { evidence: "a sign-off step" });
 
+  // the notes your agent keeps for itself (memory.ts): this repo, just you, though they sit in your home
+  const mem = memory(HISTORY_FOR.get(root) ?? root);
+  if (mem && mem.notes.length)
+    g.node("surface", "memory", { kind: "persistent-memory", discovered: true, provenance: { path: mem.dir }, n: mem.notes.length,
+      summary: `${mem.notes.length} note${mem.notes.length === 1 ? "" : "s"} your agent keeps for itself` });
+
   // observability
   if (hist && _files(hist, "\\.jsonl$").length)
     sig("transcripts", "history", hist, { evidence: `${_files(hist, ".jsonl$").length} sessions kept`, n: _files(hist, "\\.jsonl$").length });
@@ -915,7 +922,8 @@ function stampParts(g: Graph) {
     const t = n.type, nid: string = n.id;
     let part: string | null = null;
     if (t === "surface") {
-      if (nid.startsWith("surface:global-")) part = "user-constitution";
+      if (n.kind === "persistent-memory") part = "persistent-memory";
+      else if (nid.startsWith("surface:global-")) part = "user-constitution";
       else if (nid.startsWith("surface:project-") || nid.includes("claude-md") || nid.includes("agents-md")) part = "project-constitution";
     } else if (t === "unit") part = "skill";
     else if (t === "contract") part = "engine-protocol";

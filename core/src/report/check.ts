@@ -140,7 +140,8 @@ function checkIn(rootIn: string, opts: { count_home?: boolean; runtime?: string 
       add(rule, { message: `${lf.title}: ${lf.detail}`, subject: lf.loop, place: lf.place ? place(lf.place.path, lf.place.line) : null, fix: lf.fix });
     } }
   let sts: any[] = [], stores: string[] = [];
-  try { sts = statementsOf(root); stores = backing.vaultDirs(root); } catch { sts = []; }
+  // your agent's notes (memory) are left out: check's output is shared, and what's in them stays on this machine
+  try { sts = statementsOf(root, undefined, opts.count_home ? undefined : false).filter((s: any) => s.who !== "agent"); stores = backing.vaultDirs(root); } catch { sts = []; }
   oversight.resetCaches();
   oversight.SAID.splice(0, oversight.SAID.length, ...backing.saidSituations(sts, stores));
   let ov: any;

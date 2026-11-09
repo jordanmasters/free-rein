@@ -23,6 +23,7 @@ import { step } from "./steps";
 import { flows } from "../judge/flows";
 import { moves } from "../judge/moves";
 import { stack } from "./stack";
+import { words as wordsOf, withReading } from "./words";
 import * as packages from "../write/packages";
 import { models } from "../read/models";
 import * as oversight from "../judge/oversight";
@@ -355,13 +356,20 @@ function boardOf(root: string | null, countHome: boolean, profile: string | null
   let ov: any;
   step("situations", "Playing out risky actions through your permission rules and hooks");
   try { ov = oversight.both(root, a, runtime); } finally { oversight.SAID.length = 0; }
-  let tier: Record<string, any> = {}, said: any = null;
+  let tier: Record<string, any> = {}, said: any = null, words: any = null;
+  // the agent review, when the user's own agent has written one: findings whose quotes check out (report/review.ts)
+  const review = a.profile ? null : readReview(root);
   step("situations", "Playing out risky actions through your permission rules and hooks", ((ss: any[]) => `${ss.length} actions, ${ss.filter((x: any) => x.verdict === "exposed").length} exposed`)(ov.by_mode[readMode(ov)].situations || []));
   if (sts.length || readsRules) {
     step("backing", "Matching each rule to what enforces it");
     const sits = ov.by_mode.auto.situations;
     const bk = backing.back(sts, sits, stores);
     said = saidBlock(sts, bk, sits, root!);
+    // everything the agent reads, when each loads, and what it says (report/words.ts)
+    try {
+      const inj = slots.flatMap((sl: any) => sl.types.filter((t: any) => t.id === "live-injection").flatMap((t: any) => [...(t.inst || []), ...(countHome ? t.extra || [] : [])]));
+      words = wordsOf({ root: root!, runtime, rtRecord: load().cores[coreOf(runtime)], sts, backing: bk, hooks: inj });
+    } catch { words = null; }
     step("backing", "Matching each rule to what enforces it", (said.summary.rules ? `${said.summary.backed} of ${said.summary.rules} rule${said.summary.rules === 1 ? "" : "s"} enforced, ${said.summary.unbacked} only asked` : "no rules to match"));
     tier = tiersMod.evaluate(load(), a, root!, sits, bk, oversight.HISTORY_FOR.get(root!));
     a.progression.xp += tierXp(a, tier);
@@ -401,13 +409,15 @@ function boardOf(root: string | null, countHome: boolean, profile: string | null
     free_rein: freeReinAll(ov, readMode(ov), readsRules ? said : null,
       ((((load().cores[coreOf(rtId)] || {}).run_modes || {}).modes || []) as any[]).map((m: any) => m.level)),
     // the agent review, when the user's own agent has written one: findings whose quotes check out (report/review.ts)
-    review: prof ? null : readReview(root),
+    review: prof ? null : review,
     // how it knows: every check it makes, by how it knows (read, matched, recorded), with what each found here
     checks: prof ? null : checks({ root, types: slots.flatMap((x: any) => x.types), statements: said ? said.statements : [], situations: ov.by_mode[readMode(ov)].situations || [],
       lint: a.lint || {}, loops: howItChecks, flows: howItFlows, record: runtimeFiles()[coreOf(rtId)] || null, rtName }),
     // everything worth doing next, in one list (situations, rules, loops, flows, pieces), merged and ranked
     moves: prof ? [] : moves({ oversight: ov, said: readsRules ? said : null, loops: howItChecks, flows: howItFlows, next: nexts },
       Object.fromEntries(slots.flatMap((s: any) => s.types).map((t: any) => [t.id, t])), new Set(TEMPLATE_IDS)),
+    // everything the agent reads: instructions, skills, its own notes; when each loads, what each says (report/words.ts)
+    words: withReading(words, review && review.sentences),
     // the levels it reads this harness at, most specific first, with what's at each (model/runtimes/<id>.json "layers")
     stack: prof && prof.kind !== "runtime" ? null : stack({ root: prof ? null : root, rt: load().cores[coreOf(rtId)], rtName: prof ? prof.name : rtName, slots,
       baseShips: Object.fromEntries(((runtimeProfile(prof ? rtId : runtime) || {}).ships || []).filter((e: any) => truthy(e.ships)).map((e: any) => [e.type, { ships: e.ships }])), baseOn: base !== false, runMode: startMode(prof ? null : root, (load().cores[coreOf(rtId)] || {}).run_modes), models: readsRules ? models(root!) : null }),

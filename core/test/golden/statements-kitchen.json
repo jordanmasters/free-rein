@@ -319,7 +319,7 @@
  },
  {
   "id": "CLAUDE.local.md:1:2451644a",
-  "kind": "residual",
+  "kind": "fact",
   "text": "Personal: prefer short answers.",
   "source": {
    "file": "CLAUDE.local.md",
@@ -530,7 +530,7 @@
  },
  {
   "id": ".claude/skills/commit-it/SKILL.md:5:cd60e8fb",
-  "kind": "residual",
+  "kind": "fact",
   "text": "Writes progress.md.",
   "source": {
    "file": ".claude/skills/commit-it/SKILL.md",
@@ -856,7 +856,7 @@
  },
  {
   "id": ".claude/skills/review-work/SKILL.md:32:e4adf2eb",
-  "kind": "residual",
+  "kind": "fact",
   "text": "Bad bytes:  café  end.",
   "source": {
    "file": ".claude/skills/review-work/SKILL.md",

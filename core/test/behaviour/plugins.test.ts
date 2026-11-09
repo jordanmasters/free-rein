@@ -94,3 +94,14 @@ test("without the plugin, the same harness reads as plain", () => {
     assert.deepEqual(board(root).uses, []);
   } finally { process.env.FREE_REIN_PLUGINS = [TIDY, BROKEN].join(":"); }
 });
+
+test("what a plugin says is its own is credited to it, wherever its config puts it", () => {
+  const root = tidyHarness();
+  fs.writeFileSync(path.join(root, ".claude", "tidy.json"), JSON.stringify({ notes: "journal" }, null, 2) + "\n");
+  for (const n of ["a", "b", "c"]) write(root, `journal/${n}.md`, `# ${n}\n`);
+  const S = board(root).stack, p = S.levels.find((l: any) => l.id === "project");
+  const kb = p.gives.find((g: any) => g.piece === "knowledge-base");
+  assert.ok(kb && kb.files.includes("journal"), "its notes folder, at the path its config names");
+  assert.ok(p.from.some((f: any) => f.name === "tidy"), "credited to Tidy, not to you");
+  assert.ok(S.packages.some((x: any) => x.name === "tidy" && x.pieces.includes("knowledge-base")));
+});

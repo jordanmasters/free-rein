@@ -179,6 +179,7 @@ turns a set of separately written specs into one harness you can reason about.
 | `claim` | something asserted as true about the harness | "Every release goes through /release" |
 | `definition` | what a term means here | "A gate is a review step before a write" |
 | `pointer` | a reference to another file, skill or tool | "See docs/glossary.md" |
+| `fact` | how the project is or works, said as description | "`npm test` runs the core's tests" |
 | `residual` | prose that says something none of the above captures | kept, never dropped (Losslessness) |
 
 **Fields** (common to every statement):

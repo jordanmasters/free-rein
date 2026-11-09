@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as path from "path";
 import { reviewBrief, readReview, sensitiveFiles } from "../../src/report/review";
+import { board } from "../../src/report/board";
 
 const repo = () => {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), "free-rein-review-"));
@@ -42,4 +43,30 @@ test("a review keeps findings whose quotes check out, and drops the rest", () =>
   assert.deepEqual(r.dropped.map(x => x.reason), ["a quote isn't in the file it cites", "it quotes a sensitive file"]);
   assert.deepEqual(r.changed_since, []);
   assert.equal(readReview(fs.mkdtempSync(path.join(os.tmpdir(), "free-rein-none-"))), null, "no review, nothing");
+});
+
+test("the sentences Free Rein can't place go in the brief by id; your agent's kinds come back only when their quotes check out", () => {
+  const d = repo();
+  fs.writeFileSync(path.join(d, "CLAUDE.md"), "# Rules\n\nNo unsolicited emojis.\nConcise answers please.\n");
+  const b = board(d);
+  const brief = reviewBrief(d, b);
+  const unplaced = b.words.files.flatMap((f: any) => f.sentences.filter((s: any) => s.kind === "residual"));
+  assert.ok(unplaced.length >= 1);
+  assert.ok(unplaced.every((s: any) => brief.includes(s.id)), "each by its id");
+  const id = unplaced.find((s: any) => /emojis/.test(s.text)).id;
+  fs.mkdirSync(path.join(d, ".free-rein"), { recursive: true });
+  fs.writeFileSync(path.join(d, ".free-rein", "review.json"), JSON.stringify({ version: 1, findings: [], sentences: [
+    { id, kind: "rule", strength: "must-not", quote: "No unsolicited emojis." },
+    { id, kind: "rule", strength: "must", quote: "a quote that isn't there at all" },
+    { id: "CLAUDE.md:99:abcdef12", kind: "fact", quote: "No unsolicited emojis." },
+  ] }));
+  assert.deepEqual(readReview(d)!.sentences.map(s => [s.kind, s.strength]), [["rule", "must-not"]], "a quote not in the file, or at another line, is dropped");
+  // its time is when the file was written, whatever the agent says (a model doesn't know the time)
+  const rj = path.join(d, ".free-rein", "review.json"); fs.writeFileSync(rj, JSON.stringify({ ...JSON.parse(fs.readFileSync(rj, "utf8")), at: "2020-01-01T12:00:00Z" }));
+  assert.equal(readReview(d)!.at, fs.statSync(rj).mtime.toISOString());
+  const w = board(d).words, s = w.files.flatMap((f: any) => f.sentences).find((x: any) => x.id === id);
+  assert.deepEqual(s.agent, { kind: "rule", strength: "must-not" });
+  assert.equal(s.kind, "residual", "the patterns' kind stays; your agent's is beside it");
+  assert.equal(w.totals.agent_found_rules, 1);
+  assert.equal(board(d).said.summary.rules, b.said.summary.rules, "it never counts toward the rules Free Rein measures");
 });

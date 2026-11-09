@@ -41,6 +41,7 @@ module.exports = {
     for (const n of ctx.g.nodes.values()) n.contexts = n.type === "contract" ? ["base", "tidy"] : ["base"];
   },
   vaults: root => cfg(root).notes ? [[cfg(root).notes, "configured in .claude/tidy.json"]] : [],
+  owns: root => [".claude/tidy.json", "rituals", ".tidy", ...(cfg(root).notes ? [cfg(root).notes] : [])],
 
   lint(g, root, kit) {
     const read = new Set(g.edges.filter(e => e.type === "reads").map(e => e.target));
